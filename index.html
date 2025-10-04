@@ -551,27 +551,12 @@
 
     <!-- ===== SCRIPT: Contadores ===== -->
     <script>
-    // Contador de cartas entregadas (basado en fecha, siempre creciente)
+    // Contador de cartas entregadas: siempre creciente, de 1 en 1
     (function() {
         const now = new Date();
-        const dateString = now.getFullYear().toString() +
-                           String(now.getMonth() + 1).padStart(2, '0') +
-                           String(now.getDate()).padStart(2, '0') +
-                           String(now.getHours()).padStart(2, '0') +
-                           String(now.getMinutes()).padStart(2, '0') +
-                           String(now.getSeconds()).padStart(2, '0');
-        
-        // Sumar todos los dígitos
-        let sum = 0;
-        for (let i = 0; i < dateString.length; i++) {
-            sum += parseInt(dateString[i]);
-        }
-        
-        // Calcular el número final
-        const base = 1000; // Número base
-        const multiplier = 10; // Para hacerlo más grande
-        const count = base + (sum * multiplier);
-        
+        const secondsSinceMidnight = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+        const base = 1000;
+        const count = base + secondsSinceMidnight;
         document.getElementById('countCartas').textContent = count.toLocaleString();
     })();
     </script>
