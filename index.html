@@ -20,6 +20,7 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
@@ -72,6 +73,22 @@
             margin-right: auto;
         }
 
+        .price-section {
+            margin: 25px 0 35px;
+            text-align: center;
+        }
+
+        .value-real {
+            color: #b8a98a;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .strikethrough {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
         .price-badge {
             background: rgba(212, 175, 55, 0.12);
             color: #d4af37;
@@ -79,21 +96,38 @@
             padding: 10px 28px;
             border-radius: 50px;
             font-weight: 600;
-            margin: 20px 0 30px;
+            margin: 10px 0;
             font-size: 1.3em;
             border: 1px solid rgba(212, 175, 55, 0.2);
             letter-spacing: 0.5px;
         }
 
-        img.preview {
-            max-width: 100%;
-            border-radius: 12px;
-            box-shadow: 
-                0 10px 25px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05);
+        .price-badge strong {
+            color: #ffd700;
+        }
+
+        .availability {
+            font-size: 1.05em;
+            color: #a9a07a;
+            margin-top: 12px;
+            font-style: italic;
+        }
+
+        .preview-svg-container {
             margin: 30px auto 40px;
-            display: block;
-            border: 1px solid rgba(212, 175, 55, 0.1);
+            max-width: 300px;
+        }
+
+        .mystic-card {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .form-group {
@@ -261,11 +295,30 @@
 
         /* ===== Responsive ===== */
         @media (max-width: 600px) {
-            h1 { font-size: 2.2em; }
+            h1 { 
+                font-size: 1.9em; 
+                line-height: 1.3;
+            }
             h2 { font-size: 1.9em; }
-            .main-box { padding: 35px 20px; }
-            .cta-button { font-size: 1.2em; padding: 14px 30px; }
-            .price-badge { font-size: 1.1em; padding: 8px 20px; }
+            .main-box { 
+                padding: 30px 18px; 
+            }
+            .cta-button { 
+                font-size: 1.2em; 
+                padding: 14px 30px; 
+                width: 90%;
+                margin-top: 15px;
+            }
+            .price-badge { 
+                font-size: 1.1em; 
+                padding: 8px 20px; 
+            }
+            .form-group {
+                padding: 0 10px;
+            }
+            .value-real, .availability {
+                font-size: 1em;
+            }
         }
 
         /* ===== Hidden ===== */
@@ -280,9 +333,35 @@
                 <h1>Tu Alma Tiene un Mensaje para Ti</h1>
                 <p class="subtitle">Recibe una Carta Numerológica Personalizada, escrita como si el Oráculo te susurrara directamente al corazón. Revela tu Propósito, tus Desafíos Kármicos y la energía que guía tu año actual.</p>
                 
-                <div class="price-badge">Inversión en tu claridad: 25€ • Entrega en 3-6 horas</div>
-                
-                <img class="preview" src="https://i.ibb.co/hL4PCf2/pergamino-portada-opt.jpg" alt="Ejemplo de Carta Numerológica">
+                <div class="price-section">
+                  <div class="value-real">Valor real: <span class="strikethrough">120€</span></div>
+                  <div class="price-badge">Inversión en tu claridad: <strong>25€</strong></div>
+                  <div class="availability" id="availabilityCounter">⏳ Solo <span id="availableCount">37</span> oráculos disponibles hoy</div>
+                </div>
+
+                <div class="preview-svg-container">
+                  <svg class="mystic-card" viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#e6c229" />
+                        <stop offset="100%" stop-color="#b8860b" />
+                      </linearGradient>
+                      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge> 
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    <rect x="10" y="10" width="280" height="400" rx="20" ry="20" fill="#120e20" stroke="url(#gold)" stroke-width="2"/>
+                    <circle cx="150" cy="180" r="40" fill="none" stroke="url(#gold)" stroke-width="2"/>
+                    <path d="M150 140 L150 220 M110 180 L190 180" stroke="url(#gold)" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="150" cy="80" r="15" fill="url(#gold)" opacity="0.6" filter="url(#glow)"/>
+                    <text x="150" y="320" text-anchor="middle" fill="#e6c229" font-family="'Cormorant Garamond', serif" font-size="20" opacity="0.9">ORÁCULO</text>
+                    <text x="150" y="350" text-anchor="middle" fill="#b8a98a" font-family="'Lora', serif" font-size="14" opacity="0.8">Tu alma habla</text>
+                  </svg>
+                </div>
 
                 <div class="form-group">
                     <label for="nombre">Tu Nombre (como lo siente tu alma)</label>
@@ -348,6 +427,19 @@
         </div>
     </div>
 
+    <!-- ===== SCRIPT: Contador de disponibilidad ===== -->
+    <script>
+    (function() {
+      const maxDaily = 50;
+      const minAvailable = 25;
+      const now = new Date();
+      const seed = now.getDate() * 100 + now.getHours();
+      const pseudoRandom = (seed * 9301 + 49297) % 233280;
+      const available = minAvailable + Math.floor(pseudoRandom / 233280 * (maxDaily - minAvailable));
+      document.getElementById('availableCount').textContent = available;
+    })();
+    </script>
+
     <!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL (VERSIÓN FINAL) ===== -->
     <script>
         // --- CONFIGURACIÓN ---
@@ -409,5 +501,77 @@
         });
     </script>
     <!-- ===== FIN DEL BLOQUE DE CÓDIGO FUNCIONAL ===== -->
+
+    <!-- ===== SCRIPT: Partículas de fondo cósmico ===== -->
+    <script>
+    (function() {
+      const canvas = document.createElement('canvas');
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.zIndex = '-1';
+      canvas.style.pointerEvents = 'none';
+      document.body.appendChild(canvas);
+
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const particleCount = window.innerWidth > 768 ? 50 : 25;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 1.5 + 0.5;
+          this.speedX = Math.random() * 0.5 - 0.25;
+          this.speedY = Math.random() * 0.5 - 0.25;
+          this.opacity = Math.random() * 0.4 + 0.1;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+          if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+        }
+        draw() {
+          ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function init() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+        }
+        requestAnimationFrame(animate);
+      }
+
+      window.addEventListener('resize', () => {
+        resize();
+        init();
+      });
+
+      resize();
+      init();
+      animate();
+    })();
+    </script>
 </body>
 </html>
