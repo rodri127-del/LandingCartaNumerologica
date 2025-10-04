@@ -93,17 +93,19 @@
             background: rgba(212, 175, 55, 0.12);
             color: #d4af37;
             display: inline-block;
-            padding: 10px 28px;
+            padding: 12px 30px;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 700;
             margin: 10px 0;
-            font-size: 1.3em;
+            font-size: 1.4em;
             border: 1px solid rgba(212, 175, 55, 0.2);
             letter-spacing: 0.5px;
+            animation: glow 2s ease-in-out infinite alternate;
         }
 
-        .price-badge strong {
-            color: #ffd700;
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(212, 175, 55, 0.5); }
+            to { box-shadow: 0 0 15px rgba(212, 175, 55, 0.8); }
         }
 
         .availability {
@@ -113,21 +115,20 @@
             font-style: italic;
         }
 
-        .preview-svg-container {
+        .preview {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
             margin: 30px auto 40px;
-            max-width: 300px;
+            display: block;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: transform 0.3s ease;
         }
 
-        .mystic-card {
-            width: 100%;
-            height: auto;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .preview:hover {
+            transform: scale(1.02);
         }
 
         .form-group {
@@ -149,7 +150,7 @@
 
         input {
             width: 100%;
-            padding: 14px;
+            padding: 16px 18px;
             border-radius: 10px;
             border: 1px solid rgba(212, 175, 55, 0.2);
             background: rgba(10, 8, 20, 0.7);
@@ -158,12 +159,13 @@
             font-size: 1.05em;
             text-align: center;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         input:focus {
             outline: none;
             border-color: #d4af37;
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2), 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .cta-button {
@@ -180,6 +182,25 @@
             box-shadow: 0 6px 20px rgba(184, 134, 11, 0.3);
             letter-spacing: 1px;
             margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cta-button:hover::before {
+            opacity: 1;
         }
 
         .cta-button:hover {
@@ -296,12 +317,12 @@
         /* ===== Responsive ===== */
         @media (max-width: 600px) {
             h1 { 
-                font-size: 1.9em; 
+                font-size: 1.8em; 
                 line-height: 1.3;
             }
             h2 { font-size: 1.9em; }
             .main-box { 
-                padding: 30px 18px; 
+                padding: 30px 15px; 
             }
             .cta-button { 
                 font-size: 1.2em; 
@@ -310,11 +331,18 @@
                 margin-top: 15px;
             }
             .price-badge { 
-                font-size: 1.1em; 
-                padding: 8px 20px; 
+                font-size: 1.2em; 
+                padding: 10px 20px; 
             }
             .form-group {
                 padding: 0 10px;
+            }
+            .preview {
+                margin: 25px auto 35px;
+            }
+            .testimonial {
+                padding: 25px;
+                max-width: 100%;
             }
             .value-real, .availability {
                 font-size: 1em;
@@ -339,29 +367,7 @@
                   <div class="availability" id="availabilityCounter">⏳ Solo <span id="availableCount">37</span> oráculos disponibles hoy</div>
                 </div>
 
-                <div class="preview-svg-container">
-                  <svg class="mystic-card" viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#e6c229" />
-                        <stop offset="100%" stop-color="#b8860b" />
-                      </linearGradient>
-                      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                        <feMerge> 
-                          <feMergeNode in="coloredBlur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                    </defs>
-                    <rect x="10" y="10" width="280" height="400" rx="20" ry="20" fill="#120e20" stroke="url(#gold)" stroke-width="2"/>
-                    <circle cx="150" cy="180" r="40" fill="none" stroke="url(#gold)" stroke-width="2"/>
-                    <path d="M150 140 L150 220 M110 180 L190 180" stroke="url(#gold)" stroke-width="2" stroke-linecap="round"/>
-                    <circle cx="150" cy="80" r="15" fill="url(#gold)" opacity="0.6" filter="url(#glow)"/>
-                    <text x="150" y="320" text-anchor="middle" fill="#e6c229" font-family="'Cormorant Garamond', serif" font-size="20" opacity="0.9">ORÁCULO</text>
-                    <text x="150" y="350" text-anchor="middle" fill="#b8a98a" font-family="'Lora', serif" font-size="14" opacity="0.8">Tu alma habla</text>
-                  </svg>
-                </div>
+                <img class="preview" src="https://i.ibb.co/hL4PCf2/pergamino-portada-opt.jpg" alt="Ejemplo de Carta Numerológica">
 
                 <div class="form-group">
                     <label for="nombre">Tu Nombre (como lo siente tu alma)</label>
