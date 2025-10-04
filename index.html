@@ -6,39 +6,83 @@
     <title>El Oráculo Diario - Tu Carta Numerológica</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
-        body { font-family: 'Cinzel', serif; background-color: #1a1a1a; color: #e0e0e0; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
-        .container { max-width: 800px; background: rgba(0, 0, 0, 0.3); border-radius: 15px; padding: 40px; box-shadow: 0 0 30px rgba(255, 223, 186, 0.2); }
+        body { font-family: 'Cinzel', serif; background-color: #1a1a1a; color: #e0e0e0; margin: 0; padding: 40px 20px; text-align: center; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .main-box { background: rgba(0, 0, 0, 0.3); border-radius: 15px; padding: 40px; box-shadow: 0 0 30px rgba(255, 223, 186, 0.2); margin-bottom: 40px; }
         h1 { font-size: 3em; color: #ffd700; margin-bottom: 10px; }
-        p { font-size: 1.2em; line-height: 1.6; margin-bottom: 30px; }
+        p.subtitle { font-size: 1.2em; line-height: 1.6; margin-bottom: 30px; }
         img.preview { max-width: 100%; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); margin-bottom: 40px; }
         .form-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-size: 1.1em; }
-        input { width: 80%; padding: 12px; border-radius: 8px; border: 1px solid #555; background: #333; color: #fff; font-family: 'Cinzel', serif; font-size: 1em; }
+        input { width: 80%; max-width: 400px; padding: 12px; border-radius: 8px; border: 1px solid #555; background: #333; color: #fff; font-family: 'Cinzel', serif; font-size: 1em; text-align: center; }
         .cta-button { background: #ffd700; color: #1a1a1a; border: none; padding: 15px 30px; font-size: 1.5em; font-family: 'Cinzel', serif; font-weight: bold; border-radius: 10px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
         .cta-button:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
         .hidden { display: none; }
+
+        /* --- NUEVAS SECCIONES --- */
+        h2 { font-size: 2.5em; color: #ffd700; margin-top: 60px; margin-bottom: 30px; }
+        .testimonials { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-bottom: 40px; }
+        .testimonial { background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 25px; max-width: 350px; text-align: left; }
+        .testimonial p { font-size: 1em; font-style: italic; }
+        .testimonial .author { font-style: normal; text-align: right; font-weight: bold; margin-top: 15px; }
+        
+        .faq { max-width: 700px; margin: 0 auto 40px auto; text-align: left; }
+        .faq-item { margin-bottom: 20px; }
+        .faq-item h3 { font-size: 1.3em; color: #ffd700; margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
         
         <div id="sales-section">
-            <h1>Descubre el Mapa de Tu Alma</h1>
-            <p>Recibe una Carta Numerológica personalizada...</p>
-            <img class="preview" src="https://i.ibb.co/hL4PCf2/pergamino-portada-opt.jpg" alt="Ejemplo de Carta Numerológica">
-            <div class="form-group">
-                <label for="nombre">Tu Nombre Completo</label>
-                <input type="text" id="nombre" placeholder="Escribe tu nombre aquí" required>
+            <div class="main-box">
+                <h1>Descubre el Mapa de Tu Alma</h1>
+                <p class="subtitle">Recibe una Carta Numerológica personalizada, canalizada por el Oráculo, que revelará tu Camino de Vida, tu Destino, tus Desafíos Kármicos y la energía de tu año actual. Un viaje profundo hacia tu autoconocimiento entregado en un hermoso PDF en menos de 3 horas.</p>
+                <img class="preview" src="https://i.ibb.co/hL4PCf2/pergamino-portada-opt.jpg" alt="Ejemplo de Carta Numerológica">
+                <div class="form-group">
+                    <label for="nombre">Tu Nombre Completo</label>
+                    <input type="text" id="nombre" placeholder="Escribe tu nombre aquí" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Tu Email (para recibir la carta)</label>
+                    <input type="email" id="email" placeholder="Escribe tu email aquí" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Tu Fecha de Nacimiento</label>
+                    <input type="date" id="fecha" required>
+                </div>
+                <button id="paymentButton" class="cta-button">Pide tu Carta por 25€</button>
             </div>
-             <div class="form-group">
-                <label for="email">Tu Email (para recibir la carta)</label>
-                <input type="email" id="email" placeholder="Escribe tu email aquí" required>
+
+            <!-- SECCIÓN DE TESTIMONIOS -->
+            <h2>Lo que dicen las Almas que ya han recibido su mapa</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <p>"Ha sido increíblemente preciso. Es como si hubieran leído mi alma. Me ha dado la claridad que necesitaba en este momento de mi vida. ¡Gracias!"</p>
+                    <p class="author">- Ana G.</p>
+                </div>
+                <div class="testimonial">
+                    <p>"El PDF es una obra de arte, y el contenido es profundo y revelador. Mucho más de lo que esperaba por este precio. Lo recomiendo al 100%."</p>
+                    <p class="author">- Javier L.</p>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="fecha">Tu Fecha de Nacimiento</label>
-                <input type="date" id="fecha" required>
+
+            <!-- SECCIÓN DE PREGUNTAS FRECUENTES (FAQ) -->
+            <h2>Preguntas del Oráculo</h2>
+            <div class="faq">
+                <div class="faq-item">
+                    <h3>¿Qué es exactamente la Carta Numerológica?</h3>
+                    <p>Es un análisis personalizado basado en los números de tu fecha de nacimiento. No es un informe genérico; es un mapa detallado de las energías que tu alma eligió para esta vida, revelando tus dones, lecciones y tu propósito más elevado.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Cómo recibiré mi carta?</h3>
+                    <p>Recibirás un documento PDF de varias páginas, diseñado con un estilo místico y cuidado, directamente en tu bandeja de entrada de correo electrónico en un plazo de 3 a 6 horas después de tu compra.</p>
+                </div>
+                 <div class="faq-item">
+                    <h3>¿Es seguro mi pago?</h3>
+                    <p>Totalmente. Todos los pagos son procesados de forma segura por Stripe, una de las pasarelas de pago más fiables y utilizadas del mundo. Nosotros nunca vemos ni almacenamos los datos de tu tarjeta.</p>
+                </div>
             </div>
-            <button id="paymentButton" class="cta-button">Pide tu Carta por 25€</button>
         </div>
 
         <div id="thank-you-section" class="hidden">
@@ -57,62 +101,58 @@
         const salesSection = document.getElementById("sales-section");
         const thankYouSection = document.getElementById("thank-you-section");
 
-    // --- MANEJADOR DEL BOTÓN DE PAGO ---
-    document.getElementById("paymentButton").addEventListener("click", function() {
-        const nombre = document.getElementById("nombre").value;
-        const fechaInput = document.getElementById("fecha").value;
-        const email = document.getElementById("email").value;
+        document.getElementById("paymentButton").addEventListener("click", function() {
+            const nombre = document.getElementById("nombre").value;
+            const fechaInput = document.getElementById("fecha").value;
+            const email = document.getElementById("email").value;
 
-        if (!nombre || !fechaInput || !email) {
-            alert("Por favor, completa todos los campos.");
-            return;
-        }
-
-        // 1. Guardamos los datos cruciales (nombre y fecha) en el navegador
-        localStorage.setItem("numerology_data", JSON.stringify({ nombre, fecha: fechaInput, email }));
-        
-        // 2. Construimos la URL de Stripe pre-rellenando el email del cliente
-        const finalStripeUrl = `${stripePaymentLink}?prefilled_email=${encodeURIComponent(email)}`;
-        
-        // 3. Redirigimos al cliente a la página de pago optimizada
-        window.location.href = finalStripeUrl;
-    });
-
-    // --- LÓGICA DE LA PÁGINA DE GRACIAS ---
-    window.addEventListener("load", function() {
-        if (window.location.pathname === "/gracias") {
-            salesSection.classList.add("hidden");
-            thankYouSection.classList.remove("hidden");
-
-            const storedData = localStorage.getItem("numerology_data");
-            const urlParams = new URLSearchParams(window.location.search);
-            const sessionId = urlParams.get('session_id');
-
-            if (storedData && sessionId) {
-                const { nombre, fecha, email } = JSON.parse(storedData);
-                
-                const [year, month, day] = fecha.split('-');
-                const fechaFormateada = `${day}-${month}-${year}`;
-
-                const dataToSend = {
-                    nombre: nombre,
-                    fecha: fechaFormateada,
-                    email: email,
-                    stripe_session_id: sessionId
-                };
-
-                fetch(n8nWebhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dataToSend),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Éxito - n8n ha recibido los datos:', data);
-                    localStorage.removeItem("numerology_data");
-                })
-                .catch((error) => console.error('Error al enviar datos a n8n:', error));
+            if (!nombre || !fechaInput || !email) {
+                alert("Por favor, completa todos los campos.");
+                return;
             }
-        }
-    });
-</script>
+
+            localStorage.setItem("numerology_data", JSON.stringify({ nombre, fecha: fechaInput, email }));
+            
+            const finalStripeUrl = `${stripePaymentLink}?prefilled_email=${encodeURIComponent(email)}`;
+            window.location.href = finalStripeUrl;
+        });
+
+        window.addEventListener("load", function() {
+            if (window.location.pathname === "/gracias") {
+                salesSection.classList.add("hidden");
+                thankYouSection.classList.remove("hidden");
+
+                const storedData = localStorage.getItem("numerology_data");
+                const urlParams = new URLSearchParams(window.location.search);
+                const sessionId = urlParams.get('session_id');
+
+                if (storedData && sessionId) {
+                    const { nombre, fecha, email } = JSON.parse(storedData);
+                    
+                    const [year, month, day] = fecha.split('-');
+                    const fechaFormateada = `${day}-${month}-${year}`;
+
+                    const dataToSend = {
+                        nombre: nombre,
+                        fecha: fechaFormateada,
+                        email: email,
+                        stripe_session_id: sessionId
+                    };
+
+                    fetch(n8nWebhookUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(dataToSend),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Éxito - n8n ha recibido los datos:', data);
+                        localStorage.removeItem("numerology_data");
+                    })
+                    .catch((error) => console.error('Error al enviar datos a n8n:', error));
+                }
+            }
+        });
+    </script>
+</body>
+</html>
