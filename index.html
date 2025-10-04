@@ -122,7 +122,7 @@
 
         .preview {
             max-width: 100%;
-            max-height: 300px; /* Limitamos la altura */
+            max-height: 350px; /* Aumentado ligeramente */
             object-fit: contain;
             border-radius: 12px;
             box-shadow: 
@@ -242,12 +242,13 @@
             margin: 60px auto 30px;
             text-align: center;
             position: relative;
+            margin-top: 60px;
         }
 
         h2::after {
             content: "✧";
             position: absolute;
-            bottom: -25px; /* Bajamos más para que no toque el texto */
+            bottom: -30px; /* Bajamos más para evitar superposición */
             left: 50%;
             transform: translateX(-50%);
             color: #d4af37;
@@ -327,6 +328,68 @@
             line-height: 1.6;
         }
 
+        /* ===== Página de agradecimiento ===== */
+        #thank-you-section .main-box {
+            padding: 40px 20px;
+        }
+
+        #thank-you-section h1 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        #thank-you-section p {
+            font-size: 1.1em;
+            margin: 10px 0;
+            color: #e0d8c0;
+        }
+
+        .gift-button {
+            background: linear-gradient(135deg, #e6c229, #b8860b);
+            color: #1a142a;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.2em;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(184, 134, 11, 0.3);
+            letter-spacing: 1px;
+            margin: 20px auto;
+            display: block;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gift-button::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gift-button:hover::before {
+            opacity: 1;
+        }
+
+        .gift-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(184, 134, 11, 0.5);
+        }
+
+        .gift-button:active {
+            transform: translateY(0);
+        }
+
         /* ===== Responsive ===== */
         @media (max-width: 600px) {
             h1 { 
@@ -355,7 +418,7 @@
             }
             .preview {
                 margin: 25px auto 35px;
-                max-height: 200px; /* Aún más pequeño en móvil */
+                max-height: 250px; /* Aumentado ligeramente en móvil */
             }
             .testimonial {
                 padding: 25px;
@@ -366,6 +429,13 @@
             }
             .faq-item p {
                 font-size: 0.95em;
+            }
+            #thank-you-section .main-box {
+                padding: 30px 15px;
+            }
+            .gift-button {
+                font-size: 1.1em;
+                padding: 12px 25px;
             }
         }
 
@@ -449,6 +519,10 @@
                 <h1>¡Gracias por tu confianza!</h1>
                 <p style="font-size:1.2em; margin-top:20px;">El Oráculo ha recibido tu petición. Tu pago ha sido procesado con éxito.</p>
                 <p style="font-size:1.2em;">Estamos tejiendo los hilos de tu destino. La recibirás en tu correo en las próximas horas.</p>
+                <button class="gift-button" onclick="window.location.href='/'">✨ Regalar una Carta a alguien querido</button>
+                <p style="font-size:0.95em; color:#b8a98a; margin-top:10px; font-style:italic;">
+                    ¿Quieres regalar claridad a alguien que amas? 💌
+                </p>
             </div>
         </div>
     </div>
