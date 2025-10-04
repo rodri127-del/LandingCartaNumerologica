@@ -6,141 +6,270 @@
     <title>El Oráculo Diario – Tu Carta Numerológica</title>
     <meta name="description" content="Recibe una carta numerológica personalizada, escrita como si el Oráculo te susurrara directamente al corazón. Revela tu propósito, tus desafíos kármicos y la energía que guía tu año actual.">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+        /* ===== Fuentes premium ===== */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lora:ital@0;1&display=swap');
+
+        /* ===== Reset y base ===== */
+        * {
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Cinzel', serif;
-            background-color: #1a1a1a;
-            color: #e0e0e0;
+            font-family: 'Lora', serif;
+            background: linear-gradient(145deg, #0c0a1a, #1a142a);
+            color: #f8f6f0;
             margin: 0;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .main-box {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 0 30px rgba(255, 223, 186, 0.2);
-            margin-bottom: 40px;
-        }
-        h1 {
-            font-size: 3em;
-            color: #ffd700;
-            margin-bottom: 10px;
-        }
-        p.subtitle {
-            font-size: 1.2em;
+            padding: 0;
             line-height: 1.6;
-            margin-bottom: 30px;
         }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== Estilo premium ===== */
+        .main-box {
+            background: rgba(20, 15, 35, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            padding: 50px 30px;
+            margin: 40px auto 50px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.4),
+                inset 0 0 0 1px rgba(212, 175, 55, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #e6c229;
+            margin: 0 0 20px;
+            text-shadow: 0 0 15px rgba(230, 194, 41, 0.2);
+            line-height: 1.2;
+        }
+
+        p.subtitle {
+            font-size: 1.25em;
+            margin: 0 0 30px;
+            color: #e0d8c0;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .price-badge {
+            background: rgba(212, 175, 55, 0.12);
+            color: #d4af37;
+            display: inline-block;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin: 20px 0 30px;
+            font-size: 1.3em;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            letter-spacing: 0.5px;
+        }
+
         img.preview {
             max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            margin-bottom: 40px;
+            border-radius: 12px;
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            margin: 30px auto 40px;
+            display: block;
+            border: 1px solid rgba(212, 175, 55, 0.1);
         }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
+
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 1.1em;
+            color: #e6c229;
+            font-weight: 500;
+            font-family: 'Cormorant Garamond', serif;
         }
-        input {
-            width: 80%;
-            max-width: 400px;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #555;
-            background: #333;
-            color: #fff;
-            font-family: 'Cinzel', serif;
-            font-size: 1em;
-            text-align: center;
-        }
-        .cta-button {
-            background: #ffd700;
-            color: #1a1a1a;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.5em;
-            font-family: 'Cinzel', serif;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .cta-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-        }
-        .hidden { display: none; }
 
-        h2 {
-            font-size: 2.5em;
-            color: #ffd700;
-            margin-top: 60px;
-            margin-bottom: 30px;
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: rgba(10, 8, 20, 0.7);
+            color: #f8f6f0;
+            font-family: 'Lora', serif;
+            font-size: 1.05em;
+            text-align: center;
+            transition: all 0.3s ease;
         }
+
+        input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #e6c229, #b8860b);
+            color: #1a142a;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.4em;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(184, 134, 11, 0.3);
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(184, 134, 11, 0.5);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        .guarantee {
+            font-size: 0.95em;
+            color: #b8a98a;
+            margin-top: 20px;
+            font-style: italic;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== Secciones adicionales ===== */
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2em;
+            color: #e6c229;
+            margin: 60px auto 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        h2::after {
+            content: "✧";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d4af37;
+            font-size: 1.4em;
+        }
+
         .testimonials {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
+
         .testimonial {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 25px;
-            max-width: 350px;
+            background: rgba(25, 20, 40, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 380px;
             text-align: left;
+            position: relative;
         }
+
+        .testimonial::before {
+            content: """;
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 4em;
+            color: rgba(212, 175, 55, 0.1);
+            font-family: serif;
+        }
+
         .testimonial p {
-            font-size: 1em;
+            font-size: 1.05em;
             font-style: italic;
+            margin: 0;
+            position: relative;
+            z-index: 1;
         }
+
         .testimonial .author {
             font-style: normal;
             text-align: right;
-            font-weight: bold;
-            margin-top: 15px;
+            font-weight: 600;
+            margin-top: 20px;
+            color: #e6c229;
+            font-family: 'Cormorant Garamond', serif;
         }
-        
+
         .faq {
             max-width: 700px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 50px;
             text-align: left;
+            background: rgba(25, 20, 40, 0.4);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
         }
+
         .faq-item {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
+
         .faq-item h3 {
-            font-size: 1.3em;
-            color: #ffd700;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4em;
+            color: #e6c229;
             margin-bottom: 10px;
         }
 
-        .price-badge {
-            background: rgba(255, 215, 0, 0.15);
-            color: #ffd700;
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            margin: 15px 0;
-            font-size: 1.2em;
+        .faq-item p {
+            margin: 0;
+            color: #e0d8c0;
         }
-        .guarantee {
-            font-size: 0.95em;
-            color: #a9a9d6;
-            margin-top: 15px;
-            font-style: italic;
+
+        /* ===== Responsive ===== */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2em; }
+            h2 { font-size: 1.9em; }
+            .main-box { padding: 35px 20px; }
+            .cta-button { font-size: 1.2em; padding: 14px 30px; }
+            .price-badge { font-size: 1.1em; padding: 8px 20px; }
         }
+
+        /* ===== Hidden ===== */
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -150,8 +279,11 @@
             <div class="main-box">
                 <h1>Tu Alma Tiene un Mensaje para Ti</h1>
                 <p class="subtitle">Recibe una Carta Numerológica Personalizada, escrita como si el Oráculo te susurrara directamente al corazón. Revela tu Propósito, tus Desafíos Kármicos y la energía que guía tu año actual.</p>
-                <div class="price-badge">Solo 25€ • Entrega en 3-6 horas</div>
+                
+                <div class="price-badge">Inversión en tu claridad: 25€ • Entrega en 3-6 horas</div>
+                
                 <img class="preview" src="https://i.ibb.co/hL4PCf2/pergamino-portada-opt.jpg" alt="Ejemplo de Carta Numerológica">
+
                 <div class="form-group">
                     <label for="nombre">Tu Nombre (como lo siente tu alma)</label>
                     <input type="text" id="nombre" placeholder="Ej: María López" required>
@@ -164,8 +296,14 @@
                     <label for="fecha">Tu Fecha de Nacimiento</label>
                     <input type="date" id="fecha" required>
                 </div>
-                <button id="paymentButton" class="cta-button">Recibir mi Carta del Oráculo</button>
-                <p class="guarantee">🔒 Pago seguro con Stripe • 🕊️ Garantía de satisfacción • 📩 Entrega por email</p>
+                
+                <button id="paymentButton" class="cta-button">✨ Recibir mi Carta del Oráculo</button>
+                
+                <p class="guarantee">
+                    <span>🔒 Pago seguro con Stripe</span>
+                    <span>🕊️ Garantía de satisfacción</span>
+                    <span>📩 Entrega por email</span>
+                </p>
             </div>
 
             <h2>Lo que dicen las Almas que ya han recibido su mapa</h2>
@@ -196,25 +334,27 @@
                 </div>
                 <div class="faq-item">
                     <h3>¿Por qué vale 25€?</h3>
-                    <p>Porque cada carta requiere tiempo, intuición y precisión...</p>
+                    <p>Porque cada carta requiere tiempo, intuición y precisión. Su valor real supera los 120€, pero hoy está accesible para ti.</p>
                 </div>
             </div>
         </div>
 
         <div id="thank-you-section" class="hidden">
-            <h1>¡Gracias por tu confianza!</h1>
-            <p>El Oráculo ha recibido tu petición. Tu pago ha sido procesado con éxito.</p>
-            <p>Estamos tejiendo los hilos de tu destino. La recibirás en tu correo en las próximas horas.</p>
+            <div class="main-box">
+                <h1>¡Gracias por tu confianza!</h1>
+                <p style="font-size:1.2em; margin-top:20px;">El Oráculo ha recibido tu petición. Tu pago ha sido procesado con éxito.</p>
+                <p style="font-size:1.2em;">Estamos tejiendo los hilos de tu destino. La recibirás en tu correo en las próximas horas.</p>
+            </div>
         </div>
     </div>
 
-     <!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL (VERSIÓN FINAL) ===== -->
+    <!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL (VERSIÓN FINAL) ===== -->
     <script>
         // --- CONFIGURACIÓN ---
         // 1. REEMPLAZA ESTA URL CON LA TUYA DE STRIPE (PRODUCCIÓN)
-        // const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00";
+        // const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00  ";
         // 1. REEMPLAZA ESTA URL CON LA TUYA DE STRIPE (PRUEBA)
-        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00";
+        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00  ";
 
         // --- REFERENCIAS A ELEMENTOS (NO TOCAR) ---
         const salesSection = document.getElementById("sales-section");
