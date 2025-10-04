@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Oráculo Diario - Tu Carta Numerológica</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+        body {
+            font-family: 'Cinzel', serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(255, 223, 186, 0.2);
+        }
+        h1 {
+            font-size: 3em;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        img.preview {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        input {
+            width: 80%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #555;
+            background: #333;
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 1em;
+        }
+        .cta-button {
+            background: #ffd700;
+            color: #1a1a1a;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Descubre el Mapa de Tu Alma</h1>
+        <p>Recibe una Carta Numerológica personalizada, canalizada por el Oráculo, que revelará tu Camino de Vida, tu Destino, tus Desafíos Kármicos y la energía de tu año actual. Un viaje profundo hacia tu autoconocimiento entregado en un hermoso PDF en menos de 3 horas.</p>
+        
+        <!-- Reemplaza esta URL con la imagen de tu portada -->
+        <img class="preview" src="https://i.ibb.co/hL4PCf2/pergamino-portada-opt.jpg" alt="Ejemplo de Carta Numerológica">
+        
+        <div class="form-group">
+            <label for="nombre">Tu Nombre Completo</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre aquí" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="fecha">Tu Fecha de Nacimiento</label>
+            <input type="text" id="fecha" name="fecha" placeholder="DD-MM-AAAA" required>
+        </div>
+        
+        <button id="paymentButton" class="cta-button">Pide tu Carta por 25€</button>
+    </div>
+
+    <script>
+        // --- ¡LA MAGIA ESTÁ AQUÍ! ---
+        // 1. Pega aquí el link de pago que creaste en Stripe
+        const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00";
+
+        // 2. Esta función coge los datos del formulario y los añade al link de Stripe
+        document.getElementById("paymentButton").addEventListener("click", function() {
+            const nombre = document.getElementById("nombre").value;
+            const fecha = document.getElementById("fecha").value;
+
+            if (!nombre || !fecha) {
+                alert("Por favor, completa tu nombre y fecha de nacimiento.");
+                return;
+            }
+
+            // Stripe usa ?prefilled_email= para el email.
+            // Para los campos personalizados, usamos ?prefilled_CustomField[Nombre del Campo]=VALOR
+            const finalUrl = `${stripePaymentLink}?prefilled_CustomField[Nombre]=${encodeURIComponent(nombre)}&prefilled_CustomField[Fecha de Nacimiento]=${encodeURIComponent(fecha)}`;
+            
+            // 3. Redirige al cliente a la página de pago de Stripe con los datos ya rellenos
+            window.location.href = finalUrl;
+        });
+    </script>
+</body>
+</html>
