@@ -80,7 +80,6 @@
         }
         .hidden { display: none; }
 
-        /* --- NUEVAS SECCIONES --- */
         h2 {
             font-size: 2.5em;
             color: #ffd700;
@@ -126,7 +125,6 @@
             margin-bottom: 10px;
         }
 
-        /* --- MEJORA DE VALOR --- */
         .price-badge {
             background: rgba(255, 215, 0, 0.15);
             color: #ffd700;
@@ -152,11 +150,8 @@
             <div class="main-box">
                 <h1>Tu Alma Tiene un Mensaje para Ti</h1>
                 <p class="subtitle">Recibe una Carta Numerológica Personalizada, escrita como si el Oráculo te susurrara directamente al corazón. Revela tu Propósito, tus Desafíos Kármicos y la energía que guía tu año actual.</p>
-                
                 <div class="price-badge">Solo 25€ • Entrega en 3-6 horas</div>
-
                 <img class="preview" src="https://i.ibb.co/hL4PCf2/pergamino-portada-opt.jpg" alt="Ejemplo de Carta Numerológica">
-
                 <div class="form-group">
                     <label for="nombre">Tu Nombre (como lo siente tu alma)</label>
                     <input type="text" id="nombre" placeholder="Ej: María López" required>
@@ -173,7 +168,6 @@
                 <p class="guarantee">🔒 Pago seguro con Stripe • 🕊️ Garantía de satisfacción • 📩 Entrega por email</p>
             </div>
 
-            <!-- TESTIMONIOS -->
             <h2>Lo que dicen las Almas que ya han recibido su mapa</h2>
             <div class="testimonials">
                 <div class="testimonial">
@@ -186,41 +180,40 @@
                 </div>
             </div>
 
-            <!-- FAQ -->
             <h2>Preguntas del Oráculo</h2>
             <div class="faq">
                 <div class="faq-item">
                     <h3>¿Qué es exactamente la Carta Numerológica?</h3>
-                    <p>Es un análisis personalizado basado en los números de tu fecha de nacimiento. No es un informe genérico; es un mapa detallado de las energías que tu alma eligió para esta vida, revelando tus dones, lecciones y tu propósito más elevado.</p>
+                    <p>Es un análisis personalizado basado en los números de tu fecha de nacimiento...</p>
                 </div>
                 <div class="faq-item">
                     <h3>¿Cómo recibiré mi carta?</h3>
-                    <p>Recibirás un documento PDF de varias páginas, diseñado con un estilo místico y cuidado, directamente en tu bandeja de entrada de correo electrónico en un plazo de 3 a 6 horas después de tu compra.</p>
+                    <p>Recibirás un documento PDF de varias páginas...</p>
                 </div>
                 <div class="faq-item">
                     <h3>¿Es seguro mi pago?</h3>
-                    <p>Totalmente. Todos los pagos son procesados de forma segura por Stripe, una de las pasarelas de pago más fiables y utilizadas del mundo. Nosotros nunca vemos ni almacenamos los datos de tu tarjeta.</p>
+                    <p>Totalmente. Todos los pagos son procesados de forma segura por Stripe...</p>
                 </div>
                 <div class="faq-item">
                     <h3>¿Por qué vale 25€?</h3>
-                    <p>Porque cada carta requiere tiempo, intuición y precisión. No es un texto generado por máquina. Es un mensaje canalizado, escrito como si el Oráculo te hablara directamente a ti. Es una inversión en tu autoconocimiento.</p>
+                    <p>Porque cada carta requiere tiempo, intuición y precisión...</p>
                 </div>
             </div>
         </div>
 
-        <!-- SECCIÓN DE GRACIAS (NO TOCAR - FLUJO CRÍTICO) -->
         <div id="thank-you-section" class="hidden">
             <h1>¡Gracias por tu confianza!</h1>
             <p>El Oráculo ha recibido tu petición. Tu pago ha sido procesado con éxito.</p>
             <p>Estamos tejiendo los hilos de tu destino. La recibirás en tu correo en las próximas horas.</p>
         </div>
-
     </div>
-<!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL ===== -->
+
+    <!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL ===== -->
     <script>
-        // --- CONFIGURACIÓN (NO MODIFICAR) ---
-        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00";
-        const n8nWebhookUrl = "https://n8n.novaproflow.com/webhook/carta-numerologica";
+        // --- CONFIGURACIÓN ---
+        // 1. REEMPLAZA ESTAS URLS CON LAS TUYAS
+        const stripePaymentLink = "URL_DE_TU_LINK_DE_PAGO_DE_STRIPE";
+        const n8nWebhookUrl = "URL_DE_TU_WEBHOOK_DE_N8N";
 
         // --- REFERENCIAS A ELEMENTOS (NO TOCAR) ---
         const salesSection = document.getElementById("sales-section");
