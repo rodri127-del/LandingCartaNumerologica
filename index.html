@@ -122,6 +122,8 @@
 
         .preview {
             max-width: 100%;
+            max-height: 300px; /* Limitamos la altura */
+            object-fit: contain;
             border-radius: 12px;
             box-shadow: 
                 0 10px 25px rgba(0, 0, 0, 0.5),
@@ -245,11 +247,12 @@
         h2::after {
             content: "✧";
             position: absolute;
-            bottom: -15px;
+            bottom: -25px; /* Bajamos más para que no toque el texto */
             left: 50%;
             transform: translateX(-50%);
             color: #d4af37;
             font-size: 1.4em;
+            z-index: 1;
         }
 
         .testimonials {
@@ -352,6 +355,7 @@
             }
             .preview {
                 margin: 25px auto 35px;
+                max-height: 200px; /* Aún más pequeño en móvil */
             }
             .testimonial {
                 padding: 25px;
@@ -466,9 +470,9 @@
     <script>
         // --- CONFIGURACIÓN ---
         // 1. REEMPLAZA ESTA URL CON LA TUYA DE STRIPE (PRODUCCIÓN)
-        // const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00  ";
+        // const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00";
         // 1. REEMPLAZA ESTA URL CON LA TUYA DE STRIPE (PRUEBA)
-        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00  ";
+        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00";
 
         // --- REFERENCIAS A ELEMENTOS (NO TOCAR) ---
         const salesSection = document.getElementById("sales-section");
