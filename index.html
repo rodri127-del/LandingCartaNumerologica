@@ -100,8 +100,11 @@
 
     <script>
         // --- ¡LA MAGIA ESTÁ AQUÍ! ---
-        // 1. Pega aquí el link de pago que creaste en Stripe
-        const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00";
+        // 1. Pega aquí el link de pago que creaste en Stripe (prod)
+        // const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00";
+        
+        // 1. Pega aquí el link de pago que creaste en Stripe (test)
+        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00";
 
         // 2. Esta función coge los datos del formulario y los añade al link de Stripe
         document.getElementById("paymentButton").addEventListener("click", function() {
