@@ -216,15 +216,17 @@
         </div>
 
     </div>
-
+<!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL ===== -->
     <script>
         // --- CONFIGURACIÓN (NO MODIFICAR) ---
         const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00";
         const n8nWebhookUrl = "https://n8n.novaproflow.com/webhook/carta-numerologica";
 
+        // --- REFERENCIAS A ELEMENTOS (NO TOCAR) ---
         const salesSection = document.getElementById("sales-section");
         const thankYouSection = document.getElementById("thank-you-section");
 
+        // --- MANEJADOR DEL BOTÓN DE PAGO ---
         document.getElementById("paymentButton").addEventListener("click", function() {
             const nombre = document.getElementById("nombre").value.trim();
             const fechaInput = document.getElementById("fecha").value;
@@ -235,19 +237,23 @@
                 return;
             }
 
-            // Validación básica de email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 alert("Por favor, introduce un email válido.");
                 return;
             }
 
+            // Guardamos los datos en el navegador del cliente
             localStorage.setItem("numerology_data", JSON.stringify({ nombre, fecha: fechaInput, email }));
             
+            // Construimos la URL de Stripe pre-rellenando el email
             const finalStripeUrl = `${stripePaymentLink}?prefilled_email=${encodeURIComponent(email)}`;
+            
+            // Redirigimos al cliente a la página de pago
             window.location.href = finalStripeUrl;
         });
 
+        // --- LÓGICA DE LA PÁGINA DE GRACIAS ---
         window.addEventListener("load", function() {
             if (window.location.pathname === "/gracias") {
                 salesSection.classList.add("hidden");
@@ -270,6 +276,7 @@
                         stripe_session_id: sessionId
                     };
 
+                    // Envía los datos finales a n8n
                     fetch(n8nWebhookUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -285,5 +292,6 @@
             }
         });
     </script>
+    <!-- ===== FIN DEL BLOQUE DE CÓDIGO FUNCIONAL ===== -->
 </body>
 </html>
