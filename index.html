@@ -57,61 +57,62 @@
         const salesSection = document.getElementById("sales-section");
         const thankYouSection = document.getElementById("thank-you-section");
 
-        // --- MANEJADOR DEL BOTÓN DE PAGO ---
-        document.getElementById("paymentButton").addEventListener("click", function() {
-            const nombre = document.getElementById("nombre").value;
-            const fechaInput = document.getElementById("fecha").value;
-            const email = document.getElementById("email").value;
+    // --- MANEJADOR DEL BOTÓN DE PAGO ---
+    document.getElementById("paymentButton").addEventListener("click", function() {
+        const nombre = document.getElementById("nombre").value;
+        const fechaInput = document.getElementById("fecha").value;
+        const email = document.getElementById("email").value;
 
-            if (!nombre || !fechaInput || !email) {
-                alert("Por favor, completa todos los campos.");
-                return;
+        if (!nombre || !fechaInput || !email) {
+            alert("Por favor, completa todos los campos.");
+            return;
+        }
+
+        // 1. Guardamos los datos cruciales (nombre y fecha) en el navegador
+        localStorage.setItem("numerology_data", JSON.stringify({ nombre, fecha: fechaInput, email }));
+        
+        // 2. Construimos la URL de Stripe pre-rellenando el email del cliente
+        const finalStripeUrl = `${stripePaymentLink}?prefilled_email=${encodeURIComponent(email)}`;
+        
+        // 3. Redirigimos al cliente a la página de pago optimizada
+        window.location.href = finalStripeUrl;
+    });
+
+    // --- LÓGICA DE LA PÁGINA DE GRACIAS ---
+    window.addEventListener("load", function() {
+        if (window.location.pathname === "/gracias") {
+            salesSection.classList.add("hidden");
+            thankYouSection.classList.remove("hidden");
+
+            const storedData = localStorage.getItem("numerology_data");
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+
+            if (storedData && sessionId) {
+                const { nombre, fecha, email } = JSON.parse(storedData);
+                
+                const [year, month, day] = fecha.split('-');
+                const fechaFormateada = `${day}-${month}-${year}`;
+
+                const dataToSend = {
+                    nombre: nombre,
+                    fecha: fechaFormateada,
+                    email: email,
+                    stripe_session_id: sessionId
+                };
+
+                fetch(n8nWebhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSend),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Éxito - n8n ha recibido los datos:', data);
+                    localStorage.removeItem("numerology_data");
+                })
+                .catch((error) => console.error('Error al enviar datos a n8n:', error));
             }
-
-            localStorage.setItem("numerology_data", JSON.stringify({ nombre, fecha: fechaInput, email }));
-            
-            // Pasamos el email a Stripe para pre-rellenar su campo de pago
-            const finalStripeUrl = `${stripePaymentLink}?prefilled_email=${encodeURIComponent(email)}`;
-            window.location.href = finalStripeUrl;
-        });
-
-        // --- LÓGICA DE LA PÁGINA DE GRACIAS ---
-        window.addEventListener("load", function() {
-            if (window.location.pathname === "/gracias") {
-                salesSection.classList.add("hidden");
-                thankYouSection.classList.remove("hidden");
-
-                const storedData = localStorage.getItem("numerology_data");
-                const urlParams = new URLSearchParams(window.location.search);
-                const sessionId = urlParams.get('session_id');
-
-                if (storedData && sessionId) {
-                    const { nombre, fecha, email } = JSON.parse(storedData);
-                    
-                    const [year, month, day] = fecha.split('-');
-                    const fechaFormateada = `${day}-${month}-${year}`;
-
-                    const dataToSend = {
-                        nombre: nombre,
-                        fecha: fechaFormateada,
-                        email: email,
-                        stripe_session_id: sessionId
-                    };
-
-                    fetch(n8nWebhookUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(dataToSend),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Éxito - n8n ha recibido los datos:', data);
-                        localStorage.removeItem("numerology_data");
-                    })
-                    .catch((error) => console.error('Error al enviar datos a n8n:', error));
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+        }
+    });
+</script>
