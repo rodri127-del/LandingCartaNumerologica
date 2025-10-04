@@ -540,59 +540,55 @@
     })();
     </script>
 
-    <!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL (VERSIÓN FINAL) ===== -->
+    <!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL (VERSIÓN CORREGIDA) ===== -->
     <script>
         // --- CONFIGURACIÓN ---
-        // 1. REEMPLAZA ESTA URL CON LA TUYA DE STRIPE (PRODUCCIÓN)
-        // const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00";
-        // 1. REEMPLAZA ESTA URL CON LA TUYA DE STRIPE (PRUEBA)
-        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00";
-
-        // --- REFERENCIAS A ELEMENTOS (NO TOCAR) ---
+        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00"; // ← SIN ESPACIOS
+    
         const salesSection = document.getElementById("sales-section");
         const thankYouSection = document.getElementById("thank-you-section");
-
-        // --- MANEJADOR DEL BOTÓN DE PAGO ---
+    
         document.getElementById("paymentButton").addEventListener("click", function() {
             const nombre = document.getElementById("nombre").value.trim();
             const fechaInput = document.getElementById("fecha").value;
             const email = document.getElementById("email").value.trim();
-
+    
             if (!nombre || !fechaInput || !email) {
                 alert("Por favor, completa todos los campos.");
                 return;
             }
-
+    
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 alert("Por favor, introduce un email válido.");
                 return;
             }
-
-            // A. Formateamos la fecha a DD-MM-YYYY
+    
             const [year, month, day] = fechaInput.split('-');
             const fechaFormateada = `${day}-${month}-${year}`;
-
-            // B. Creamos un paquete (objeto) con todos los datos del cliente
+    
             const customerData = {
                 nombre: nombre,
                 fecha: fechaFormateada,
                 email: email
             };
-
-            // C. Codificamos el paquete de datos para que viaje seguro en la URL
-            const encodedData = btoa(JSON.stringify(customerData));
-
-            // D. Construimos la URL final, pasando los datos en el 'client_reference_id'
-            const finalStripeUrl = `${stripePaymentLink}?client_reference_id=${encodedData}&prefilled_email=${encodeURIComponent(email)}`;
-            
-            // E. Redirigimos al cliente a Stripe
+    
+            // ✅ SANITIZAR client_reference_id PARA STRIPE
+            let encodedData = btoa(JSON.stringify(customerData))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
+    
+            // Verificar límite de 200 caracteres
+            if (encodedData.length > 200) {
+                alert("Error: nombre demasiado largo. Usa un nombre más corto.");
+                return;
+            }
+    
+            const finalStripeUrl = `${stripePaymentLink}?client_reference_id=${encodeURIComponent(encodedData)}&prefilled_email=${encodeURIComponent(email)}`;
             window.location.href = finalStripeUrl;
         });
-
-        // --- LÓGICA DE LA PÁGINA DE GRACIAS (SIMPLIFICADA) ---
-        // Su única misión es mostrar el mensaje de "Gracias" si el pago fue exitoso.
-        // Ya no necesita llamar a n8n.
+    
         window.addEventListener("load", function() {
             if (window.location.pathname === "/gracias") {
                 salesSection.classList.add("hidden");
