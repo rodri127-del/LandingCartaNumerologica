@@ -4,229 +4,221 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Oráculo Diario – Tu Carta Numerológica</title>
-    <meta name="description" content="Recibe un mensaje canalizado desde tu alma. Una carta numerológica personalizada, escrita como si el Oráculo te hablara directamente.">
+    <meta name="description" content="Recibe una carta numerológica personalizada, escrita como si el Oráculo te susurrara directamente al corazón. Revela tu propósito, tus desafíos kármicos y la energía que guía tu año actual.">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital@0;1&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
         body {
-            font-family: 'Lora', serif;
-            background: linear-gradient(135deg, #0c0a1a, #1e153a);
-            color: #f9f4e6;
+            font-family: 'Cinzel', serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px;
             text-align: center;
-            line-height: 1.6;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
         }
         .main-box {
-            background: rgba(8, 5, 20, 0.85);
-            border-radius: 20px;
-            padding: 40px 25px;
-            box-shadow: 0 0 30px rgba(128, 0, 128, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(255, 223, 186, 0.2);
             margin-bottom: 40px;
-            border: 1px solid rgba(255, 215, 0, 0.15);
         }
         h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.6em;
+            font-size: 3em;
             color: #ffd700;
-            margin: 0 0 20px;
-            text-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+            margin-bottom: 10px;
         }
         p.subtitle {
-            font-size: 1.25em;
-            line-height: 1.7;
+            font-size: 1.2em;
+            line-height: 1.6;
             margin-bottom: 30px;
-            color: #e8d8b3;
-        }
-        .price-tag {
-            background: rgba(255, 215, 0, 0.1);
-            color: #ffd700;
-            display: inline-block;
-            padding: 6px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            margin: 15px 0;
-            font-size: 1.15em;
         }
         img.preview {
             max-width: 100%;
-            border-radius: 12px;
+            border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            margin: 30px 0;
-            border: 1px solid rgba(255, 215, 0, 0.1);
+            margin-bottom: 40px;
         }
         .form-group {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
         label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-size: 1.1em;
-            color: #ffd700;
-            font-weight: bold;
         }
         input {
-            width: 90%;
+            width: 80%;
             max-width: 400px;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #4a3a7a;
-            background: rgba(15, 10, 35, 0.7);
-            color: white;
-            font-family: 'Lora', serif;
-            font-size: 1.1em;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #555;
+            background: #333;
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 1em;
             text-align: center;
         }
         .cta-button {
-            background: linear-gradient(to right, #d4af37, #ffd700);
-            color: #0d0a1a;
+            background: #ffd700;
+            color: #1a1a1a;
             border: none;
-            padding: 16px 40px;
-            font-size: 1.4em;
+            padding: 15px 30px;
+            font-size: 1.5em;
             font-family: 'Cinzel', serif;
             font-weight: bold;
-            border-radius: 50px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
-            margin-top: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
-        }
-        .trust-note {
-            font-size: 0.95em;
-            color: #b8a9d6;
-            margin-top: 15px;
-            font-style: italic;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
         .hidden { display: none; }
 
+        /* --- NUEVAS SECCIONES --- */
         h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.1em;
+            font-size: 2.5em;
             color: #ffd700;
-            margin: 50px 0 25px;
+            margin-top: 60px;
+            margin-bottom: 30px;
         }
         .testimonials {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 25px;
-            margin: 30px 0;
+            gap: 30px;
+            margin-bottom: 40px;
         }
         .testimonial {
-            background: rgba(20, 15, 45, 0.5);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
             padding: 25px;
-            max-width: 320px;
+            max-width: 350px;
             text-align: left;
-            border-left: 3px solid #d4af37;
         }
         .testimonial p {
+            font-size: 1em;
             font-style: italic;
-            margin: 0;
-            color: #e0d0b0;
         }
         .testimonial .author {
             font-style: normal;
             text-align: right;
             font-weight: bold;
-            margin-top: 12px;
-            color: #ffd700;
+            margin-top: 15px;
         }
+        
         .faq {
             max-width: 700px;
-            margin: 0 auto 40px;
+            margin: 0 auto 40px auto;
             text-align: left;
-            background: rgba(15, 10, 35, 0.4);
-            padding: 25px;
-            border-radius: 15px;
+        }
+        .faq-item {
+            margin-bottom: 20px;
         }
         .faq-item h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.25em;
+            font-size: 1.3em;
             color: #ffd700;
             margin-bottom: 10px;
+        }
+
+        /* --- MEJORA DE VALOR --- */
+        .price-badge {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            margin: 15px 0;
+            font-size: 1.2em;
+        }
+        .guarantee {
+            font-size: 0.95em;
+            color: #a9a9d6;
+            margin-top: 15px;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        
         <div id="sales-section">
             <div class="main-box">
-                <h1>El Oráculo Tiene un Mensaje para Ti</h1>
-                <p class="subtitle">
-                    No es un informe. Es una carta escrita como si tu alma te hablara directamente.<br>
-                    Revela tu propósito, tus lecciones kármicas y la energía que guía tu año actual.
-                </p>
-
-                <div class="price-tag">Inversión: 25€ • Entrega en 3-6 horas</div>
+                <h1>Tu Alma Tiene un Mensaje para Ti</h1>
+                <p class="subtitle">Recibe una Carta Numerológica Personalizada, escrita como si el Oráculo te susurrara directamente al corazón. Revela tu Propósito, tus Desafíos Kármicos y la energía que guía tu año actual.</p>
+                
+                <div class="price-badge">Solo 25€ • Entrega en 3-6 horas</div>
 
                 <img class="preview" src="https://i.ibb.co/hL4PCf2/pergamino-portada-opt.jpg" alt="Ejemplo de Carta Numerológica">
 
                 <div class="form-group">
-                    <label for="nombre">Tu nombre (como lo siente tu alma)</label>
-                    <input type="text" id="nombre" placeholder="Ej: Lucía Martínez" required>
+                    <label for="nombre">Tu Nombre (como lo siente tu alma)</label>
+                    <input type="text" id="nombre" placeholder="Ej: María López" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Tu email (para entregarte la carta)</label>
+                    <label for="email">Tu Email (para recibir la carta)</label>
                     <input type="email" id="email" placeholder="tuemail@ejemplo.com" required>
                 </div>
                 <div class="form-group">
-                    <label for="fecha">Tu fecha de nacimiento</label>
+                    <label for="fecha">Tu Fecha de Nacimiento</label>
                     <input type="date" id="fecha" required>
                 </div>
                 <button id="paymentButton" class="cta-button">Recibir mi Carta del Oráculo</button>
-                <p class="trust-note">
-                    🔒 Pago seguro con Stripe • 🕊️ Confidencial al 100% • 📩 Entrega en PDF por email
-                </p>
+                <p class="guarantee">🔒 Pago seguro con Stripe • 🕊️ Garantía de satisfacción • 📩 Entrega por email</p>
             </div>
 
-            <h2>Palabras de Almas que ya han Recibido su Mensaje</h2>
+            <!-- TESTIMONIOS -->
+            <h2>Lo que dicen las Almas que ya han recibido su mapa</h2>
             <div class="testimonials">
                 <div class="testimonial">
-                    <p>"Me llegó en 4 horas. Lloré al leerlo. Era como si supieran exactamente por lo que estaba pasando."</p>
-                    <p class="author">– Ana, 34 años</p>
+                    <p>"Ha sido increíblemente preciso. Es como si hubieran leído mi alma. Me ha dado la claridad que necesitaba en este momento de mi vida. ¡Gracias!"</p>
+                    <p class="author">– Ana G.</p>
                 </div>
                 <div class="testimonial">
-                    <p>"No esperaba tanta profundidad. Se siente como si lo hubiera escrito alguien que me conoce desde siempre."</p>
-                    <p class="author">– David, 28 años</p>
+                    <p>"El PDF es una obra de arte, y el contenido es profundo y revelador. Mucho más de lo que esperaba por este precio. Lo recomiendo al 100%."</p>
+                    <p class="author">– Javier L.</p>
                 </div>
             </div>
 
-            <h2>Preguntas que el Corazón Formula</h2>
+            <!-- FAQ -->
+            <h2>Preguntas del Oráculo</h2>
             <div class="faq">
                 <div class="faq-item">
-                    <h3>¿Es esto un informe automático?</h3>
-                    <p>No. Cada carta es interpretada con intuición y cuidado, como un mensaje único del Oráculo. No hay textos copiados.</p>
+                    <h3>¿Qué es exactamente la Carta Numerológica?</h3>
+                    <p>Es un análisis personalizado basado en los números de tu fecha de nacimiento. No es un informe genérico; es un mapa detallado de las energías que tu alma eligió para esta vida, revelando tus dones, lecciones y tu propósito más elevado.</p>
                 </div>
                 <div class="faq-item">
-                    <h3>¿Cuándo recibiré mi carta?</h3>
-                    <p>En un plazo de 3 a 6 horas después de tu pago. Siempre antes de que termine el día.</p>
+                    <h3>¿Cómo recibiré mi carta?</h3>
+                    <p>Recibirás un documento PDF de varias páginas, diseñado con un estilo místico y cuidado, directamente en tu bandeja de entrada de correo electrónico en un plazo de 3 a 6 horas después de tu compra.</p>
                 </div>
                 <div class="faq-item">
-                    <h3>¿Por qué 25€?</h3>
-                    <p>Porque cada carta requiere tiempo, enfoque energético y precisión. Es una inversión en tu autoconocimiento, no un producto.</p>
+                    <h3>¿Es seguro mi pago?</h3>
+                    <p>Totalmente. Todos los pagos son procesados de forma segura por Stripe, una de las pasarelas de pago más fiables y utilizadas del mundo. Nosotros nunca vemos ni almacenamos los datos de tu tarjeta.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Por qué vale 25€?</h3>
+                    <p>Porque cada carta requiere tiempo, intuición y precisión. No es un texto generado por máquina. Es un mensaje canalizado, escrito como si el Oráculo te hablara directamente a ti. Es una inversión en tu autoconocimiento.</p>
                 </div>
             </div>
         </div>
 
-        <!-- SECCIÓN DE GRACIAS (NO MODIFICAR) -->
+        <!-- SECCIÓN DE GRACIAS (NO TOCAR - FLUJO CRÍTICO) -->
         <div id="thank-you-section" class="hidden">
-            <h1>✨ El Oráculo ha escuchado tu llamado</h1>
-            <p>Tu carta está siendo tejida con los hilos del destino.</p>
-            <p>La recibirás en tu email en las próximas horas.</p>
-            <p>Confía. Todo llega en el momento perfecto.</p>
+            <h1>¡Gracias por tu confianza!</h1>
+            <p>El Oráculo ha recibido tu petición. Tu pago ha sido procesado con éxito.</p>
+            <p>Estamos tejiendo los hilos de tu destino. La recibirás en tu correo en las próximas horas.</p>
         </div>
+
     </div>
 
     <script>
-        // --- FLUJO TÉCNICO INTACTO ---
+        // --- CONFIGURACIÓN (NO MODIFICAR) ---
         const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00";
         const n8nWebhookUrl = "https://n8n.novaproflow.com/webhook/carta-numerologica";
 
@@ -239,10 +231,11 @@
             const email = document.getElementById("email").value.trim();
 
             if (!nombre || !fechaInput || !email) {
-                alert("Por favor, completa todos los campos para que el Oráculo pueda guiarte.");
+                alert("Por favor, completa todos los campos.");
                 return;
             }
 
+            // Validación básica de email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 alert("Por favor, introduce un email válido.");
@@ -250,7 +243,9 @@
             }
 
             localStorage.setItem("numerology_data", JSON.stringify({ nombre, fecha: fechaInput, email }));
-            window.location.href = `${stripePaymentLink}?prefilled_email=${encodeURIComponent(email)}`;
+            
+            const finalStripeUrl = `${stripePaymentLink}?prefilled_email=${encodeURIComponent(email)}`;
+            window.location.href = finalStripeUrl;
         });
 
         window.addEventListener("load", function() {
@@ -264,21 +259,28 @@
 
                 if (storedData && sessionId) {
                     const { nombre, fecha, email } = JSON.parse(storedData);
+                    
                     const [year, month, day] = fecha.split('-');
                     const fechaFormateada = `${day}-${month}-${year}`;
+
+                    const dataToSend = {
+                        nombre: nombre,
+                        fecha: fechaFormateada,
+                        email: email,
+                        stripe_session_id: sessionId
+                    };
 
                     fetch(n8nWebhookUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            nombre,
-                            fecha: fechaFormateada,
-                            email,
-                            stripe_session_id: sessionId
-                        }),
+                        body: JSON.stringify(dataToSend),
                     })
-                    .then(() => localStorage.removeItem("numerology_data"))
-                    .catch(console.error);
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Éxito - n8n ha recibido los datos:', data);
+                        localStorage.removeItem("numerology_data");
+                    })
+                    .catch((error) => console.error('Error al enviar datos a n8n:', error));
                 }
             }
         });
