@@ -251,19 +251,19 @@
             text-align: center;
             position: relative;
             margin-top: 60px;
-            margin-bottom: 30px; /* Añadimos margen inferior para dar espacio */
+            margin-bottom: 30px;
         }
-        
+
         h2::after {
             content: "✧";
             position: absolute;
-            top: 100%; /* Colocamos la estrella justo debajo del título */
+            top: 100%;
             left: 50%;
             transform: translateX(-50%);
             color: #d4af37;
             font-size: 1.4em;
             z-index: 1;
-            margin-top: 10px; /* Espacio adicional entre título y estrella */
+            margin-top: 10px;
         }
 
         .testimonials {
@@ -272,7 +272,8 @@
             justify-content: center;
             gap: 30px;
             margin-bottom: 50px;
-            margin-top: 50px; /* Añadido */
+            margin-top: 50px;
+        }
 
         .testimonial {
             background: rgba(25, 20, 40, 0.5);
@@ -321,7 +322,7 @@
 
         .faq {
             max-width: 700px;
-            margin: 50px auto 50px; /* Añadido margin-top */
+            margin: 50px auto 50px;
             text-align: left;
             background: rgba(25, 20, 40, 0.4);
             padding: 30px;
@@ -504,12 +505,12 @@
             <h2>Lo que dicen las Almas que ya han recibido su mapa</h2>
             <div class="testimonials">
                 <div class="testimonial">
-                    <p>"Ha sido increíblemente preciso. Es como si hubieran leído mi alma. Me ha dado la claridad que necesitaba en este momento de mi vida. ¡Gracias!"</p>
+                    <p>"La carta es una obra de arte, y el contenido es profundo y revelador. Mucho más de lo que esperaba por este precio. Lo recomiendo al 100%."</p>
                     <p class="author">– Ana G., Madrid</p>
                     <p class="testimonial-date">Recibido el 15 de marzo de 2025</p>
                 </div>
                 <div class="testimonial">
-                    <p>"La carta es una obra de arte, y el contenido es profundo y revelador. Mucho más de lo que esperaba por este precio. Lo recomiendo al 100%."</p>
+                    <p>"Ha sido increíblemente preciso. Es como si hubieran leído mi alma. Me ha dado la claridad que necesitaba en este momento de mi vida. ¡Gracias!"</p>
                     <p class="author">– Javier L., Barcelona</p>
                     <p class="testimonial-date">Recibido el 2 de abril de 2025</p>
                 </div>
@@ -523,7 +524,7 @@
                 </div>
                 <div class="faq-item">
                     <h3>¿Cómo recibiré mi carta?</h3>
-                    <p>Recibirás un documento de varias páginas, diseñado con cuidado artesanal, que incluye ilustraciones místicas, símbolos numéricos y mensajes canalizados exclusivamente para ti. La entrega es por email, en 3-6 horas tras tu pago. Puedes imprimirlo, guardarlo o leerlo en tu dispositivo — es tuyo para siempre.</p>
+                    <p>Recibirás un documento de varias páginas, escrito con intención sagrada y estructurado como un manuscrito ancestral. Cada palabra está canalizada exclusivamente para ti. La entrega es por email, en 3-6 horas tras tu pago. Puedes imprimirlo, guardarlo o releerlo en silencio — es tuyo para siempre.</p>
                 </div>
                 <div class="faq-item">
                     <h3>¿Es seguro mi pago?</h3>
@@ -559,9 +560,7 @@
         const count = base + secondsSinceMidnight;
         document.getElementById('countCartas').textContent = count.toLocaleString();
     })();
-    </script>
-    
-    </script>
+
     // Contador de disponibilidad
     (function() {
       const maxDaily = 50;
