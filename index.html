@@ -22,14 +22,17 @@
 <body>
     <div class="container">
         
-        <!-- SECCIÓN DE VENTA (Visible por defecto) -->
         <div id="sales-section">
             <h1>Descubre el Mapa de Tu Alma</h1>
-            <p>Recibe una Carta Numerológica personalizada, canalizada por el Oráculo, que revelará tu Camino de Vida, tu Destino, tus Desafíos Kármicos y la energía de tu año actual. Un viaje profundo hacia tu autoconocimiento entregado en un hermoso PDF en menos de 3 horas.</p>
+            <p>Recibe una Carta Numerológica personalizada...</p>
             <img class="preview" src="https://i.ibb.co/hL4PCf2/pergamino-portada-opt.jpg" alt="Ejemplo de Carta Numerológica">
             <div class="form-group">
                 <label for="nombre">Tu Nombre Completo</label>
                 <input type="text" id="nombre" placeholder="Escribe tu nombre aquí" required>
+            </div>
+             <div class="form-group">
+                <label for="email">Tu Email (para recibir la carta)</label>
+                <input type="email" id="email" placeholder="Escribe tu email aquí" required>
             </div>
             <div class="form-group">
                 <label for="fecha">Tu Fecha de Nacimiento</label>
@@ -38,25 +41,19 @@
             <button id="paymentButton" class="cta-button">Pide tu Carta por 25€</button>
         </div>
 
-        <!-- SECCIÓN DE GRACIAS (Oculta por defecto) -->
         <div id="thank-you-section" class="hidden">
             <h1>¡Gracias por tu confianza!</h1>
             <p>El Oráculo ha recibido tu petición. Tu pago ha sido procesado con éxito.</p>
-            <p>Estamos tejiendo los hilos de tu destino en una carta única para ti. La recibirás en tu correo electrónico en las próximas horas.</p>
-            <p>Mientras esperas, puedes cerrar esta ventana. El universo ya está en movimiento.</p>
+            <p>Estamos tejiendo los hilos de tu destino. La recibirás en tu correo en las próximas horas.</p>
         </div>
 
     </div>
 
     <script>
         // --- CONFIGURACIÓN ---
-        // 1. Pega aquí el link de pago de Stripe
-        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00";
-        // 2. Pega aquí la URL de tu Webhook de n8n
-        const n8nWebhookUrl = "https://n8n.novaproflow.com/webhook/carta-numerologica";
+        const stripePaymentLink = "URL_DE_TU_LINK_DE_PAGO_DE_STRIPE";
+        const n8nWebhookUrl = "URL_DE_TU_WEBHOOK_DE_N8N";
 
-        
-        // --- LÓGICA PRINCIPAL ---
         const salesSection = document.getElementById("sales-section");
         const thankYouSection = document.getElementById("thank-you-section");
 
@@ -64,68 +61,54 @@
         document.getElementById("paymentButton").addEventListener("click", function() {
             const nombre = document.getElementById("nombre").value;
             const fechaInput = document.getElementById("fecha").value;
+            const email = document.getElementById("email").value;
 
-            if (!nombre || !fechaInput) {
-                alert("Por favor, completa tu nombre y fecha de nacimiento.");
+            if (!nombre || !fechaInput || !email) {
+                alert("Por favor, completa todos los campos.");
                 return;
             }
 
-            // Guardamos los datos en el navegador del cliente
-            localStorage.setItem("numerology_nombre", nombre);
-            localStorage.setItem("numerology_fecha", fechaInput);
+            localStorage.setItem("numerology_data", JSON.stringify({ nombre, fecha: fechaInput, email }));
             
-            // Redirigimos al cliente a la página de pago
-            window.location.href = stripePaymentLink;
+            // Pasamos el email a Stripe para pre-rellenar su campo de pago
+            const finalStripeUrl = `${stripePaymentLink}?prefilled_email=${encodeURIComponent(email)}`;
+            window.location.href = finalStripeUrl;
         });
 
-
         // --- LÓGICA DE LA PÁGINA DE GRACIAS ---
-        // Se ejecuta cada vez que la página carga
         window.addEventListener("load", function() {
-            // Comprueba si la URL es la de redirección de Stripe
             if (window.location.pathname === "/gracias") {
-                // Oculta la sección de venta y muestra la de gracias
                 salesSection.classList.add("hidden");
                 thankYouSection.classList.remove("hidden");
 
-                // Recupera los datos guardados
-                const nombre = localStorage.getItem("numerology_nombre");
-                const fechaInput = localStorage.getItem("numerology_fecha"); // Formato AAAA-MM-DD
-                
-                // Lee el session_id de la URL que nos da Stripe
+                const storedData = localStorage.getItem("numerology_data");
                 const urlParams = new URLSearchParams(window.location.search);
                 const sessionId = urlParams.get('session_id');
 
-                if (nombre && fechaInput && sessionId) {
-                    // Formatea la fecha a DD-MM-AAAA
-                    const [year, month, day] = fechaInput.split('-');
+                if (storedData && sessionId) {
+                    const { nombre, fecha, email } = JSON.parse(storedData);
+                    
+                    const [year, month, day] = fecha.split('-');
                     const fechaFormateada = `${day}-${month}-${year}`;
 
-                    // Construye el paquete de datos para n8n
                     const dataToSend = {
                         nombre: nombre,
                         fecha: fechaFormateada,
+                        email: email,
                         stripe_session_id: sessionId
                     };
 
-                    // Envía los datos a n8n usando el método POST
                     fetch(n8nWebhookUrl, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(dataToSend),
                     })
                     .then(response => response.json())
                     .then(data => {
                         console.log('Éxito - n8n ha recibido los datos:', data);
-                        // Limpiamos los datos guardados para la próxima compra
-                        localStorage.removeItem("numerology_nombre");
-                        localStorage.removeItem("numerology_fecha");
+                        localStorage.removeItem("numerology_data");
                     })
-                    .catch((error) => {
-                        console.error('Error al enviar datos a n8n:', error);
-                    });
+                    .catch((error) => console.error('Error al enviar datos a n8n:', error));
                 }
             }
         });
