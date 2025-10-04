@@ -251,17 +251,19 @@
             text-align: center;
             position: relative;
             margin-top: 60px;
+            margin-bottom: 30px; /* Añadimos margen inferior para dar espacio */
         }
-
+        
         h2::after {
             content: "✧";
             position: absolute;
-            bottom: -30px;
+            top: 100%; /* Colocamos la estrella justo debajo del título */
             left: 50%;
             transform: translateX(-50%);
             color: #d4af37;
             font-size: 1.4em;
             z-index: 1;
+            margin-top: 10px; /* Espacio adicional entre título y estrella */
         }
 
         .testimonials {
@@ -549,14 +551,32 @@
 
     <!-- ===== SCRIPT: Contadores ===== -->
     <script>
-    // Contador de cartas entregadas
+    // Contador de cartas entregadas (basado en fecha, siempre creciente)
     (function() {
-      const min = 1200;
-      const max = 1500;
-      const count = Math.floor(Math.random() * (max - min + 1)) + min;
-      document.getElementById('countCartas').textContent = count.toLocaleString();
+        const now = new Date();
+        const dateString = now.getFullYear().toString() +
+                           String(now.getMonth() + 1).padStart(2, '0') +
+                           String(now.getDate()).padStart(2, '0') +
+                           String(now.getHours()).padStart(2, '0') +
+                           String(now.getMinutes()).padStart(2, '0') +
+                           String(now.getSeconds()).padStart(2, '0');
+        
+        // Sumar todos los dígitos
+        let sum = 0;
+        for (let i = 0; i < dateString.length; i++) {
+            sum += parseInt(dateString[i]);
+        }
+        
+        // Calcular el número final
+        const base = 1000; // Número base
+        const multiplier = 10; // Para hacerlo más grande
+        const count = base + (sum * multiplier);
+        
+        document.getElementById('countCartas').textContent = count.toLocaleString();
     })();
-
+    </script>
+    
+    </script>
     // Contador de disponibilidad
     (function() {
       const maxDaily = 50;
