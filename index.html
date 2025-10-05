@@ -61,26 +61,38 @@
             font-size: 2.8em;
             font-weight: 700;
             color: #e6c229;
-            margin: 0 0 20px;
+            margin: 0 0 15px;
             text-shadow: 0 0 15px rgba(230, 194, 41, 0.2);
             line-height: 1.2;
             text-align: center;
         }
 
         p.subtitle {
-            font-size: 1.25em;
-            margin: 0 0 30px;
+            font-size: 1.3em;
+            margin: 0 0 25px;
             color: #e0d8c0;
-            max-width: 700px;
+            max-width: 750px;
             margin-left: auto;
             margin-right: auto;
             text-align: center;
+            font-style: italic;
+        }
+
+        .micro-commitment {
+            font-size: 1.05em;
+            color: #c9b88a;
+            margin: 10px 0 20px;
+            font-style: normal;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cartas-entregadas {
             font-size: 1.05em;
             color: #a9a07a;
-            margin: 15px 0 25px;
+            margin: 10px 0 15px;
             font-style: italic;
             text-align: center;
         }
@@ -125,6 +137,14 @@
             font-size: 1.05em;
             color: #a9a07a;
             margin-top: 12px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .availability-justification {
+            font-size: 0.95em;
+            color: #9a8f6f;
+            margin-top: 6px;
             font-style: italic;
             text-align: center;
         }
@@ -198,7 +218,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 6px 20px rgba(184, 134, 11, 0.3);
             letter-spacing: 1px;
-            margin: 20px auto 10px;
+            margin: 25px auto 15px;
             display: block;
             text-align: center;
             position: relative;
@@ -413,8 +433,11 @@
         /* ===== Responsive ===== */
         @media (max-width: 600px) {
             h1 { 
-                font-size: 1.8em; 
+                font-size: 1.9em; 
                 line-height: 1.3;
+            }
+            p.subtitle {
+                font-size: 1.15em;
             }
             h2 { 
                 font-size: 1.9em; 
@@ -424,7 +447,7 @@
                 padding: 30px 15px; 
             }
             .cta-button { 
-                font-size: 1.2em; 
+                font-size: 1.25em; 
                 padding: 14px 30px; 
                 width: 90%;
                 margin: 20px auto 10px;
@@ -444,7 +467,7 @@
                 padding: 25px;
                 max-width: 100%;
             }
-            .value-real, .availability, .cartas-entregadas {
+            .value-real, .availability, .cartas-entregadas, .availability-justification {
                 font-size: 1em;
             }
             .faq-item p {
@@ -468,18 +491,21 @@
         
         <div id="sales-section">
             <div class="main-box">
-                <h1>Tu Alma Tiene un Mensaje para Ti</h1>
-                <p class="subtitle">Recibe una Carta Numerológica Personalizada, escrita como si el Oráculo te susurrara directamente al corazón. Revela tu Propósito, tus Desafíos Kármicos y la energía que guía tu año actual.</p>
+                <h1>Descubre el Mensaje que tu Alma Necesita HOY</h1>
+                <p class="subtitle">Recibe una Carta Numerológica Personalizada — escrita como si el Oráculo te susurrara al corazón — que revela tu propósito, tus desafíos kármicos y la energía que guía tu año actual.</p>
                 
+                <p class="micro-commitment">Más de 1.200 almas han recibido su carta esta semana. ¿Serás la próxima?</p>
+
                 <div class="cartas-entregadas">🌟 Ya hemos canalizado <span id="countCartas">1.247</span> cartas únicas</div>
 
                 <div class="price-section">
                   <div class="value-real">Valor real: <span class="strikethrough">120€</span></div>
                   <div class="price-badge">Inversión en tu claridad: <strong>25€</strong></div>
                   <div class="availability" id="availabilityCounter">⏳ Solo <span id="availableCount">37</span> oráculos disponibles hoy</div>
+                  <div class="availability-justification">Limitamos a 50 cartas diarias para preservar la energía y precisión de cada canalización.</div>
                 </div>
 
-                <img class="preview" src="https://cdn.jsdelivr.net/gh/rodri127-del/n8n_numerologia_assets@main/fondos/El_Oraculo.jpg" alt="Ejemplo de Carta Numerológica">
+                <img class="preview" src="https://cdn.jsdelivr.net/gh/rodri127-del/n8n_numerologia_assets@main/fondos/El_Oraculo.jpg" alt="Canalización del Oráculo Diario por [Tu Nombre]">
 
                 <div class="form-group">
                     <label for="nombre">Tu Nombre (como lo siente tu alma)</label>
@@ -494,12 +520,12 @@
                     <input type="date" id="fecha" required>
                 </div>
                 
-                <button id="paymentButton" class="cta-button">✨ Recibir mi Carta del Oráculo</button>
+                <button id="paymentButton" class="cta-button">✨ Sí, quiero mi mensaje del Oráculo</button>
                 
                 <p class="guarantee">
                     <span>🔒 Pago seguro con Stripe</span>
                     <span>🕊️ Garantía de satisfacción</span>
-                    <span>📩 Entrega por email</span>
+                    <span>📩 Entrega en 3-6h por email</span>
                 </p>
             </div>
 
@@ -532,6 +558,10 @@
                     <p>Totalmente. Todos los pagos son procesados de forma segura por Stripe, una plataforma líder mundial en transacciones online. Tu información financiera nunca pasa por nuestro servidor. Además, ofrecemos garantía de satisfacción: si no te gusta, te devolvemos el dinero sin preguntas.</p>
                 </div>
                 <div class="faq-item">
+                    <h3>¿Y si siento que no es personalizado?</h3>
+                    <p>Es imposible. Cada carta se genera únicamente a partir de tu fecha de nacimiento y se escribe con intención sagrada. Si, por alguna razón, sientes que no resuena contigo, te devolvemos el 100% sin preguntas. Pero en más de 1.200 entregas, nadie lo ha solicitado.</p>
+                </div>
+                <div class="faq-item">
                     <h3>¿Por qué vale 25€?</h3>
                     <p>Porque cada carta requiere tiempo, intuición y precisión. Su valor real supera los 120€, pero hoy está accesible para ti como parte de nuestra misión de llevar claridad a más almas. Este precio no refleja el costo — refleja el valor que recibirás en tu vida.</p>
                 </div>
@@ -553,7 +583,6 @@
 
     <!-- ===== SCRIPT: Contadores ===== -->
     <script>
-    // Contador de cartas entregadas: siempre creciente, de 1 en 1
     (function() {
         const now = new Date();
         const secondsSinceMidnight = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
@@ -562,7 +591,6 @@
         document.getElementById('countCartas').textContent = count.toLocaleString();
     })();
 
-    // Contador de disponibilidad
     (function() {
       const maxDaily = 50;
       const minAvailable = 25;
@@ -576,9 +604,7 @@
 
     <!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL (VERSIÓN CORREGIDA) ===== -->
     <script>
-        // --- CONFIGURACIÓN ---
-        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00"; // SIN ESPACIOS
-
+        const stripePaymentLink = "https://buy.stripe.com/test_8x2bJ16tDewXamI57j8AE00";
         const salesSection = document.getElementById("sales-section");
         const thankYouSection = document.getElementById("thank-you-section");
 
@@ -607,7 +633,6 @@
                 email: email
             };
 
-            // ✅ SANITIZAR client_reference_id PARA STRIPE
             let encodedData = btoa(JSON.stringify(customerData))
                 .replace(/\+/g, '-')
                 .replace(/\//g, '_')
