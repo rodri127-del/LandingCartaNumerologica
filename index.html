@@ -519,6 +519,17 @@
                     <label for="fecha">Tu Fecha de Nacimiento</label>
                     <input type="date" id="fecha" required>
                 </div>
+
+                <!-- Consentimiento RGPD -->
+                <div class="form-group">
+                    <div style="display: flex; align-items: flex-start; gap: 12px; justify-content: center; margin-top: 8px;">
+                        <input type="checkbox" id="consentimiento_rgpd" required style="width: auto; height: 18px; margin-top: 4px; accent-color: #d4af37;">
+                        <label for="consentimiento_rgpd" style="font-size: 1em; color: #e0d8c0; text-align: left; line-height: 1.5;">
+                            Acepto recibir mi carta numerológica y, si lo deseo, futuras comunicaciones inspiradoras por email. 
+                            He leído y acepto la <a href="/politica-privacidad" target="_blank" style="color: #e6c229; text-decoration: underline;">política de privacidad</a>.
+                        </label>
+                    </div>
+                </div>
                 
                 <button id="paymentButton" class="cta-button">✨ Sí, quiero mi mensaje del Oráculo</button>
                 
@@ -618,50 +629,57 @@
     </script>
 
     <!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL (VERSIÓN CORREGIDA) ===== -->
-    <script>
+        <script>
         const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00";
         const salesSection = document.getElementById("sales-section");
         const thankYouSection = document.getElementById("thank-you-section");
-
+    
         document.getElementById("paymentButton").addEventListener("click", function() {
             const nombre = document.getElementById("nombre").value.trim();
             const fechaInput = document.getElementById("fecha").value;
             const email = document.getElementById("email").value.trim();
-
+            const consentimiento = document.getElementById("consentimiento_rgpd").checked;
+    
             if (!nombre || !fechaInput || !email) {
                 alert("Por favor, completa todos los campos.");
                 return;
             }
-
+    
+            if (!consentimiento) {
+                alert("Debes aceptar la política de privacidad para continuar.");
+                return;
+            }
+    
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 alert("Por favor, introduce un email válido.");
                 return;
             }
-
+    
             const [year, month, day] = fechaInput.split('-');
             const fechaFormateada = `${day}-${month}-${year}`;
-
+    
             const customerData = {
                 nombre: nombre,
                 fecha: fechaFormateada,
-                email: email
+                email: email,
+                consentimiento_rgpd: consentimiento // ← ¡ahora incluye el consentimiento!
             };
-
+    
             let encodedData = btoa(JSON.stringify(customerData))
                 .replace(/\+/g, '-')
                 .replace(/\//g, '_')
                 .replace(/=+$/, '');
-
+    
             if (encodedData.length > 200) {
                 alert("Error: nombre demasiado largo. Usa un nombre más corto.");
                 return;
             }
-
+    
             const finalStripeUrl = `${stripePaymentLink}?client_reference_id=${encodeURIComponent(encodedData)}&prefilled_email=${encodeURIComponent(email)}`;
             window.location.href = finalStripeUrl;
         });
-
+    
         window.addEventListener("load", function() {
             if (window.location.pathname === "/gracias") {
                 salesSection.classList.add("hidden");
