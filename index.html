@@ -664,66 +664,74 @@
     })();
     </script>
 
-    <!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL (VERSIÓN CORREGIDA) ===== -->
-        <script>
-        const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00";
-        const salesSection = document.getElementById("sales-section");
-        const thankYouSection = document.getElementById("thank-you-section");
-    
-        document.getElementById("paymentButton").addEventListener("click", function() {
-            const nombre = document.getElementById("nombre").value.trim();
-            const fechaInput = document.getElementById("fecha").value;
-            const email = document.getElementById("email").value.trim();
-            const consentimiento = document.getElementById("consentimiento_rgpd").checked;
-    
-            if (!nombre || !fechaInput || !email) {
-                alert("Por favor, completa todos los campos.");
-                return;
-            }
-    
-            if (!consentimiento) {
-                alert("Debes aceptar la política de privacidad para continuar.");
-                return;
-            }
-    
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert("Por favor, introduce un email válido.");
-                return;
-            }
-    
-            const [year, month, day] = fechaInput.split('-');
-            const fechaFormateada = `${day}-${month}-${year}`;
-    
-            const customerData = {
-                nombre: nombre,
-                fecha: fechaFormateada,
-                email: email,
-                consentimiento_rgpd: consentimiento // ← ¡ahora incluye el consentimiento!
-            };
-    
-            let encodedData = btoa(JSON.stringify(customerData))
-                .replace(/\+/g, '-')
-                .replace(/\//g, '_')
-                .replace(/=+$/, '');
-    
-            if (encodedData.length > 200) {
-                alert("Error: nombre demasiado largo. Usa un nombre más corto.");
-                return;
-            }
-    
-            const finalStripeUrl = `${stripePaymentLink}?client_reference_id=${encodeURIComponent(encodedData)}&prefilled_email=${encodeURIComponent(email)}`;
-            window.location.href = finalStripeUrl;
-        });
-    
-        window.addEventListener("load", function() {
-            if (window.location.pathname === "/gracias") {
-                salesSection.classList.add("hidden");
-                thankYouSection.classList.remove("hidden");
-            }
-        });
-    </script>
-    <!-- ===== FIN DEL BLOQUE DE CÓDIGO FUNCIONAL ===== -->
+<!-- ===== INICIO DEL BLOQUE DE CÓDIGO FUNCIONAL (VERSIÓN CON 2 CHECKBOXES) ===== -->
+<script>
+    const stripePaymentLink = "https://buy.stripe.com/8x2bJ16tDewXamI57j8AE00";
+    const salesSection = document.getElementById("sales-section");
+    const thankYouSection = document.getElementById("thank-you-section");
+
+    document.getElementById("paymentButton").addEventListener("click", function() {
+        const nombre = document.getElementById("nombre").value.trim();
+        const fechaInput = document.getElementById("fecha").value;
+        const email = document.getElementById("email").value.trim();
+        const aceptoTerminos = document.getElementById("acepto_terminos")?.checked;
+        const consentimientoMarketing = document.getElementById("consentimiento_marketing")?.checked;
+
+        // Validar campos obligatorios
+        if (!nombre || !fechaInput || !email) {
+            alert("Por favor, completa todos los campos.");
+            return;
+        }
+
+        // Validar email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Por favor, introduce un email válido.");
+            return;
+        }
+
+        // Validar aceptación de términos (obligatorio)
+        if (!aceptoTerminos) {
+            alert("Debes aceptar los términos legales y la política de privacidad para continuar.");
+            return;
+        }
+
+        // Formatear fecha
+        const [year, month, day] = fechaInput.split('-');
+        const fechaFormateada = `${day}-${month}-${year}`;
+
+        // Preparar datos para enviar a Stripe
+        const customerData = {
+            nombre: nombre,
+            fecha: fechaFormateada,
+            email: email,
+            consentimiento_rgpd: !!consentimientoMarketing // true solo si marcó el checkbox de marketing
+        };
+
+        // Codificar en base64 URL-safe
+        let encodedData = btoa(JSON.stringify(customerData))
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '');
+
+        if (encodedData.length > 200) {
+            alert("Error: nombre demasiado largo. Usa un nombre más corto.");
+            return;
+        }
+
+        // Redirigir a Stripe
+        const finalStripeUrl = `${stripePaymentLink}?client_reference_id=${encodeURIComponent(encodedData)}&prefilled_email=${encodeURIComponent(email)}`;
+        window.location.href = finalStripeUrl;
+    });
+
+    window.addEventListener("load", function() {
+        if (window.location.pathname === "/gracias") {
+            salesSection.classList.add("hidden");
+            thankYouSection.classList.remove("hidden");
+        }
+    });
+</script>
+<!-- ===== FIN DEL BLOQUE DE CÓDIGO FUNCIONAL ===== -->
 
     <!-- ===== SCRIPT: Partículas de fondo cósmico ===== -->
     <script>
