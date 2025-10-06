@@ -526,18 +526,23 @@
                     <input type="date" id="fecha" required>
                 </div>
 
-                <!-- Consentimiento RGPD -->
-                <div class="form-group">
-                    <div style="display: flex; align-items: flex-start; gap: 12px; justify-content: center; margin-top: 8px;">
-                        <input type="checkbox" id="consentimiento_rgpd" required style="width: auto; height: 18px; margin-top: 4px; accent-color: #d4af37;">
-                        <label for="consentimiento_rgpd" style="font-size: 1em; color: #e0d8c0; text-align: left; line-height: 1.5;">
-                            Acepto recibir mi carta numerológica y, si lo deseo, futuras comunicaciones inspiradoras por email. 
-                            He leído y acepto la <a href="/politica-privacidad" target="_blank" style="color: #e6c229; text-decoration: underline;">política de privacidad</a>.
-                            Este servicio es personalizado y no tiene derecho de desistimiento. Al pagar, aceptas nuestros <a href="/terminos-condiciones">Términos</a>
-                        </label>
-                    </div>
-                </div>
-                
+                <!-- Consentimiento RGPD mejorado -->
+                <div class="form-group" style="margin-top: 10px;">
+                  <label for="consentimiento_rgpd" style="display: flex; align-items: flex-start; gap: 12px; font-size: 1em; color: #e0d8c0; line-height: 1.6; cursor: pointer; padding: 8px 0;">
+                    <input type="checkbox" id="consentimiento_rgpd" required 
+                           style="width: 18px; height: 18px; margin-top: 4px; accent-color: #d4af37; cursor: pointer;">
+                    <span>
+                      Acepto recibir futuras comunicaciones inspiradoras por email.<br>
+                      <span style="font-size: 0.95em; color: #b8a98a;">
+                        He leído y acepto la 
+                        <a href="/politica-privacidad" target="_blank" style="color: #e6c229; text-decoration: underline;">política de privacidad</a>.
+                        Este servicio es personalizado y no tiene derecho de desistimiento. 
+                        Al continuar, aceptas nuestros 
+                        <a href="/terminos-condiciones" style="color: #e6c229; text-decoration: underline;">términos de venta</a>.
+                      </span>
+                    </span>
+                  </label>
+                </div>                
                 <button id="paymentButton" class="cta-button">✨ Sí, quiero mi mensaje del Oráculo</button>
                 
                 <p class="guarantee">
