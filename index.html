@@ -526,23 +526,36 @@
                     <input type="date" id="fecha" required>
                 </div>
 
-                <!-- Consentimiento RGPD mejorado -->
-                <div class="form-group" style="margin-top: 10px;">
-                  <label for="consentimiento_rgpd" style="display: flex; align-items: flex-start; gap: 12px; font-size: 1em; color: #e0d8c0; line-height: 1.6; cursor: pointer; padding: 8px 0;">
-                    <input type="checkbox" id="consentimiento_rgpd" required 
-                           style="width: 18px; height: 18px; margin-top: 4px; accent-color: #d4af37; cursor: pointer;">
-                    <span>
-                      Acepto recibir futuras comunicaciones inspiradoras por email.<br>
-                      <span style="font-size: 0.95em; color: #b8a98a;">
-                        He leído y acepto la 
-                        <a href="/politica-privacidad" target="_blank" style="color: #e6c229; text-decoration: underline;">política de privacidad</a>.
-                        Este servicio es personalizado y no tiene derecho de desistimiento. 
-                        Al continuar, aceptas nuestros 
-                        <a href="/terminos-condiciones" style="color: #e6c229; text-decoration: underline;">términos de venta</a>.
+                <!-- Consentimientos RGPD - Versión final con iconos y dos checkboxes -->
+                <div class="form-group" style="margin-top: 10px; text-align: center;">
+                  
+                  <!-- Checkbox 1: Marketing -->
+                  <label for="consentimiento_marketing" style="display: flex; align-items: flex-start; gap: 12px; font-size: 1em; color: #e0d8c0; line-height: 1.6; cursor: pointer; max-width: 500px; margin: 0 auto 12px; padding: 8px 0;">
+                    <span style="font-size: 1.1em; color: #d4af37;">✧</span>
+                    <input type="checkbox" id="consentimiento_marketing" 
+                           style="width: 18px; height: 18px; margin-top: 4px; accent-color: #d4af37; cursor: pointer; border-radius: 4px;">
+                    <span style="text-align: left; flex: 1;">
+                      Acepto recibir futuras comunicaciones inspiradoras por email.
+                    </span>
+                  </label>
+                
+                  <!-- Checkbox 2: Términos legales (obligatorio) -->
+                  <label for="acepto_terminos" style="display: flex; align-items: flex-start; gap: 12px; font-size: 1em; color: #e0d8c0; line-height: 1.6; cursor: pointer; max-width: 500px; margin: 0 auto; padding: 8px 0;">
+                    <span style="font-size: 1.1em; color: #d4af37;">📜</span>
+                    <input type="checkbox" id="acepto_terminos" required
+                           style="width: 18px; height: 18px; margin-top: 4px; accent-color: #d4af37; cursor: pointer; border-radius: 4px;">
+                    <span style="text-align: left; flex: 1;">
+                      He leído y acepto la 
+                      <a href="/politica-privacidad" target="_blank" style="color: #e6c229; text-decoration: underline; font-weight: 500;">política de privacidad</a> 
+                      y los 
+                      <a href="/terminos-condiciones" target="_blank" style="color: #e6c229; text-decoration: underline; font-weight: 500;">términos de venta</a>.<br>
+                      <span style="font-size: 0.9em; color: #b8a98a; display: block; margin-top: 4px;">
+                        Este servicio es personalizado y no tiene derecho de desistimiento.
                       </span>
                     </span>
                   </label>
-                </div>                
+                
+                </div>              
                 <button id="paymentButton" class="cta-button">✨ Sí, quiero mi mensaje del Oráculo</button>
                 
                 <p class="guarantee">
