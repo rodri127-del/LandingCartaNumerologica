@@ -31,12 +31,12 @@
         No es una predicción: es un espejo. Y en él, verás lo que tu alma ya sabe.
       </p>
 
-      <form id="reading-form" class="form-group" style="max-width:500px; margin:30px auto;">
+      <form id="reading-form" class="form-group">
         <label for="name">Tu nombre (como te llama tu corazón)</label>
         <input type="text" id="name" name="name" placeholder="Ej: Lucía">
 
         <label for="question">¿Qué desea saber el Oráculo hoy?</label>
-        <input type="text" id="question" name="question" placeholder="Ej: ¿Qué debo soltar? ¿Estoy en el camino correcto?">
+        <textarea id="question" name="question" placeholder="Ej: ¿Qué debo soltar? ¿Estoy en el camino correcto?"></textarea>
 
         <button type="submit" class="cta-button">✨ Revelar las cartas</button>
       </form>
@@ -75,7 +75,7 @@
   <!-- Partículas de fondo -->
   <script src="/js/particles.js"></script>
 
-  <!-- Lógica de envío (conecta con n8n) -->
+  <!-- Lógica de envío -->
   <script>
     document.getElementById('reading-form').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -88,19 +88,8 @@
         return;
       }
 
-      // Aquí integrarás tu webhook de n8n
-      // Ejemplo:
-      // fetch('https://tu-n8n-webhook.novaproflow.com/webhook/tirada', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ name, question })
-      // })
-      // .then(res => res.json())
-      // .then(data => window.location.href = `/tirada/resultado?id=${data.id}`)
-      // .catch(err => alert('Hubo un error. Intenta de nuevo.'));
-
       alert('✨ Tu intención ha sido recibida. Las cartas se están revelando...');
-      // Por ahora, redirige a una página de "procesando" o muestra resultado en la misma página
+      // Aquí conectarás tu webhook de n8n cuando esté listo
     });
   </script>
 </body>
