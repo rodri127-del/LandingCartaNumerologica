@@ -64,8 +64,8 @@
     <a href="/aviso-legal" style="color: #e6c229; margin: 0 8px;">Aviso Legal</a>
     <a href="/politica-privacidad" style="color: #e6c229; margin: 0 8px;">Privacidad</a>
     <a href="/terminos-condiciones" style="color: #e6c229; margin: 0 8px;">Términos</a>
-</footer>
-  
+  </footer>
+
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-918MCZD0XF"></script>
   <script>
@@ -80,19 +80,24 @@
 
   <!-- Lógica de envío -->
   <script>
-    document.getElementById('reading-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('name').value.trim();
-      const question = document.getElementById('question').value.trim();
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('reading-form');
+      if (!form) return;
 
-      if (!question) {
-        alert('Por favor, escribe tu pregunta al Oráculo.');
-        return;
-      }
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('name').value.trim();
+        const question = document.getElementById('question').value.trim();
 
-      alert('✨ Tu intención ha sido recibida. Las cartas se están revelando...');
-      // Aquí conectarás tu webhook de n8n cuando esté listo
+        if (!question) {
+          alert('Por favor, escribe tu pregunta al Oráculo.');
+          return;
+        }
+
+        alert('✨ Tu intención ha sido recibida. Las cartas se están revelando...');
+        // Aquí conectarás tu webhook de n8n cuando esté listo
+      });
     });
   </script>
 </body>
