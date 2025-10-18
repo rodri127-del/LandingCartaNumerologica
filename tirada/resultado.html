@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>El Oráculo Diario • Tu Tirada</title>
+  <meta name="description" content="Tu tirada de Tarot personalizada, escrita como si el Oráculo te susurrara al corazón.">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/rodri127-del/n8n_numerologia_assets@main/fondos/ElOraculoDiario.ico" type="image/x-icon">
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+  <!-- Estilos compartidos -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header style="text-align: center; padding: 20px 0; margin-bottom: -20px; z-index: 10; position: relative;">
+    <a href="/" style="text-decoration: none; color: #e6c229; font-family: 'Cormorant Garamond', serif; font-size: 1.8em; letter-spacing: 1px;">
+      ✨ El Oráculo Diario
+    </a>
+  </header>
+
+  <div class="container">
+    <div class="main-box">
+      <h1>Las Cartas Han Hablado</h1>
+      
+      <p class="subtitle">
+        Escucha con el corazón, no con la mente.
+      </p>
+
+      <!-- Placeholder: en versión dinámica, esto se llenará con datos de Supabase -->
+      <div id="resultado-contenido">
+        <p style="font-style: italic; margin: 25px 0; color: #e0d8c0;">
+          <strong>Cartas reveladas:</strong><br>
+          <span id="cartas-mostradas" style="color: #e6c229;">El Ermitaño • La Luna • Cinco de Espadas</span>
+        </p>
+
+        <div id="interpretacion" style="margin: 30px 0; line-height: 1.8; font-size: 1.1em;">
+          <!-- Aquí irá la interpretación generada por IA -->
+          En el silencio entre dos mundos, <span style="color:#e6c229;">El Ermitaño</span> te invita a buscar tu propia luz. 
+          No necesitas respuestas externas: ya las llevas dentro. 
+          <span style="color:#e6c229;">La Luna</span> advierte: no todo lo que sientes es real; hay sombras que distorsionan tu intuición. 
+          Y en medio del caos, <span style="color:#e6c229;">Cinco de Espadas</span> te recuerda que ganar una batalla no siempre significa ganar la paz. 
+          ¿Qué estás dispuesto a soltar para recuperar tu equilibrio?
+        </div>
+
+        <p class="guarantee" style="margin-top: 30px; font-size: 0.95em;">
+          ¿Sientes que necesitas una guía más profunda?  
+          La <strong>Carta Numerológica del Oráculo</strong> revela tu propósito de alma, tus nudos kármicos y la energía de tu año.  
+          <a href="/" style="color:#e6c229; text-decoration:underline;">Descúbrela aquí</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
+    <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+      <a href="/" style="color: #e6c229; text-decoration: none; font-weight: 500;">
+        📜 Carta Numerológica
+      </a>
+      <a href="/tirada" style="color: #e6c229; text-decoration: none; font-weight: 500;">
+        🔮 Tirada de Tarot
+      </a>
+    </div>
+    <a href="/aviso-legal" style="color: #e6c229; margin: 0 8px;">Aviso Legal</a>
+    <a href="/politica-privacidad" style="color: #e6c229; margin: 0 8px;">Privacidad</a>
+    <a href="/terminos-condiciones" style="color: #e6c229; margin: 0 8px;">Términos</a>
+  </footer>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-918MCZD0XF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-918MCZD0XF');
+  </script>
+
+  <!-- Partículas de fondo -->
+  <script src="/js/particles.js"></script>
+
+  <!-- (Opcional) Cargar resultado dinámico desde Supabase -->
+  <!--
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://xxxxxxxx.supabase.co',
+      'TU_ANON_KEY'
+    );
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const readingId = urlParams.get('id');
+
+    if (readingId) {
+      const { data, error } = await supabase
+        .from('readings')
+        .select('cards, interpretation')
+        .eq('id', readingId)
+        .single();
+
+      if (error) {
+        document.getElementById('interpretacion').innerHTML = '<p style="color:#d4af37;">No se pudo cargar tu tirada. Intenta de nuevo.</p>';
+      } else {
+        document.getElementById('cartas-mostradas').textContent = data.cards.join(' • ');
+        document.getElementById('interpretacion').textContent = data.interpretation;
+      }
+    }
+  </script>
+  -->
+</body>
+</html>
