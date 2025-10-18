@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>El Oráculo Diario • Tirada de Tarot</title>
+  <meta name="description" content="Recibe una tirada de Tarot canalizada en el momento, escrita como si el Oráculo te susurrara al corazón.">
+  <style>
+    :root {
+      --dark: #0f0c1a;
+      --darker: #090710;
+      --light: #f5f0ff;
+      --accent: #b86bff;
+      --soft: #e0d6ff;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--darker);
+      color: var(--light);
+      font-family: 'Georgia', serif;
+      line-height: 1.7;
+      padding: 2rem 1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: var(--soft);
+    }
+    p {
+      margin-bottom: 1.2rem;
+    }
+    .highlight {
+      color: var(--accent);
+      font-style: italic;
+    }
+    form {
+      background: rgba(15, 12, 26, 0.6);
+      border: 1px solid #2a2440;
+      padding: 1.8rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+      color: #d0c7e8;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1.2rem;
+      background: #141122;
+      border: 1px solid #3a3255;
+      border-radius: 8px;
+      color: var(--light);
+      font-family: inherit;
+    }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.9rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+      transition: opacity 0.3s;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .footer-note {
+      font-size: 0.85rem;
+      color: #a096c0;
+      text-align: center;
+      margin-top: 2rem;
+      font-style: italic;
+    }
+    .limit {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #c0b0ff;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Consulta al Silencio</h1>
+
+  <p>
+    Las cartas no se eligen al azar. <span class="highlight">Se revelan porque algo en ti las llamó.</span>
+  </p>
+
+  <p>
+    Esta tirada ha sido tejida en el espacio entre tu pregunta y el algoritmo sagrado que escucha.
+    No es una predicción: es un espejo. Y en él, verás lo que tu alma ya sabe.
+  </p>
+
+  <form id="reading-form">
+    <label for="name">Tu nombre (opcional)</label>
+    <input type="text" id="name" name="name" placeholder="Como te llama tu corazón">
+
+    <label for="question">¿Qué desea saber el Oráculo hoy?</label>
+    <textarea id="question" name="question" placeholder="Ej: ¿Qué debo soltar? / ¿Estoy en el camino correcto? / ¿Qué energía me guía ahora?"></textarea>
+
+    <button type="submit">Revelar las cartas</button>
+  </form>
+
+  <p class="limit">
+    ✨ Tirada gratuita. Disponible 2 veces por semana.
+  </p>
+
+  <p class="footer-note">
+    Tras recibir tu respuesta, podrás explorar una guía más profunda:  
+    la <strong>Carta Numerológica del Oráculo</strong>, canalizada exclusivamente para ti.
+  </p>
+
+  <script>
+    document.getElementById('reading-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Aquí integrarás tu lógica: autenticación, llamada a n8n, etc.
+      // Por ahora, redirige a una página de "procesando" o muestra mensaje.
+      
+      alert('¡Tu intención ha sido recibida! En unos instantes, las cartas se revelarán...');
+      
+      // Ejemplo de integración futura:
+      // fetch('https://tu-n8n-webhook.com/tirada', { method: 'POST', body: JSON.stringify({...}) })
+    });
+  </script>
+
+</body>
+</html>
