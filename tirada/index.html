@@ -15,11 +15,11 @@
             <h1>El Oráculo Diario</h1>
         </div>
         <div id="user-header-info">
-            <!-- El contenido (botón de login o email de usuario) se inyectará aquí por auth.js -->
+            <!-- El contenido se inyectará aquí por auth.js -->
         </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL DE LA PÁGINA -->
+    <!-- CONTENIDO PRINCIPAL (RESTAURADO) -->
     <main>
         <div class="container">
             <div class="card">
@@ -30,63 +30,57 @@
         </div>
     </main>
 
-    <!-- MODAL DE AUTENTICACIÓN (LOGIN / REGISTRO) -->
+    <!-- MODAL DE AUTENTICACIÓN (SIMPLIFICADO CON GOOGLE) -->
     <div id="authModal" class="auth-modal">
         <div class="auth-modal-content">
             <span class="close-modal">&times;</span>
-            <div class="auth-tabs">
-                <button class="tab-button active" id="loginTab">Iniciar Sesión</button>
-                <button class="tab-button" id="signupTab">Registrarse</button>
+            <h2>Iniciar Sesión</h2>
+            <p>Accede para revelar tu futuro</p>
+            
+            <!-- Botón de Iniciar con Google -->
+            <button id="google-signin-btn" class="google-btn">
+                <svg width="18" height="18" viewBox="0 0 18 18">
+                    <path fill="#4285F4" d="M16.51 9H9v2.89h4.13a3.5 3.5 0 0 1-1.47 2.29l2.36 1.84A7.49 7.49 0 0 0 18 9a7.48 7.48 0 0 0-1.49-4.49z"/>
+                    <path fill="#34A853" d="M9 18a7.48 7.48 0 0 0 5.03-1.91l-2.36-1.84A4.5 4.5 0 0 1 4.5 12.9H1.89v1.9A7.5 7.5 0 0 0 9 18z"/>
+                    <path fill="#FBBC05" d="M4.5 12.9a4.47 4.47 0 0 1 0-2.8V8.2H1.89a7.49 7.49 0 0 0 0 6.7l2.61-2z"/>
+                    <path fill="#EA4335" d="M9 3.58a4.5 4.5 0 0 1 2.83 1L14.6 1.8A7.48 7.48 0 0 0 9 0a7.5 7.5 0 0 0-7.11 5.2L4.5 8.2A4.48 4.48 0 0 1 9 3.58z"/>
+                </svg>
+                Iniciar con Google
+            </button>
+
+            <div class="auth-separator">
+                <span>o</span>
             </div>
-            <div id="login-content" class="tab-content active">
-                <form id="login-form" class="auth-form">
-                    <input type="email" name="email" placeholder="Correo Electrónico" required>
-                    <div class="error-message" id="login-error"></div>
-                    <input type="password" name="password" placeholder="Contraseña" required>
-                    <button type="submit">Entrar</button>
-                </form>
-            </div>
-            <div id="signup-content" class="tab-content">
-                <form id="signup-form" class="auth-form">
-                    <input type="email" name="email" placeholder="Correo Electrónico" required>
-                    <div class="error-message" id="signup-error"></div>
-                    <input type="password" name="password" placeholder="Crear Contraseña" required>
-                    <button type="submit">Crear Cuenta</button>
-                </form>
-            </div>
+
+            <!-- Formulario de Email -->
+            <form id="login-form" class="auth-form">
+                <input type="email" name="email" placeholder="Correo Electrónico" required>
+                <div class="error-message" id="login-error"></div>
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <button type="submit">Entrar</button>
+            </form>
         </div>
     </div>
 
-    <!-- SCRIPTS (El orden es importante) -->
-    <!-- 1. Librería de Supabase -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    
-    <!-- 2. Tu cliente de Supabase (recuerda configurarlo) -->
     <script src="../supabase-client.js"></script>
-    
-    <!-- 3. Lógica de autenticación (header, modal, login, etc.) -->
     <script src="../js/auth.js"></script>
-    
-    <!-- 4. Tu script existente de partículas -->
     <script src="../js/particles.js"></script>
     
-    <!-- 5. Lógica específica para esta página (el botón de revelar) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const revealBtn = document.getElementById('reveal-btn');
 
             if (revealBtn) {
                 revealBtn.addEventListener('click', async () => {
-                    // 1. Verificar si el usuario está autenticado
                     const { data: { session } } = await window.supabase.auth.getSession();
 
                     if (session) {
-                        // 2. Si está autenticado, redirigir a la página de resultados
-                        console.log('Usuario autenticado. Redirigiendo a resultado.html...');
+                        console.log('Usuario autenticado. Redirigiendo...');
                         window.location.href = 'resultado.html';
                     } else {
-                        // 3. Si no lo está, mostrar el modal de autenticación
-                        console.log('Usuario no autenticado. Mostrando modal de login...');
+                        console.log('Usuario no autenticado. Mostrando modal...');
                         document.getElementById('authModal').style.display = 'flex';
                     }
                 });
