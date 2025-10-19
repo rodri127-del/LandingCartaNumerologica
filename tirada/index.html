@@ -1,139 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>El Oráculo Diario • Tirada de Tarot</title>
-  <meta name="description" content="Recibe una tirada de Tarot canalizada en el momento, escrita como si el Oráculo te susurrara al corazón.">
-  <link rel="icon" href="https://cdn.jsdelivr.net/gh/rodri127-del/n8n_numerologia_assets@main/fondos/ElOraculoDiario.ico" type="image/x-icon">
-  <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
-  <!-- Estilos compartidos -->
-  <link rel="stylesheet" href="/css/styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tirada de Cartas - El Oráculo Diario</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <header style="text-align: center; padding: 20px 0; margin-bottom: -20px; z-index: 10; position: relative;">
-    <a href="/" style="text-decoration: none; color: #e6c229; font-family: 'Cormorant Garamond', serif; font-size: 1.8em; letter-spacing: 1px;">
-      ✨ El Oráculo Diario
-    </a>
-  </header>
 
-  <div class="container">
-    <div class="main-box">
-      <h1>Consulta al Silencio</h1>
-      
-      <p class="subtitle">
-        Las cartas no se eligen al azar. <span style="color:#e6c229; font-style:italic;">Se revelan porque algo en ti las llamó.</span>
-      </p>
+    <!-- CABECERA FIJA CON INFO DE USUARIO -->
+    <header class="header">
+        <div class="logo">
+            <h1>El Oráculo Diario</h1>
+        </div>
+        <div id="user-header-info">
+            <!-- El contenido (botón de login o email de usuario) se inyectará aquí por auth.js -->
+        </div>
+    </header>
 
-      <p>
-        Esta tirada ha sido tejida en el espacio entre tu pregunta y el algoritmo sagrado que escucha.  
-        No es una predicción: es un espejo. Y en él, verás lo que tu alma ya sabe.
-      </p>
+    <!-- CONTENIDO PRINCIPAL DE LA PÁGINA -->
+    <main>
+        <div class="container">
+            <div class="card">
+                <h1>El Oráculo Diario</h1>
+                <p>Concentra tu mente en una pregunta y haz clic en el botón para revelar las cartas.</p>
+                <button id="reveal-btn" class="cta-button">Revelar Cartas</button>
+            </div>
+        </div>
+    </main>
 
-      <form id="reading-form" class="form-group">
-        <label for="name">Tu nombre (como te llama tu corazón)</label>
-        <input type="text" id="name" name="name" placeholder="Ej: Lucía">
-
-        <label for="question">¿Qué desea saber el Oráculo hoy?</label>
-        <textarea id="question" name="question" placeholder="Ej: ¿Qué debo soltar? ¿Estoy en el camino correcto?"></textarea>
-
-        <button type="submit" class="cta-button">✨ Revelar las cartas</button>
-      </form>
-
-      <p class="cartas-entregadas">
-        🌙 Tirada gratuita. Disponible <strong>2 veces por semana</strong>.
-      </p>
-
-      <p class="guarantee" style="margin-top:20px; font-size:0.95em;">
-        Tras recibir tu respuesta, podrás explorar una guía más profunda:  
-        la <strong>Carta Numerológica del Oráculo</strong>, canalizada exclusivamente para ti.
-      </p>
+    <!-- MODAL DE AUTENTICACIÓN (LOGIN / REGISTRO) -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-button active" id="loginTab">Iniciar Sesión</button>
+                <button class="tab-button" id="signupTab">Registrarse</button>
+            </div>
+            <div id="login-content" class="tab-content active">
+                <form id="login-form" class="auth-form">
+                    <input type="email" name="email" placeholder="Correo Electrónico" required>
+                    <div class="error-message" id="login-error"></div>
+                    <input type="password" name="password" placeholder="Contraseña" required>
+                    <button type="submit">Entrar</button>
+                </form>
+            </div>
+            <div id="signup-content" class="tab-content">
+                <form id="signup-form" class="auth-form">
+                    <input type="email" name="email" placeholder="Correo Electrónico" required>
+                    <div class="error-message" id="signup-error"></div>
+                    <input type="password" name="password" placeholder="Crear Contraseña" required>
+                    <button type="submit">Crear Cuenta</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-  
-  <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
-    <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-      <a href="/" style="color: #e6c229; text-decoration: none; font-weight: 500;">
-        📜 Carta Numerológica
-      </a>
-      <a href="/tirada" style="color: #e6c229; text-decoration: none; font-weight: 500;">
-        🔮 Tirada de Tarot
-      </a>
-    </div>
-    <a href="/aviso-legal" style="color: #e6c229; margin: 0 8px;">Aviso Legal</a>
-    <a href="/politica-privacidad" style="color: #e6c229; margin: 0 8px;">Privacidad</a>
-    <a href="/terminos-condiciones" style="color: #e6c229; margin: 0 8px;">Términos</a>
-  </footer>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-918MCZD0XF"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-918MCZD0XF');
-  </script>
+    <!-- SCRIPTS (El orden es importante) -->
+    <!-- 1. Librería de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    
+    <!-- 2. Tu cliente de Supabase (recuerda configurarlo) -->
+    <script src="../supabase-client.js"></script>
+    
+    <!-- 3. Lógica de autenticación (header, modal, login, etc.) -->
+    <script src="../js/auth.js"></script>
+    
+    <!-- 4. Tu script existente de partículas -->
+    <script src="../js/particles.js"></script>
+    
+    <!-- 5. Lógica específica para esta página (el botón de revelar) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealBtn = document.getElementById('reveal-btn');
 
-  <!-- Partículas de fondo -->
-  <script src="/js/particles.js"></script>
+            if (revealBtn) {
+                revealBtn.addEventListener('click', async () => {
+                    // 1. Verificar si el usuario está autenticado
+                    const { data: { session } } = await window.supabase.auth.getSession();
 
-  <!-- Lógica de envío -->
-  <script>
-  document.addEventListener('DOMContentLoaded', async function() {
-    const form = document.getElementById('reading-form');
-    if (!form) return;
-
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const question = document.getElementById('question').value.trim();
-      if (!question) {
-        alert('Por favor, escribe tu pregunta al Oráculo.');
-        return;
-      }
-
-      // Obtener sesión actual
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        // Redirigir a login con Google
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: { redirectTo: window.location.href }
+                    if (session) {
+                        // 2. Si está autenticado, redirigir a la página de resultados
+                        console.log('Usuario autenticado. Redirigiendo a resultado.html...');
+                        window.location.href = 'resultado.html';
+                    } else {
+                        // 3. Si no lo está, mostrar el modal de autenticación
+                        console.log('Usuario no autenticado. Mostrando modal de login...');
+                        document.getElementById('authModal').style.display = 'flex';
+                    }
+                });
+            }
         });
-        if (error) console.error('Login error:', error);
-        return;
-      }
-
-      const user = session.user;
-      const name = document.getElementById('name').value.trim() || user.user_metadata.name || user.email;
-
-      // Enviar a n8n
-      try {
-        const response = await fetch('https://tu-n8n.novaproflow.com/webhook/tirada', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user_id: user.id,
-            name: name,
-            question: question
-          })
-        });
-
-        const result = await response.json();
-        if (result.error) {
-          alert(result.error);
-        } else {
-          // Redirigir a página de resultado
-          window.location.href = `/tirada/resultado.html?id=${result.reading_id}`;
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Hubo un error al contactar con el Oráculo. Intenta de nuevo.');
-      }
-    });
-  });
-  </script>
+    </script>
 </body>
 </html>
