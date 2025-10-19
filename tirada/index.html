@@ -10,7 +10,7 @@
 <body>
 
     <div class="container">
-        <!-- TU CABECERA ORIGINAL CON LA NUEVA FUNCIÓN DE USUARIO -->
+        <!-- TU CABECERA ORIGINAL, CON EL NUEVO ELEMENTO AÑADIDO -->
         <header>
             <div class="logo">
                 <a href="../index.html">
@@ -25,7 +25,7 @@
                     <li><a href="#">Contacto</a></li>
                 </ul>
             </nav>
-            <!-- AQUÍ AÑADIMOS LA INFORMACIÓN DEL USUARIO -->
+            <!-- AQUÍ ESTÁ EL ÚNICO CAMBIO EN TU ESTRUCTURA -->
             <div id="user-header-info">
                 <!-- El contenido se inyectará aquí por auth.js -->
             </div>
@@ -68,9 +68,9 @@
                 <p>&copy; 2024 El Oráculo Diario. Todos los derechos reservados.</p>
             </div>
         </footer>
-    </div> <!-- Fin del .container -->
+    </div> 
 
-    <!-- MODAL DE AUTENTICACIÓN (SE AÑADE FUERA DEL .container) -->
+    <!-- MODAL DE AUTENTICACIÓN -->
     <div id="authModal" class="auth-modal">
         <div class="auth-modal-content">
             <span class="close-modal">&times;</span>
@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Scripts (sin cambios) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="../supabase-client.js"></script>
     <script src="../js/auth.js"></script>
@@ -109,16 +109,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const revealBtn = document.getElementById('reveal-btn');
-
             if (revealBtn) {
                 revealBtn.addEventListener('click', async () => {
                     const { data: { session } } = await window.supabase.auth.getSession();
-
                     if (session) {
-                        console.log('Usuario autenticado. Redirigiendo...');
                         window.location.href = 'resultado.html';
                     } else {
-                        console.log('Usuario no autenticado. Mostrando modal...');
                         document.getElementById('authModal').style.display = 'flex';
                     }
                 });
