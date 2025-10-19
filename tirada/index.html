@@ -1,125 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tirada de Cartas - El Oráculo Diario</title>
-    <link rel="stylesheet" href="../css/styles.css">
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>El Oráculo Diario • Tu Tirada</title>
+  <meta name="description" content="Concentra tu mente en una pregunta y revela las cartas del Oráculo Diario.">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/rodri127-del/n8n_numerologia_assets@main/fondos/ElOraculoDiario.ico" type="image/x-icon">
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+  <!-- Estilos compartidos -->
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-
-    <div class="container">
-        <!-- TU CABECERA ORIGINAL, CON EL NUEVO ELEMENTO AÑADIDO -->
-        <header>
-            <div class="logo">
-                <a href="../index.html">
-                    <img src="../images/logo.png" alt="El Oráculo Diario">
-                </a>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="../index.html">Inicio</a></li>
-                    <li><a href="index.html" class="active">Tirada de Tarot</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Contacto</a></li>
-                </ul>
-            </nav>
-            <!-- AQUÍ ESTÁ EL ÚNICO CAMBIO EN TU ESTRUCTURA -->
-            <div id="user-header-info">
-                <!-- El contenido se inyectará aquí por auth.js -->
-            </div>
-        </header>
-
-        <!-- TU CONTENIDO PRINCIPAL ORIGINAL -->
-        <main>
-            <div class="card">
-                <h1>El Oráculo Diario</h1>
-                <p>Concentra tu mente en una pregunta y haz clic en el botón para revelar las cartas.</p>
-                <button id="reveal-btn" class="cta-button">Revelar Cartas</button>
-            </div>
-        </main>
-
-        <!-- TU PIE DE PÁGINA ORIGINAL -->
-        <footer>
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>El Oráculo Diario</h3>
-                    <p>Tu guía diaria hacia el autoconocimiento a través de la sabiduría del tarot.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Enlaces Rápidos</h3>
-                    <ul>
-                        <li><a href="../index.html">Inicio</a></li>
-                        <li><a href="index.html">Tirada de Tarot</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="../aviso-legal.html">Aviso Legal</a></li>
-                        <li><a href="../politica-privacidad.html">Privacidad</a></li>
-                        <li><a href="../terminos-condiciones.html">Términos y Condiciones</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 El Oráculo Diario. Todos los derechos reservados.</p>
-            </div>
-        </footer>
-    </div> 
-
-    <!-- MODAL DE AUTENTICACIÓN -->
-    <div id="authModal" class="auth-modal">
-        <div class="auth-modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Iniciar Sesión</h2>
-            <p>Accede para revelar tu futuro</p>
-            
-            <button id="google-signin-btn" class="google-btn">
-                <svg width="18" height="18" viewBox="0 0 18 18">
-                    <path fill="#4285F4" d="M16.51 9H9v2.89h4.13a3.5 3.5 0 0 1-1.47 2.29l2.36 1.84A7.49 7.49 0 0 0 18 9a7.48 7.48 0 0 0-1.49-4.49z"/>
-                    <path fill="#34A853" d="M9 18a7.48 7.48 0 0 0 5.03-1.91l-2.36-1.84A4.5 4.5 0 0 1 4.5 12.9H1.89v1.9A7.5 7.5 0 0 0 9 18z"/>
-                    <path fill="#FBBC05" d="M4.5 12.9a4.47 4.47 0 0 1 0-2.8V8.2H1.89a7.49 7.49 0 0 0 0 6.7l2.61-2z"/>
-                    <path fill="#EA4335" d="M9 3.58a4.5 4.5 0 0 1 2.83 1L14.6 1.8A7.48 7.48 0 0 0 9 0a7.5 7.5 0 0 0-7.11 5.2L4.5 8.2A4.48 4.48 0 0 1 9 3.58z"/>
-                </svg>
-                Iniciar con Google
-            </button>
-
-            <div class="auth-separator">
-                <span>o</span>
-            </div>
-
-            <form id="login-form" class="auth-form">
-                <input type="email" name="email" placeholder="Correo Electrónico" required>
-                <div class="error-message" id="login-error"></div>
-                <input type="password" name="password" placeholder="Contraseña" required>
-                <button type="submit">Entrar</button>
-            </form>
-        </div>
+  <header style="text-align: center; padding: 20px 0; margin-bottom: -20px; z-index: 10; position: relative;">
+    <a href="/" style="text-decoration: none; color: #e6c229; font-family: 'Cormorant Garamond', serif; font-size: 1.8em; letter-spacing: 1px;">
+      ✨ El Oráculo Diario
+    </a>
+    <!-- ÚNICO CAMBIO: Añadimos el contenedor de usuario aquí -->
+    <div id="user-header-info" style="position: absolute; top: 50%; right: 20px; transform: translateY(-50%); color: #e6c229; font-family: 'Lora', serif;">
+        <!-- El contenido se inyectará aquí por auth.js -->
     </div>
+  </header>
 
-    <!-- Scripts (sin cambios) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="../supabase-client.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/particles.js"></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const revealBtn = document.getElementById('reveal-btn');
-            if (revealBtn) {
-                revealBtn.addEventListener('click', async () => {
-                    const { data: { session } } = await window.supabase.auth.getSession();
-                    if (session) {
-                        window.location.href = 'resultado.html';
-                    } else {
-                        document.getElementById('authModal').style.display = 'flex';
-                    }
-                });
-            }
-        });
-    </script>
+  <div class="container">
+    <div class="main-box">
+      <h1>Concentra tu Energía</h1>
+      
+      <p class="subtitle">
+        Piensa en una pregunta. El Oráculo te escuchará.
+      </p>
+
+      <button id="reveal-btn" class="cta-button" style="margin-top: 20px;">Revelar Cartas</button>
+    </div>
+  </div>
+
+  <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
+    <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+      <a href="/" style="color: #e6c229; text-decoration: none; font-weight: 500;">
+        📜 Carta Numerológica
+      </a>
+      <a href="/tirada" style="color: #e6c229; text-decoration: none; font-weight: 500;">
+        🔮 Tirada de Tarot
+      </a>
+    </div>
+    <a href="/aviso-legal" style="color: #e6c229; margin: 0 8px;">Aviso Legal</a>
+    <a href="/politica-privacidad" style="color: #e6c229; margin: 0 8px;">Privacidad</a>
+    <a href="/terminos-condiciones" style="color: #e6c229; margin: 0 8px;">Términos</a>
+  </footer>
+
+  <!-- MODAL DE AUTENTICACIÓN (AÑADIDO COMPLETO) -->
+  <div id="authModal" class="auth-modal">
+    <div class="auth-modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 style="color: #e6c229; font-family: 'Cormorant Garamond', serif;">Iniciar Sesión</h2>
+      <p style="color: #e0d8c0;">Accede para revelar tu futuro</p>
+      
+      <button id="google-signin-btn" class="google-btn">
+        <svg width="18" height="18" viewBox="0 0 18 18">
+          <path fill="#4285F4" d="M16.51 9H9v2.89h4.13a3.5 3.5 0 0 1-1.47 2.29l2.36 1.84A7.49 7.49 0 0 0 18 9a7.48 7.48 0 0 0-1.49-4.49z"/>
+          <path fill="#34A853" d="M9 18a7.48 7.48 0 0 0 5.03-1.91l-2.36-1.84A4.5 4.5 0 0 1 4.5 12.9H1.89v1.9A7.5 7.5 0 0 0 9 18z"/>
+          <path fill="#FBBC05" d="M4.5 12.9a4.47 4.47 0 0 1 0-2.8V8.2H1.89a7.49 7.49 0 0 0 0 6.7l2.61-2z"/>
+          <path fill="#EA4335" d="M9 3.58a4.5 4.5 0 0 1 2.83 1L14.6 1.8A7.48 7.48 0 0 0 9 0a7.5 7.5 0 0 0-7.11 5.2L4.5 8.2A4.48 4.48 0 0 1 9 3.58z"/>
+        </svg>
+        Iniciar con Google
+      </button>
+
+      <div class="auth-separator">
+        <span>o</span>
+      </div>
+
+      <form id="login-form" class="auth-form">
+        <input type="email" name="email" placeholder="Correo Electrónico" required>
+        <div class="error-message" id="login-error"></div>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-918MCZD0XF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-918MCZD0XF');
+  </script>
+
+  <!-- Partículas de fondo -->
+  <script src="/js/particles.js"></script>
+  
+  <!-- Scripts de Autenticación -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="/supabase-client.js"></script>
+  <script src="/js/auth.js"></script>
+
+  <!-- Lógica del botón Revelar -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const revealBtn = document.getElementById('reveal-btn');
+        if (revealBtn) {
+            revealBtn.addEventListener('click', async () => {
+                const { data: { session } } = await window.supabase.auth.getSession();
+                if (session) {
+                    window.location.href = 'resultado.html';
+                } else {
+                    document.getElementById('authModal').style.display = 'flex';
+                }
+            });
+        }
+    });
+  </script>
 </body>
 </html>
