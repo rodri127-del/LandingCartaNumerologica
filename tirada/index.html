@@ -154,6 +154,28 @@
       margin-top: 5px;
       display: none;
     }
+
+    /* Estilos para el botón de PayPal */
+    .paypal-donate {
+      display: inline-block;
+      background: #FFC439;
+      color: #111;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1em;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .paypal-donate:hover {
+      background: #F0B631;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 196, 57, 0.4);
+    }
   </style>
 </head>
 <body>
@@ -163,7 +185,10 @@
     </a>
     <!-- Botón de donar en header -->
     <div style="position: absolute; top: 50%; right: 20px; transform: translateY(-50%);">
-      <button class="donate-btn" id="header-donate-btn">❤️ Donar</button>
+      <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display: inline;">
+        <input type="hidden" name="hosted_button_id" value="8Y7DEGZZ7X2JS" />
+        <button type="submit" class="paypal-donate">❤️ Donar</button>
+      </form>
     </div>
   </header>
 
@@ -256,7 +281,10 @@
   <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
     <!-- Botón de donar en footer -->
     <div style="margin-bottom: 20px;">
-      <button class="donate-btn" id="footer-donate-btn">❤️ Apoya el Oráculo</button>
+      <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display: inline;">
+        <input type="hidden" name="hosted_button_id" value="8Y7DEGZZ7X2JS" />
+        <button type="submit" class="paypal-donate">❤️ Apoya el Oráculo</button>
+      </form>
     </div>
     
     <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
@@ -284,26 +312,14 @@
   <!-- Partículas de fondo -->
   <script src="/js/particles.js"></script>
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
   <!-- Script para la tirada del oráculo -->
   <script>
-    // Inicializar Supabase
-    const supabaseUrl = 'https://tu-proyecto.supabase.co'; // Reemplaza con tu URL
-    const supabaseAnonKey = 'TU_SUPABASE_ANON_KEY'; // Reemplaza con tu clave
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.getElementById('oracle-form');
       const loading = document.getElementById('loading');
       const resultContainer = document.getElementById('result-container');
       const resultTitle = document.getElementById('result-title');
       const resultContent = document.getElementById('result-content');
-      
-      // Configurar botones de donar
-      document.getElementById('header-donate-btn').addEventListener('click', openPayPalDonation);
-      document.getElementById('footer-donate-btn').addEventListener('click', openPayPalDonation);
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -331,25 +347,9 @@
         loading.style.display = 'block';
 
         try {
-          // 1. Guardar en Supabase
-          const { error: supabaseError } = await supabase
-            .from('leads')
-            .insert([
-              {
-                email: data.email,
-                fecha_de_nacimiento: data.birthdate,
-                acepto_terminos: data.lopd,
-                consentimiento_marketing: data.marketing,
-                created_at: new Date().toISOString()
-              }
-            ]);
-
-          if (supabaseError) {
-            throw new Error('Error al guardar en la base de datos: ' + supabaseError.message);
-          }
-
-          // 2. Obtener la tirada del oráculo
-          const response = await fetch('/api/oracle-reading', {
+          // Enviar todo al webhook de n8n
+          // IMPORTANTE: Reemplaza esta URL con la de tu webhook de n8n
+          const response = await fetch('https://tu-dominio.n8n.cloud/webhook/oracle-reading', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -358,15 +358,19 @@
           });
 
           if (!response.ok) {
-            throw new Error('Error en la consulta al oráculo');
+            throw new Error(`Error en la consulta al oráculo: ${response.status} ${response.statusText}`);
           }
 
           const result = await response.json();
           
-          // Mostrar resultados
-          resultTitle.textContent = `Tu Tirada de ${getThemeName(data.theme)}`;
-          resultContent.textContent = result.reading;
-          resultContainer.style.display = 'block';
+          if (result.success) {
+            // Mostrar resultados
+            resultTitle.textContent = `Tu Tirada de ${getThemeName(data.theme)}`;
+            resultContent.textContent = result.reading;
+            resultContainer.style.display = 'block';
+          } else {
+            throw new Error(result.error || 'Error desconocido en la respuesta');
+          }
           
         } catch (error) {
           console.error('Error:', error);
@@ -438,12 +442,6 @@
         return themes[theme] || 'Oráculo';
       }
     });
-
-    // Función para PayPal - reemplaza con tu código real
-    function openPayPalDonation() {
-      // Reemplaza con tu código de PayPal
-      window.open('https://www.paypal.com/donate?hosted_button_id=8Y7DEGZZ7X2JS', '_blank');
-    }
   </script>
 </body>
 </html>
