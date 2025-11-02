@@ -81,26 +81,6 @@
       color: #ffd700;
     }
     
-    .donate-btn {
-      background: linear-gradient(135deg, #e6c229, #d4af37);
-      color: #1a1723;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 600;
-      font-size: 1em;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
-    
-    .donate-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(230, 194, 41, 0.4);
-    }
-    
     .loading {
       display: none;
       text-align: center;
@@ -155,26 +135,26 @@
       display: none;
     }
 
-    /* Estilos para el botón de PayPal */
-    .paypal-donate {
-      display: inline-block;
-      background: #FFC439;
-      color: #111;
+    /* Estilos para los botones de donar */
+    .donate-button {
+      background: linear-gradient(135deg, #0070ba, #1546a0);
+      color: white;
+      border: none;
       padding: 12px 24px;
       border-radius: 6px;
       font-family: 'Cormorant Garamond', serif;
       font-weight: 600;
       font-size: 1em;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      border: none;
       cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
     }
 
-    .paypal-donate:hover {
-      background: #F0B631;
+    .donate-button:hover {
+      background: linear-gradient(135deg, #005ea6, #0d3d8c);
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(255, 196, 57, 0.4);
+      box-shadow: 0 5px 15px rgba(0, 112, 186, 0.4);
     }
   </style>
 </head>
@@ -185,10 +165,7 @@
     </a>
     <!-- Botón de donar en header -->
     <div style="position: absolute; top: 50%; right: 20px; transform: translateY(-50%);">
-      <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display: inline;">
-        <input type="hidden" name="hosted_button_id" value="8Y7DEGZZ7X2JS" />
-        <button type="submit" class="paypal-donate">❤️ Donar</button>
-      </form>
+      <button class="donate-button" onclick="openPayPalDonation()">❤️ Donar</button>
     </div>
   </header>
 
@@ -281,10 +258,7 @@
   <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
     <!-- Botón de donar en footer -->
     <div style="margin-bottom: 20px;">
-      <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display: inline;">
-        <input type="hidden" name="hosted_button_id" value="8Y7DEGZZ7X2JS" />
-        <button type="submit" class="paypal-donate">❤️ Apoya el Oráculo</button>
-      </form>
+      <button class="donate-button" onclick="openPayPalDonation()">❤️ Apoya el Oráculo</button>
     </div>
     
     <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
@@ -347,9 +321,10 @@
         loading.style.display = 'block';
 
         try {
-          // Enviar todo al webhook de n8n
-          // IMPORTANTE: Reemplaza esta URL con la de tu webhook de n8n
-          const response = await fetch('https://tu-dominio.n8n.cloud/webhook/oracle-reading', {
+          console.log('Enviando datos al webhook:', data);
+          
+          // Enviar todo al webhook de n8n - URL CORREGIDA
+          const response = await fetch('https://n8n.novaproflow.com:5678/webhook/oracle-reading', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -357,11 +332,15 @@
             body: JSON.stringify(data)
           });
 
+          console.log('Respuesta del servidor:', response);
+
           if (!response.ok) {
-            throw new Error(`Error en la consulta al oráculo: ${response.status} ${response.statusText}`);
+            const errorText = await response.text();
+            throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
           }
 
           const result = await response.json();
+          console.log('Resultado recibido:', result);
           
           if (result.success) {
             // Mostrar resultados
@@ -373,8 +352,8 @@
           }
           
         } catch (error) {
-          console.error('Error:', error);
-          resultContent.textContent = 'Lo sentimos, ha ocurrido un error al consultar el oráculo. Por favor, intenta de nuevo.';
+          console.error('Error completo:', error);
+          resultContent.textContent = `Lo sentimos, ha ocurrido un error al consultar el oráculo: ${error.message}. Por favor, intenta de nuevo.`;
           resultContainer.style.display = 'block';
         } finally {
           loading.style.display = 'none';
@@ -442,6 +421,11 @@
         return themes[theme] || 'Oráculo';
       }
     });
+
+    // Función para PayPal - CORREGIDA con tu código
+    function openPayPalDonation() {
+      window.open('https://www.paypal.com/donate/?hosted_button_id=8Y7DEGZZ7X2JS', '_blank');
+    }
   </script>
 </body>
 </html>
