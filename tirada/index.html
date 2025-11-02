@@ -3,38 +3,224 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>El Oráculo Diario • Tu Tirada</title>
-  <meta name="description" content="Concentra tu mente en una pregunta y revela las cartas del Oráculo Diario.">
+  <title>El Oráculo Diario • Tu Tirada Personalizada</title>
+  <meta name="description" content="Consulta al Oráculo, Tarot, Cábala, Numerología o Astrología para recibir tu tirada personalizada.">
   <link rel="icon" href="https://cdn.jsdelivr.net/gh/rodri127-del/n8n_numerologia_assets@main/fondos/ElOraculoDiario.ico" type="image/x-icon">
   <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
-  <!-- Estilos compartidos -->
+  <!-- Estilos -->
   <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #e6c229;
+      font-family: 'Lora', serif;
+      font-size: 1.1em;
+    }
+    
+    .form-input, .form-select {
+      width: 100%;
+      padding: 12px;
+      background: rgba(26, 23, 35, 0.8);
+      border: 1px solid #4a4458;
+      border-radius: 8px;
+      color: #e0d8c0;
+      font-family: 'Lora', serif;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+    
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: #e6c229;
+      box-shadow: 0 0 10px rgba(230, 194, 41, 0.3);
+    }
+    
+    .checkbox-group {
+      text-align: left;
+      margin: 25px 0;
+      padding: 15px;
+      background: rgba(26, 23, 35, 0.6);
+      border-radius: 8px;
+      border: 1px solid #4a4458;
+    }
+    
+    .checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: #e0d8c0;
+      font-family: 'Lora', serif;
+      font-size: 0.95em;
+      line-height: 1.4;
+      cursor: pointer;
+    }
+    
+    .checkbox-input {
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+    
+    .donate-btn {
+      background: linear-gradient(135deg, #e6c229, #d4af37);
+      color: #1a1723;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .donate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(230, 194, 41, 0.4);
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .spinner {
+      border: 3px solid rgba(230, 194, 41, 0.3);
+      border-radius: 50%;
+      border-top: 3px solid #e6c229;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .result-container {
+      display: none;
+      margin-top: 30px;
+      padding: 25px;
+      background: rgba(26, 23, 35, 0.8);
+      border-radius: 12px;
+      border: 1px solid #4a4458;
+      text-align: left;
+    }
+    
+    .result-title {
+      color: #e6c229;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .result-content {
+      color: #e0d8c0;
+      font-family: 'Lora', serif;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+  </style>
 </head>
 <body>
   <header style="text-align: center; padding: 20px 0; margin-bottom: -20px; z-index: 10; position: relative;">
     <a href="/" style="text-decoration: none; color: #e6c229; font-family: 'Cormorant Garamond', serif; font-size: 1.8em; letter-spacing: 1px;">
       ✨ El Oráculo Diario
     </a>
-    <!-- ÚNICO CAMBIO: Añadimos el contenedor de usuario aquí -->
-    <div id="user-header-info" style="position: absolute; top: 50%; right: 20px; transform: translateY(-50%); color: #e6c229; font-family: 'Lora', serif;">
-        <!-- El contenido se inyectará aquí por auth.js -->
+    <!-- Botón de donar en header -->
+    <div style="position: absolute; top: 50%; right: 20px; transform: translateY(-50%);">
+      <button class="donate-btn" onclick="window.open('https://paypal.com/...', '_blank')">❤️ Donar</button>
     </div>
   </header>
 
   <div class="container">
     <div class="main-box">
-      <h1>Concentra tu Energía</h1>
+      <h1>Consulta al Oráculo</h1>
       
       <p class="subtitle">
-        Piensa en una pregunta. El Oráculo te escuchará.
+        Completa tus datos y elige tu temática para recibir una tirada personalizada
       </p>
 
-      <button id="reveal-btn" class="cta-button" style="margin-top: 20px;">Revelar Cartas</button>
+      <form id="oracle-form">
+        <div class="form-group">
+          <label class="form-label">Nombre completo</label>
+          <input type="text" class="form-input" name="name" required placeholder="Tu nombre completo">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Fecha de nacimiento</label>
+          <input type="date" class="form-input" name="birthdate" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" name="email" required placeholder="tu@email.com">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Temática de consulta</label>
+          <select class="form-select" name="theme" required>
+            <option value="">Selecciona una temática</option>
+            <option value="oraculo">Oráculo</option>
+            <option value="tarot">Tarot</option>
+            <option value="cabala">Cábala</option>
+            <option value="numerologia">Numerología</option>
+            <option value="astrologica">Astrológica</option>
+          </select>
+        </div>
+
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" class="checkbox-input" name="lopd" required>
+            <span>
+              He leído y acepto la <a href="/politica-privacidad" style="color: #e6c229;">Política de Privacidad</a> 
+              y doy mi consentimiento para el tratamiento de mis datos personales según lo establecido en la LOPD/GDPR.
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" class="cta-button" style="margin-top: 10px;">
+          🎴 Hacer Tirada
+        </button>
+      </form>
+
+      <!-- Loading indicator -->
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p style="color: #e6c229; font-family: 'Lora', serif;">
+          El Oráculo está consultando las cartas...
+        </p>
+      </div>
+
+      <!-- Results container -->
+      <div class="result-container" id="result-container">
+        <h3 class="result-title" id="result-title">Tu Tirada del Oráculo</h3>
+        <div class="result-content" id="result-content"></div>
+        <button class="cta-button" style="margin-top: 20px;" onclick="location.reload()">
+          🔮 Nueva Consulta
+        </button>
+      </div>
     </div>
   </div>
 
   <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
+    <!-- Botón de donar en footer -->
+    <div style="margin-bottom: 20px;">
+      <button class="donate-btn" onclick="window.open('https://paypal.com/...', '_blank')">❤️ Apoya el Oráculo</button>
+    </div>
+    
     <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
       <a href="/" style="color: #e6c229; text-decoration: none; font-weight: 500;">
         📜 Carta Numerológica
@@ -48,36 +234,6 @@
     <a href="/terminos-condiciones" style="color: #e6c229; margin: 0 8px;">Términos</a>
   </footer>
 
-  <!-- MODAL DE AUTENTICACIÓN (AÑADIDO COMPLETO) -->
-  <div id="authModal" class="auth-modal">
-    <div class="auth-modal-content">
-      <span class="close-modal">&times;</span>
-      <h2 style="color: #e6c229; font-family: 'Cormorant Garamond', serif;">Iniciar Sesión</h2>
-      <p style="color: #e0d8c0;">Accede para revelar tu futuro</p>
-      
-      <button id="google-signin-btn" class="google-btn">
-        <svg width="18" height="18" viewBox="0 0 18 18">
-          <path fill="#4285F4" d="M16.51 9H9v2.89h4.13a3.5 3.5 0 0 1-1.47 2.29l2.36 1.84A7.49 7.49 0 0 0 18 9a7.48 7.48 0 0 0-1.49-4.49z"/>
-          <path fill="#34A853" d="M9 18a7.48 7.48 0 0 0 5.03-1.91l-2.36-1.84A4.5 4.5 0 0 1 4.5 12.9H1.89v1.9A7.5 7.5 0 0 0 9 18z"/>
-          <path fill="#FBBC05" d="M4.5 12.9a4.47 4.47 0 0 1 0-2.8V8.2H1.89a7.49 7.49 0 0 0 0 6.7l2.61-2z"/>
-          <path fill="#EA4335" d="M9 3.58a4.5 4.5 0 0 1 2.83 1L14.6 1.8A7.48 7.48 0 0 0 9 0a7.5 7.5 0 0 0-7.11 5.2L4.5 8.2A4.48 4.48 0 0 1 9 3.58z"/>
-        </svg>
-        Iniciar con Google
-      </button>
-
-      <div class="auth-separator">
-        <span>o</span>
-      </div>
-
-      <form id="login-form" class="auth-form">
-        <input type="email" name="email" placeholder="Correo Electrónico" required>
-        <div class="error-message" id="login-error"></div>
-        <input type="password" name="password" placeholder="Contraseña" required>
-        <button type="submit">Entrar</button>
-      </form>
-    </div>
-  </div>
-
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-918MCZD0XF"></script>
   <script>
@@ -89,27 +245,79 @@
 
   <!-- Partículas de fondo -->
   <script src="/js/particles.js"></script>
-  
-  <!-- Scripts de Autenticación -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="/supabase-client.js"></script>
-  <script src="/js/auth.js"></script>
 
-  <!-- Lógica del botón Revelar -->
+  <!-- Script para la tirada del oráculo -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const revealBtn = document.getElementById('reveal-btn');
-        if (revealBtn) {
-            revealBtn.addEventListener('click', async () => {
-                const { data: { session } } = await window.supabase.auth.getSession();
-                if (session) {
-                    window.location.href = 'resultado.html';
-                } else {
-                    document.getElementById('authModal').style.display = 'flex';
-                }
-            });
+      const form = document.getElementById('oracle-form');
+      const loading = document.getElementById('loading');
+      const resultContainer = document.getElementById('result-container');
+      const resultTitle = document.getElementById('result-title');
+      const resultContent = document.getElementById('result-content');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get('name'),
+          birthdate: formData.get('birthdate'),
+          email: formData.get('email'),
+          theme: formData.get('theme')
+        };
+
+        // Mostrar loading
+        form.style.display = 'none';
+        loading.style.display = 'block';
+
+        try {
+          // Obtener la API key de GitHub secrets (esto se manejará en el backend)
+          const response = await fetch('/api/oracle-reading', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (!response.ok) {
+            throw new Error('Error en la consulta al oráculo');
+          }
+
+          const result = await response.json();
+          
+          // Mostrar resultados
+          resultTitle.textContent = `Tu Tirada de ${getThemeName(data.theme)}`;
+          resultContent.textContent = result.reading;
+          resultContainer.style.display = 'block';
+          
+        } catch (error) {
+          console.error('Error:', error);
+          resultContent.textContent = 'Lo sentimos, ha ocurrido un error al consultar el oráculo. Por favor, intenta de nuevo.';
+          resultContainer.style.display = 'block';
+        } finally {
+          loading.style.display = 'none';
         }
+      });
+
+      function getThemeName(theme) {
+        const themes = {
+          'oraculo': 'Oráculo',
+          'tarot': 'Tarot',
+          'cabala': 'Cábala',
+          'numerologia': 'Numerología',
+          'astrologica': 'Astrología'
+        };
+        return themes[theme] || 'Oráculo';
+      }
     });
+
+    // Función placeholder para PayPal - reemplaza con tu código real
+    function openPayPalDonation() {
+      // Aquí pondrás tu código de PayPal
+      // window.open('https://www.paypal.com/donate?hosted_button_id=TU_CODIGO', '_blank');
+      alert('Configura tu código de PayPal aquí');
+    }
   </script>
 </body>
 </html>
