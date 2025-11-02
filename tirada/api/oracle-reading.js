@@ -1,6 +1,9 @@
+// Para GitHub Pages, necesitarás usar GitHub Actions o un servicio como Netlify Functions
+// Esta es una versión simplificada para Node.js
+
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
@@ -8,11 +11,10 @@ module.exports = async (req, res) => {
   try {
     const { name, birthdate, email, theme } = req.body;
     
-    // Configurar Gemini
+    // Configurar Gemini con la API key de las variables de entorno
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-    // Crear prompt según la temática
     const prompts = {
       oraculo: `Haz una tirada del oráculo para ${name} (nacido el ${birthdate}). 
       Selecciona 3 cartas del oráculo, indica qué cartas han salido y proporciona una interpretación detallada 
@@ -52,4 +54,4 @@ module.exports = async (req, res) => {
       error: 'Error interno del servidor' 
     });
   }
-};
+}
