@@ -44,27 +44,41 @@
     
     .checkbox-group {
       text-align: left;
-      margin: 25px 0;
+      margin: 15px 0;
       padding: 15px;
       background: rgba(26, 23, 35, 0.6);
       border-radius: 8px;
       border: 1px solid #4a4458;
+      max-width: 100%;
+      word-wrap: break-word;
     }
     
     .checkbox-label {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 12px;
       color: #e0d8c0;
       font-family: 'Lora', serif;
       font-size: 0.95em;
-      line-height: 1.4;
+      line-height: 1.5;
       cursor: pointer;
+      text-align: left;
     }
     
     .checkbox-input {
-      margin-top: 3px;
+      margin-top: 4px;
       flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+    }
+    
+    .checkbox-label a {
+      color: #e6c229;
+      text-decoration: underline;
+    }
+    
+    .checkbox-label a:hover {
+      color: #ffd700;
     }
     
     .donate-btn {
@@ -132,6 +146,14 @@
       line-height: 1.6;
       white-space: pre-line;
     }
+    
+    .error-message {
+      color: #ff6b6b;
+      font-family: 'Lora', serif;
+      font-size: 0.9em;
+      margin-top: 5px;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -141,7 +163,7 @@
     </a>
     <!-- Botón de donar en header -->
     <div style="position: absolute; top: 50%; right: 20px; transform: translateY(-50%);">
-      <button class="donate-btn" onclick="window.open('https://paypal.com/...', '_blank')">❤️ Donar</button>
+      <button class="donate-btn" id="header-donate-btn">❤️ Donar</button>
     </div>
   </header>
 
@@ -157,16 +179,19 @@
         <div class="form-group">
           <label class="form-label">Nombre completo</label>
           <input type="text" class="form-input" name="name" required placeholder="Tu nombre completo">
+          <div class="error-message" id="name-error"></div>
         </div>
         
         <div class="form-group">
           <label class="form-label">Fecha de nacimiento</label>
           <input type="date" class="form-input" name="birthdate" required>
+          <div class="error-message" id="birthdate-error"></div>
         </div>
         
         <div class="form-group">
           <label class="form-label">Email</label>
           <input type="email" class="form-input" name="email" required placeholder="tu@email.com">
+          <div class="error-message" id="email-error"></div>
         </div>
         
         <div class="form-group">
@@ -179,14 +204,27 @@
             <option value="numerologia">Numerología</option>
             <option value="astrologica">Astrológica</option>
           </select>
+          <div class="error-message" id="theme-error"></div>
         </div>
 
+        <!-- Casilla LOPD corregida -->
         <div class="checkbox-group">
           <label class="checkbox-label">
             <input type="checkbox" class="checkbox-input" name="lopd" required>
             <span>
-              He leído y acepto la <a href="/politica-privacidad" style="color: #e6c229;">Política de Privacidad</a> 
+              He leído y acepto la <a href="/politica-privacidad" target="_blank">Política de Privacidad</a> 
               y doy mi consentimiento para el tratamiento de mis datos personales según lo establecido en la LOPD/GDPR.
+            </span>
+          </label>
+          <div class="error-message" id="lopd-error"></div>
+        </div>
+
+        <!-- Casilla marketing -->
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" class="checkbox-input" name="marketing">
+            <span>
+              Acepto recibir comunicaciones comerciales y ofertas relacionadas con El Oráculo Diario.
             </span>
           </label>
         </div>
@@ -218,7 +256,7 @@
   <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
     <!-- Botón de donar en footer -->
     <div style="margin-bottom: 20px;">
-      <button class="donate-btn" onclick="window.open('https://paypal.com/...', '_blank')">❤️ Apoya el Oráculo</button>
+      <button class="donate-btn" id="footer-donate-btn">❤️ Apoya el Oráculo</button>
     </div>
     
     <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
@@ -246,32 +284,71 @@
   <!-- Partículas de fondo -->
   <script src="/js/particles.js"></script>
 
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <!-- Script para la tirada del oráculo -->
   <script>
+    // Inicializar Supabase
+    const supabaseUrl = 'https://tu-proyecto.supabase.co'; // Reemplaza con tu URL
+    const supabaseAnonKey = 'TU_SUPABASE_ANON_KEY'; // Reemplaza con tu clave
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.getElementById('oracle-form');
       const loading = document.getElementById('loading');
       const resultContainer = document.getElementById('result-container');
       const resultTitle = document.getElementById('result-title');
       const resultContent = document.getElementById('result-content');
+      
+      // Configurar botones de donar
+      document.getElementById('header-donate-btn').addEventListener('click', openPayPalDonation);
+      document.getElementById('footer-donate-btn').addEventListener('click', openPayPalDonation);
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        // Reset errores
+        resetErrors();
+        
         const formData = new FormData(form);
         const data = {
-          name: formData.get('name'),
+          name: formData.get('name').trim(),
           birthdate: formData.get('birthdate'),
-          email: formData.get('email'),
-          theme: formData.get('theme')
+          email: formData.get('email').trim(),
+          theme: formData.get('theme'),
+          lopd: formData.get('lopd') === 'on',
+          marketing: formData.get('marketing') === 'on'
         };
+
+        // Validación básica
+        if (!validateForm(data)) {
+          return;
+        }
 
         // Mostrar loading
         form.style.display = 'none';
         loading.style.display = 'block';
 
         try {
-          // Obtener la API key de GitHub secrets (esto se manejará en el backend)
+          // 1. Guardar en Supabase
+          const { error: supabaseError } = await supabase
+            .from('leads')
+            .insert([
+              {
+                email: data.email,
+                fecha_de_nacimiento: data.birthdate,
+                acepto_terminos: data.lopd,
+                consentimiento_marketing: data.marketing,
+                created_at: new Date().toISOString()
+              }
+            ]);
+
+          if (supabaseError) {
+            throw new Error('Error al guardar en la base de datos: ' + supabaseError.message);
+          }
+
+          // 2. Obtener la tirada del oráculo
           const response = await fetch('/api/oracle-reading', {
             method: 'POST',
             headers: {
@@ -300,6 +377,56 @@
         }
       });
 
+      function validateForm(data) {
+        let isValid = true;
+
+        if (!data.name || data.name.length < 2) {
+          showError('name-error', 'El nombre debe tener al menos 2 caracteres');
+          isValid = false;
+        }
+
+        if (!data.birthdate) {
+          showError('birthdate-error', 'La fecha de nacimiento es obligatoria');
+          isValid = false;
+        }
+
+        if (!data.email || !isValidEmail(data.email)) {
+          showError('email-error', 'Introduce un email válido');
+          isValid = false;
+        }
+
+        if (!data.theme) {
+          showError('theme-error', 'Selecciona una temática');
+          isValid = false;
+        }
+
+        if (!data.lopd) {
+          showError('lopd-error', 'Debes aceptar la política de privacidad');
+          isValid = false;
+        }
+
+        return isValid;
+      }
+
+      function showError(elementId, message) {
+        const element = document.getElementById(elementId);
+        element.textContent = message;
+        element.style.display = 'block';
+      }
+
+      function resetErrors() {
+        const errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach(element => {
+          element.style.display = 'none';
+          element.textContent = '';
+        });
+      }
+
+      function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
       function getThemeName(theme) {
         const themes = {
           'oraculo': 'Oráculo',
@@ -312,11 +439,10 @@
       }
     });
 
-    // Función placeholder para PayPal - reemplaza con tu código real
+    // Función para PayPal - reemplaza con tu código real
     function openPayPalDonation() {
-      // Aquí pondrás tu código de PayPal
-      // window.open('https://www.paypal.com/donate?hosted_button_id=TU_CODIGO', '_blank');
-      alert('Configura tu código de PayPal aquí');
+      // Reemplaza con tu código de PayPal
+      window.open('https://www.paypal.com/donate?hosted_button_id=TU_CODIGO_AQUI', '_blank');
     }
   </script>
 </body>
