@@ -324,7 +324,7 @@
           console.log('Enviando datos al webhook:', data);
           
           // Enviar todo al webhook de n8n - URL CORREGIDA
-          const response = await fetch('https://n8n.novaproflow.com:5678/webhook/oracle-reading', {
+          const response = await fetch('https://n8n.novaproflow.com:5678/webhook-test/oracle-reading', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
