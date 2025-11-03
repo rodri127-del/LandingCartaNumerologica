@@ -135,10 +135,10 @@
       display: none;
     }
 
-    /* Estilos para los botones de donar */
+    /* Estilos para los botones de donar - AHORA DORADOS */
     .donate-button {
-      background: linear-gradient(135deg, #0070ba, #1546a0);
-      color: white;
+      background: linear-gradient(135deg, #e6c229, #d4af37);
+      color: #1a1723;
       border: none;
       padding: 10px 16px;
       border-radius: 6px;
@@ -153,9 +153,9 @@
     }
 
     .donate-button:hover {
-      background: linear-gradient(135deg, #005ea6, #0d3d8c);
+      background: linear-gradient(135deg, #d4b325, #c19c2a);
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 112, 186, 0.4);
+      box-shadow: 0 5px 15px rgba(230, 194, 41, 0.4);
     }
 
     /* Header limpio */
@@ -182,7 +182,7 @@
       transform: translateY(-50%);
     }
 
-    /* BOTONES DE ACCIÓN MEJORADOS - ESTILO CONSISTENTE */
+    /* BOTONES DE ACCIÓN MEJORADOS - TODOS DORADOS */
     .action-buttons {
       display: flex;
       gap: 15px;
@@ -192,8 +192,8 @@
     }
 
     .action-button {
-      background: linear-gradient(to right, #4A00E0, #8E2DE2);
-      color: white;
+      background: linear-gradient(135deg, #e6c229, #d4af37);
+      color: #1a1723;
       border: none;
       padding: 12px 25px;
       border-radius: 50px;
@@ -201,7 +201,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 15px rgba(230, 194, 41, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -212,7 +212,8 @@
 
     .action-button:hover {
       transform: translateY(-3px);
-      box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 7px 20px rgba(230, 194, 41, 0.5);
+      background: linear-gradient(135deg, #d4b325, #c19c2a);
     }
 
     .action-button:active {
@@ -220,17 +221,18 @@
     }
 
     .action-button.primary {
-      background: linear-gradient(to right, #00b09b, #96c93d);
+      background: linear-gradient(135deg, #e6c229, #d4af37);
     }
 
     .action-button.secondary {
-      background: linear-gradient(to right, #ff5e62, #ff9966);
+      background: linear-gradient(135deg, #b8951a, #a68518);
+      color: #f5f5f5;
     }
 
     /* Botón CTA principal */
     .cta-button {
-      background: linear-gradient(to right, #4A00E0, #8E2DE2);
-      color: white;
+      background: linear-gradient(135deg, #e6c229, #d4af37);
+      color: #1a1723;
       border: none;
       padding: 12px 25px;
       border-radius: 50px;
@@ -238,7 +240,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 15px rgba(230, 194, 41, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -250,7 +252,8 @@
 
     .cta-button:hover {
       transform: translateY(-3px);
-      box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 7px 20px rgba(230, 194, 41, 0.5);
+      background: linear-gradient(135deg, #d4b325, #c19c2a);
     }
 
     .cta-button:active {
@@ -554,7 +557,7 @@
         <h3 class="result-title" id="result-title">Tu Tirada del Oráculo</h3>
         <div class="result-content" id="result-content"></div>
         
-        <!-- Botones de acción en la parte inferior - MEJORADOS -->
+        <!-- Botones de acción en la parte inferior - TODOS DORADOS -->
         <div class="action-buttons">
           <button class="action-button primary" id="new-consultation-btn">
             🔮 Nueva Consulta
@@ -616,6 +619,78 @@
     <a href="/politica-privacidad" style="color: #e6c229; margin: 0 8px;">Privacidad</a>
     <a href="/terminos-condiciones" style="color: #e6c229; margin: 0 8px;">Términos</a>
   </footer>
+
+  <!-- ===== SCRIPT: Partículas de fondo cósmico ===== -->
+  <script>
+  (function() {
+    const canvas = document.createElement('canvas');
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.zIndex = '-1';
+    canvas.style.pointerEvents = 'none';
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const particleCount = window.innerWidth > 768 ? 50 : 25;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.5 + 0.5;
+        this.speedX = Math.random() * 0.5 - 0.25;
+        this.speedY = Math.random() * 0.5 - 0.25;
+        this.opacity = Math.random() * 0.4 + 0.1;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+        if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+      }
+      draw() {
+        ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      init();
+    });
+
+    resize();
+    init();
+    animate();
+  })();
+  </script>
 
   <!-- Script para la tirada del oráculo -->
   <script>
