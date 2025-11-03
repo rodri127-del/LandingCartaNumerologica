@@ -187,6 +187,110 @@
       margin-left: auto;
     }
 
+    /* Botón para consultas anteriores */
+    .history-button {
+      background: linear-gradient(135deg, #6b5b95, #8a76b5);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-left: 10px;
+    }
+
+    .history-button:hover {
+      background: linear-gradient(135deg, #5a4a85, #7a66a5);
+      transform: translateY(-2px);
+    }
+
+    /* Panel de historial */
+    .history-panel {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(26, 23, 35, 0.95);
+      border: 2px solid #e6c229;
+      border-radius: 12px;
+      padding: 25px;
+      z-index: 1000;
+      max-width: 90%;
+      max-height: 80%;
+      overflow-y: auto;
+      color: #e0d8c0;
+    }
+
+    .history-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 999;
+    }
+
+    .history-item {
+      background: rgba(42, 39, 55, 0.6);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-left: 4px solid #e6c229;
+    }
+
+    .history-theme {
+      color: #e6c229;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2em;
+      margin-bottom: 8px;
+    }
+
+    .history-date {
+      color: #b8a98a;
+      font-size: 0.85em;
+      margin-bottom: 10px;
+    }
+
+    .history-content {
+      color: #e0d8c0;
+      font-family: 'Lora', serif;
+      line-height: 1.4;
+      max-height: 100px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .history-content.expanded {
+      max-height: none;
+    }
+
+    .read-more {
+      color: #e6c229;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9em;
+      margin-top: 5px;
+      text-decoration: underline;
+    }
+
+    .close-history {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: #e6c229;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+
     /* Media queries para móviles */
     @media (max-width: 768px) {
       .header-container {
@@ -205,13 +309,23 @@
         margin: 0;
       }
 
-      .donate-button {
+      .header-history {
+        order: 3;
+        margin: 10px 0 0 0;
+      }
+
+      .donate-button, .history-button {
         padding: 8px 14px;
         font-size: 0.85em;
       }
 
       .footer-donate {
         margin: 15px 0;
+      }
+
+      .history-panel {
+        width: 95%;
+        padding: 20px 15px;
       }
     }
 
@@ -224,7 +338,7 @@
         font-size: 1.5em;
       }
 
-      .donate-button {
+      .donate-button, .history-button {
         padding: 7px 12px;
         font-size: 0.8em;
       }
@@ -261,6 +375,10 @@
     <!-- Botón de donar en header - posición corregida -->
     <div class="header-donate">
       <button class="donate-button" onclick="openPayPalDonation()">❤️ Donar</button>
+    </div>
+    <!-- Botón de historial -->
+    <div class="header-history">
+      <button class="history-button" id="show-history-btn">📜 Historial</button>
     </div>
   </header>
 
@@ -349,7 +467,21 @@
         <button class="cta-button" style="margin-top: 20px;" id="new-consultation-btn">
           🔮 Nueva Consulta
         </button>
+        <button class="history-button" style="margin-top: 10px;" onclick="showHistory()">
+          📜 Ver Todas mis Consultas
+        </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Panel de historial -->
+  <div class="history-overlay" id="history-overlay"></div>
+  <div class="history-panel" id="history-panel">
+    <button class="close-history" onclick="hideHistory()">&times;</button>
+    <h2 style="color: #e6c229; text-align: center; margin-bottom: 20px;">Tus Consultas Anteriores</h2>
+    <div id="history-list"></div>
+    <div style="text-align: center; margin-top: 20px;">
+      <button class="donate-button" onclick="clearHistory()">🗑️ Limpiar Historial</button>
     </div>
   </div>
 
@@ -490,6 +622,18 @@
             return results[requestId];
         }
 
+        getAllResults() {
+            const results = JSON.parse(localStorage.getItem('oracle_results') || '{}');
+            // Convertir a array y ordenar por timestamp (más reciente primero)
+            return Object.values(results).sort((a, b) => b.timestamp - a.timestamp);
+        }
+
+        clearResults() {
+            localStorage.removeItem('oracle_results');
+            localStorage.removeItem('oracle_queue');
+            this.pendingRequests.clear();
+        }
+
         generateId() {
             return 'req_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
@@ -523,6 +667,72 @@
     // Inicializar la cola
     const oracleQueue = new OracleQueue();
 
+    // Funciones para el historial
+    function showHistory() {
+        const historyPanel = document.getElementById('history-panel');
+        const historyOverlay = document.getElementById('history-overlay');
+        const historyList = document.getElementById('history-list');
+        
+        const results = oracleQueue.getAllResults();
+        
+        if (results.length === 0) {
+            historyList.innerHTML = '<p style="text-align: center; color: #b8a98a;">No tienes consultas anteriores.</p>';
+        } else {
+            historyList.innerHTML = results.map((result, index) => {
+                const date = new Date(result.timestamp);
+                const shortContent = result.result.reading.length > 200 ? 
+                    result.result.reading.substring(0, 200) + '...' : 
+                    result.result.reading;
+                
+                return `
+                    <div class="history-item">
+                        <div class="history-theme">${getThemeName(result.data.theme)}</div>
+                        <div class="history-date">${date.toLocaleString('es-ES')}</div>
+                        <div class="history-content" id="history-content-${index}">
+                            ${shortContent}
+                        </div>
+                        ${result.result.reading.length > 200 ? 
+                            `<button class="read-more" onclick="toggleReadMore(${index})">Leer más</button>` : 
+                            ''
+                        }
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        historyPanel.style.display = 'block';
+        historyOverlay.style.display = 'block';
+    }
+
+    function hideHistory() {
+        document.getElementById('history-panel').style.display = 'none';
+        document.getElementById('history-overlay').style.display = 'none';
+    }
+
+    function toggleReadMore(index) {
+        const contentElement = document.getElementById(`history-content-${index}`);
+        const result = oracleQueue.getAllResults()[index];
+        
+        if (contentElement.classList.contains('expanded')) {
+            contentElement.textContent = result.result.reading.substring(0, 200) + '...';
+            contentElement.classList.remove('expanded');
+            contentElement.previousElementSibling.textContent = 'Leer más';
+        } else {
+            contentElement.textContent = result.result.reading;
+            contentElement.classList.add('expanded');
+            contentElement.previousElementSibling.textContent = 'Leer menos';
+        }
+    }
+
+    function clearHistory() {
+        if (confirm('¿Estás seguro de que quieres eliminar todo tu historial de consultas?')) {
+            oracleQueue.clearResults();
+            hideHistory();
+            // Si estamos en una consulta, volver al formulario
+            setupNewConsultation();
+        }
+    }
+
     // Función para nueva consulta
     function setupNewConsultation() {
         const form = document.getElementById('oracle-form');
@@ -545,11 +755,8 @@
 
     // Verificar resultados pendientes al cargar - SOLO LOG, NO MOSTRAR
     function checkPendingResults() {
-        const results = JSON.parse(localStorage.getItem('oracle_results') || '{}');
-        const recentResults = Object.values(results).filter(r => 
-            Date.now() - r.timestamp < (10 * 60 * 1000)
-        );
-        console.log('Consultas recientes en historial:', recentResults.length);
+        const results = oracleQueue.getAllResults();
+        console.log('Consultas recientes en historial:', results.length);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -559,6 +766,7 @@
         const resultTitle = document.getElementById('result-title');
         const resultContent = document.getElementById('result-content');
         const newConsultationBtn = document.getElementById('new-consultation-btn');
+        const showHistoryBtn = document.getElementById('show-history-btn');
 
         // Cargar queue al iniciar
         oracleQueue.loadFromStorage();
@@ -566,8 +774,12 @@
         // Solo verificar resultados, NO mostrarlos automáticamente
         checkPendingResults();
 
-        // Configurar botón de nueva consulta
+        // Configurar botones
         newConsultationBtn.addEventListener('click', setupNewConsultation);
+        showHistoryBtn.addEventListener('click', showHistory);
+
+        // Cerrar historial al hacer clic en el overlay
+        document.getElementById('history-overlay').addEventListener('click', hideHistory);
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
