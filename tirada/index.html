@@ -229,6 +229,27 @@
         font-size: 0.8em;
       }
     }
+
+    /* Estilos para el sistema de cola */
+    .queue-status {
+      background: rgba(230, 194, 41, 0.1);
+      border: 1px solid #e6c229;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 0.9em;
+      color: #e0d8c0;
+    }
+
+    .retry-notice {
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid #ff6b6b;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 0.9em;
+      color: #e0d8c0;
+    }
   </style>
 </head>
 <body>
@@ -316,6 +337,9 @@
         <p style="color: #e6c229; font-family: 'Lora', serif;">
           El Oráculo está consultando las cartas...
         </p>
+        <p style="color: #b8a98a; font-size: 0.9em; margin-top: 10px;">
+          ⚠️ No cierres esta ventana hasta completar la consulta
+        </p>
       </div>
 
       <!-- Results container -->
@@ -360,8 +384,145 @@
   <!-- Partículas de fondo -->
   <script src="/js/particles.js"></script>
 
-  <!-- Script para la tirada del oráculo -->
+  <!-- Script para la tirada del oráculo con sistema de cola -->
   <script>
+    // Sistema de Cola para manejar peticiones a Gemini
+    class OracleQueue {
+        constructor() {
+            this.pendingRequests = new Map();
+            this.isProcessing = false;
+            this.retryCount = 0;
+            this.maxRetries = 3;
+        }
+
+        async addRequest(data) {
+            const requestId = this.generateId();
+            this.pendingRequests.set(requestId, {
+                id: requestId,
+                data: data,
+                status: 'pending',
+                timestamp: Date.now()
+            });
+            
+            // Guardar en localStorage para recuperación
+            this.saveToStorage();
+            
+            await this.processQueue();
+            return requestId;
+        }
+
+        async processQueue() {
+            if (this.isProcessing) return;
+            
+            this.isProcessing = true;
+            
+            for (const [id, request] of this.pendingRequests) {
+                if (request.status === 'pending') {
+                    try {
+                        await this.executeRequest(request);
+                        this.pendingRequests.delete(id);
+                    } catch (error) {
+                        console.error(`Error en petición ${id}:`, error);
+                        request.status = 'failed';
+                        request.error = error.message;
+                        request.retryCount = (request.retryCount || 0) + 1;
+                        
+                        if (request.retryCount < this.maxRetries) {
+                            // Reintentar después de un delay
+                            setTimeout(() => {
+                                request.status = 'pending';
+                                this.processQueue();
+                            }, 2000 * request.retryCount);
+                        }
+                    }
+                    this.saveToStorage();
+                    break; // Procesar una a la vez
+                }
+            }
+            
+            this.isProcessing = false;
+        }
+
+        async executeRequest(request) {
+            const response = await fetch('https://n8n.novaproflow.com/webhook/oracle-reading', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(request.data)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+            }
+
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error || 'Error desconocido');
+            }
+
+            // Guardar resultado en localStorage
+            this.saveResult(request.id, result);
+            return result;
+        }
+
+        saveToStorage() {
+            const queueData = {
+                pending: Array.from(this.pendingRequests.values()),
+                timestamp: Date.now()
+            };
+            localStorage.setItem('oracle_queue', JSON.stringify(queueData));
+        }
+
+        saveResult(requestId, result) {
+            const results = JSON.parse(localStorage.getItem('oracle_results') || '{}');
+            results[requestId] = {
+                result: result,
+                timestamp: Date.now(),
+                data: this.pendingRequests.get(requestId)?.data
+            };
+            localStorage.setItem('oracle_results', JSON.stringify(results));
+        }
+
+        getResult(requestId) {
+            const results = JSON.parse(localStorage.getItem('oracle_results') || '{}');
+            return results[requestId];
+        }
+
+        generateId() {
+            return 'req_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Recuperar queue al cargar la página
+        loadFromStorage() {
+            try {
+                const saved = localStorage.getItem('oracle_queue');
+                if (saved) {
+                    const queueData = JSON.parse(saved);
+                    // Solo recuperar requests de los últimos 30 minutos
+                    const thirtyMinutesAgo = Date.now() - (30 * 60 * 1000);
+                    
+                    queueData.pending.forEach(request => {
+                        if (request.timestamp > thirtyMinutesAgo) {
+                            this.pendingRequests.set(request.id, request);
+                        }
+                    });
+                    
+                    // Procesar queue recuperada
+                    if (this.pendingRequests.size > 0) {
+                        this.processQueue();
+                    }
+                }
+            } catch (e) {
+                console.error('Error cargando queue:', e);
+            }
+        }
+    }
+
+    // Inicializar la cola
+    const oracleQueue = new OracleQueue();
+
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.getElementById('oracle-form');
       const loading = document.getElementById('loading');
@@ -369,10 +530,15 @@
       const resultTitle = document.getElementById('result-title');
       const resultContent = document.getElementById('result-content');
 
+      // Cargar queue al iniciar
+      oracleQueue.loadFromStorage();
+
+      // Verificar si hay resultados pendientes de mostrar
+      checkPendingResults();
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Reset errores
         resetErrors();
         
         const formData = new FormData(form);
@@ -385,54 +551,83 @@
           marketing: formData.get('marketing') === 'on'
         };
 
-        // Validación básica
         if (!validateForm(data)) {
           return;
         }
 
-        // Mostrar loading
+        // Mostrar loading inmediatamente
         form.style.display = 'none';
         loading.style.display = 'block';
+        loading.innerHTML = `
+            <div class="spinner"></div>
+            <p style="color: #e6c229; font-family: 'Lora', serif;">
+                El Oráculo está consultando las cartas...
+            </p>
+            <p style="color: #b8a98a; font-size: 0.9em; margin-top: 10px;">
+                ⚠️ No cierres esta ventana hasta completar la consulta
+            </p>
+        `;
 
         try {
-          console.log('Enviando datos al webhook:', data);
-          
-          // Enviar todo al webhook de n8n
-          const response = await fetch('https://n8n.novaproflow.com/webhook/oracle-reading', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-          });
-
-          console.log('Respuesta del servidor:', response);
-
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
-          }
-
-          const result = await response.json();
-          console.log('Resultado recibido:', result);
-          
-          if (result.success) {
-            // Mostrar resultados
-            resultTitle.textContent = `Tu Tirada de ${getThemeName(data.theme)}`;
-            resultContent.textContent = result.reading;
-            resultContainer.style.display = 'block';
-          } else {
-            throw new Error(result.error || 'Error desconocido en la respuesta');
-          }
-          
+            const requestId = await oracleQueue.addRequest(data);
+            
+            // Esperar por el resultado (polling)
+            await waitForResult(requestId);
+            
         } catch (error) {
-          console.error('Error completo:', error);
-          resultContent.textContent = `Lo sentimos, ha ocurrido un error al consultar el oráculo: ${error.message}. Por favor, intenta de nuevo.`;
-          resultContainer.style.display = 'block';
-        } finally {
-          loading.style.display = 'none';
+            console.error('Error en la consulta:', error);
+            showErrorResult(error.message);
         }
       });
+
+      // Función para esperar por el resultado
+      async function waitForResult(requestId, attempts = 0) {
+        const maxAttempts = 300; // 5 minutos (300 * 1 segundo)
+        
+        const result = oracleQueue.getResult(requestId);
+        if (result) {
+            // Mostrar resultado exitoso
+            resultTitle.textContent = `Tu Tirada de ${getThemeName(result.data.theme)}`;
+            resultContent.textContent = result.result.reading;
+            resultContainer.style.display = 'block';
+            loading.style.display = 'none';
+            return;
+        }
+
+        if (attempts >= maxAttempts) {
+            throw new Error('Tiempo de espera agotado. La consulta está tomando más tiempo de lo esperado.');
+        }
+
+        // Esperar 1 segundo y reintentar
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return waitForResult(requestId, attempts + 1);
+      }
+
+      // Verificar resultados pendientes al cargar
+      function checkPendingResults() {
+        const results = JSON.parse(localStorage.getItem('oracle_results') || '{}');
+        const recentResults = Object.values(results).filter(r => 
+            Date.now() - r.timestamp < (10 * 60 * 1000) // Últimos 10 minutos
+        );
+
+        if (recentResults.length > 0) {
+            // Mostrar el resultado más reciente
+            const latest = recentResults.reduce((prev, current) => 
+                prev.timestamp > current.timestamp ? prev : current
+            );
+            
+            resultTitle.textContent = `Tu Tirada de ${getThemeName(latest.data.theme)}`;
+            resultContent.textContent = latest.result.reading;
+            resultContainer.style.display = 'block';
+            form.style.display = 'none';
+        }
+      }
+
+      function showErrorResult(message) {
+        resultContent.textContent = `Lo sentimos: ${message}. Por favor, intenta de nuevo.`;
+        resultContainer.style.display = 'block';
+        loading.style.display = 'none';
+      }
 
       function validateForm(data) {
         let isValid = true;
