@@ -125,7 +125,6 @@
       font-family: 'Lora', serif;
       line-height: 1.6;
       white-space: pre-line;
-      /* QUITAMOS EL SCROLL - se expande naturalmente */
     }
     
     .error-message {
@@ -183,7 +182,7 @@
       transform: translateY(-50%);
     }
 
-    /* Botones de acción en resultados */
+    /* Botones de acción en resultados - MISMO COLOR QUE NUEVA CONSULTA */
     .action-buttons {
       display: flex;
       gap: 10px;
@@ -193,8 +192,9 @@
     }
 
     .action-button {
-      background: linear-gradient(135deg, #6b5b95, #8a76b5);
-      color: white;
+      /* MISMO ESTILO QUE cta-button */
+      background: linear-gradient(135deg, #e6c229, #d4af37);
+      color: #1a1723;
       border: none;
       padding: 10px 20px;
       border-radius: 6px;
@@ -207,11 +207,12 @@
     }
 
     .action-button:hover {
-      background: linear-gradient(135deg, #5a4a85, #7a66a5);
+      background: linear-gradient(135deg, #d4b325, #c19c2a);
       transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(230, 194, 41, 0.4);
     }
 
-    /* Panel de historial MEJORADO */
+    /* Panel de historial */
     .history-panel {
       display: none;
       position: fixed;
@@ -494,7 +495,7 @@
     </div>
   </div>
 
-  <!-- Panel de historial MEJORADO con pestañas -->
+  <!-- Panel de historial -->
   <div class="history-overlay" id="history-overlay"></div>
   <div class="history-panel" id="history-panel">
     <button class="close-history" onclick="hideHistory()">&times;</button>
@@ -516,7 +517,7 @@
     </div>
     
     <div style="text-align: center; margin-top: 20px;">
-      <button class="donate-button" onclick="clearHistory()">🗑️ Limpiar Historial</button>
+      <button class="action-button" onclick="clearHistory()">🗑️ Limpiar Historial</button>
     </div>
   </div>
 
@@ -540,6 +541,18 @@
 
   <!-- Script para la tirada del oráculo -->
   <script>
+    // FUNCIÓN GLOBAL PARA CORREGIR EL ERROR
+    function getThemeName(theme) {
+      const themes = {
+        'oraculo': 'Oráculo', 
+        'tarot': 'Tarot', 
+        'cabala': 'Cábala',
+        'numerologia': 'Numerología', 
+        'astrologica': 'Astrología'
+      };
+      return themes[theme] || 'Oráculo';
+    }
+
     // Sistema de Cola para manejar peticiones a Gemini
     class OracleQueue {
         constructor() {
@@ -638,7 +651,7 @@
         clearResults() {
             localStorage.removeItem('oracle_results');
             localStorage.removeItem('oracle_queue');
-            localStorage.removeItem('oracle_favorites'); // También limpiamos favoritos
+            localStorage.removeItem('oracle_favorites');
             this.pendingRequests.clear();
         }
 
@@ -672,7 +685,7 @@
     // Inicializar la cola
     const oracleQueue = new OracleQueue();
 
-    // SISTEMA DE FAVORITOS MEJORADO
+    // SISTEMA DE FAVORITOS
     function getFavorites() {
         return JSON.parse(localStorage.getItem('oracle_favorites') || '{}');
     }
@@ -794,7 +807,7 @@
 
     function removeFavoriteFromHistory(favoriteId) {
         removeFavorite(favoriteId);
-        loadFavoritesHistory(); // Recargar la lista
+        loadFavoritesHistory();
         showNotification('❌ Favorito eliminado');
     }
 
@@ -806,7 +819,7 @@
         }
     }
 
-    // BOTÓN FAVORITO MEJORADO
+    // BOTÓN FAVORITO
     function saveAsFavorite() {
         const results = oracleQueue.getAllResults();
         if (results.length === 0) {
@@ -826,7 +839,7 @@
         }
     }
 
-    // Resto de funciones (compartir, notificaciones, etc.)
+    // Resto de funciones
     function shareReading() {
         const resultContent = document.getElementById('result-content').textContent;
         const resultTitle = document.getElementById('result-title').textContent;
@@ -985,14 +998,6 @@
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
-        }
-
-        function getThemeName(theme) {
-            const themes = {
-                'oraculo': 'Oráculo', 'tarot': 'Tarot', 'cabala': 'Cábala',
-                'numerologia': 'Numerología', 'astrologica': 'Astrología'
-            };
-            return themes[theme] || 'Oráculo';
         }
     });
 
