@@ -125,9 +125,7 @@
       font-family: 'Lora', serif;
       line-height: 1.6;
       white-space: pre-line;
-      max-height: 400px;
-      overflow-y: auto;
-      padding: 10px;
+      /* QUITAMOS EL SCROLL - se expande naturalmente */
     }
     
     .error-message {
@@ -213,7 +211,7 @@
       transform: translateY(-2px);
     }
 
-    /* Panel de historial */
+    /* Panel de historial MEJORADO */
     .history-panel {
       display: none;
       position: fixed;
@@ -226,7 +224,7 @@
       padding: 25px;
       z-index: 1000;
       width: 90%;
-      max-width: 600px;
+      max-width: 800px;
       max-height: 80%;
       overflow-y: auto;
       color: #e0d8c0;
@@ -244,12 +242,46 @@
       z-index: 999;
     }
 
+    .history-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #4a4458;
+    }
+
+    .history-tab {
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      color: #b8a98a;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1em;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+
+    .history-tab.active {
+      color: #e6c229;
+      border-bottom-color: #e6c229;
+    }
+
+    .history-content {
+      display: none;
+    }
+
+    .history-content.active {
+      display: block;
+    }
+
     .history-item {
       background: rgba(42, 39, 55, 0.6);
       border-radius: 8px;
       padding: 15px;
       margin-bottom: 15px;
       border-left: 4px solid #e6c229;
+    }
+
+    .favorite-item {
+      border-left-color: #ffd700;
     }
 
     .history-theme {
@@ -265,28 +297,10 @@
       margin-bottom: 10px;
     }
 
-    .history-content {
+    .history-text {
       color: #e0d8c0;
       font-family: 'Lora', serif;
       line-height: 1.4;
-      max-height: 100px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .history-content.expanded {
-      max-height: none;
-    }
-
-    .read-more {
-      color: #e6c229;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 0.9em;
-      margin-top: 5px;
-      text-decoration: underline;
-      padding: 0;
     }
 
     .close-history {
@@ -303,6 +317,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .empty-message {
+      text-align: center;
+      color: #b8a98a;
+      font-style: italic;
+      padding: 40px 20px;
     }
 
     /* Media queries para móviles */
@@ -336,8 +357,12 @@
         padding: 20px 15px;
       }
 
-      .result-content {
-        max-height: 300px;
+      .history-tabs {
+        flex-direction: column;
+      }
+
+      .history-tab {
+        text-align: center;
       }
     }
 
@@ -354,27 +379,6 @@
         padding: 8px 16px;
         font-size: 0.85em;
       }
-    }
-
-    /* Estilos para el sistema de cola */
-    .queue-status {
-      background: rgba(230, 194, 41, 0.1);
-      border: 1px solid #e6c229;
-      border-radius: 8px;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 0.9em;
-      color: #e0d8c0;
-    }
-
-    .retry-notice {
-      background: rgba(255, 107, 107, 0.1);
-      border: 1px solid #ff6b6b;
-      border-radius: 8px;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 0.9em;
-      color: #e0d8c0;
     }
   </style>
 </head>
@@ -476,33 +480,47 @@
           <button class="cta-button" id="new-consultation-btn">
             🔮 Nueva Consulta
           </button>
-          <button class="action-button" id="show-history-btn">
+          <button class="action-button" onclick="showHistory('consultas')">
             📜 Ver Historial
           </button>
           <button class="action-button" onclick="shareReading()">
             📤 Compartir
           </button>
           <button class="action-button" onclick="saveAsFavorite()">
-            ⭐ Favorito
+            ⭐ Guardar Favorito
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Panel de historial -->
+  <!-- Panel de historial MEJORADO con pestañas -->
   <div class="history-overlay" id="history-overlay"></div>
   <div class="history-panel" id="history-panel">
     <button class="close-history" onclick="hideHistory()">&times;</button>
-    <h2 style="color: #e6c229; text-align: center; margin-bottom: 20px;">Tus Consultas Anteriores</h2>
-    <div id="history-list"></div>
+    <h2 style="color: #e6c229; text-align: center; margin-bottom: 20px;">Tus Consultas</h2>
+    
+    <div class="history-tabs">
+      <button class="history-tab active" onclick="switchHistoryTab('consultas')">📜 Todas las Consultas</button>
+      <button class="history-tab" onclick="switchHistoryTab('favoritos')">⭐ Favoritos</button>
+    </div>
+    
+    <!-- Contenido de Consultas -->
+    <div id="history-consultas-content" class="history-content active">
+      <div id="history-list"></div>
+    </div>
+    
+    <!-- Contenido de Favoritos -->
+    <div id="history-favoritos-content" class="history-content">
+      <div id="favorites-list"></div>
+    </div>
+    
     <div style="text-align: center; margin-top: 20px;">
       <button class="donate-button" onclick="clearHistory()">🗑️ Limpiar Historial</button>
     </div>
   </div>
 
   <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
-    <!-- Botón de donar en footer -->
     <div style="margin-bottom: 20px;">
       <button class="donate-button" onclick="openPayPalDonation()">❤️ Apoya el Oráculo</button>
     </div>
@@ -520,19 +538,7 @@
     <a href="/terminos-condiciones" style="color: #e6c229; margin: 0 8px;">Términos</a>
   </footer>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-918MCZD0XF"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-918MCZD0XF');
-  </script>
-
-  <!-- Partículas de fondo -->
-  <script src="/js/particles.js"></script>
-
-  <!-- Script para la tirada del oráculo con sistema de cola -->
+  <!-- Script para la tirada del oráculo -->
   <script>
     // Sistema de Cola para manejar peticiones a Gemini
     class OracleQueue {
@@ -552,16 +558,13 @@
                 timestamp: Date.now()
             });
             
-            // Guardar en localStorage para recuperación
             this.saveToStorage();
-            
             await this.processQueue();
             return requestId;
         }
 
         async processQueue() {
             if (this.isProcessing) return;
-            
             this.isProcessing = true;
             
             for (const [id, request] of this.pendingRequests) {
@@ -576,7 +579,6 @@
                         request.retryCount = (request.retryCount || 0) + 1;
                         
                         if (request.retryCount < this.maxRetries) {
-                            // Reintentar después de un delay
                             setTimeout(() => {
                                 request.status = 'pending';
                                 this.processQueue();
@@ -584,33 +586,23 @@
                         }
                     }
                     this.saveToStorage();
-                    break; // Procesar una a la vez
+                    break;
                 }
             }
-            
             this.isProcessing = false;
         }
 
         async executeRequest(request) {
             const response = await fetch('https://n8n.novaproflow.com/webhook/oracle-reading', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(request.data)
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${await response.text()}`);
-            }
-
+            if (!response.ok) throw new Error(`HTTP ${response.status}: ${await response.text()}`);
             const result = await response.json();
-            
-            if (!result.success) {
-                throw new Error(result.error || 'Error desconocido');
-            }
+            if (!result.success) throw new Error(result.error || 'Error desconocido');
 
-            // Guardar resultado en localStorage
             this.saveResult(request.id, result);
             return result;
         }
@@ -640,13 +632,13 @@
 
         getAllResults() {
             const results = JSON.parse(localStorage.getItem('oracle_results') || '{}');
-            // Convertir a array y ordenar por timestamp (más reciente primero)
             return Object.values(results).sort((a, b) => b.timestamp - a.timestamp);
         }
 
         clearResults() {
             localStorage.removeItem('oracle_results');
             localStorage.removeItem('oracle_queue');
+            localStorage.removeItem('oracle_favorites'); // También limpiamos favoritos
             this.pendingRequests.clear();
         }
 
@@ -654,13 +646,11 @@
             return 'req_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
 
-        // Recuperar queue al cargar la página
         loadFromStorage() {
             try {
                 const saved = localStorage.getItem('oracle_queue');
                 if (saved) {
                     const queueData = JSON.parse(saved);
-                    // Solo recuperar requests de los últimos 30 minutos
                     const thirtyMinutesAgo = Date.now() - (30 * 60 * 1000);
                     
                     queueData.pending.forEach(request => {
@@ -669,7 +659,6 @@
                         }
                     });
                     
-                    // Procesar queue recuperada
                     if (this.pendingRequests.size > 0) {
                         this.processQueue();
                     }
@@ -683,38 +672,40 @@
     // Inicializar la cola
     const oracleQueue = new OracleQueue();
 
-    // Funciones para el historial
-    function showHistory() {
+    // SISTEMA DE FAVORITOS MEJORADO
+    function getFavorites() {
+        return JSON.parse(localStorage.getItem('oracle_favorites') || '{}');
+    }
+
+    function saveFavorite(favoriteId, favoriteData) {
+        const favorites = getFavorites();
+        favorites[favoriteId] = {
+            ...favoriteData,
+            favoriteDate: Date.now(),
+            isFavorite: true
+        };
+        localStorage.setItem('oracle_favorites', JSON.stringify(favorites));
+        return favoriteId;
+    }
+
+    function removeFavorite(favoriteId) {
+        const favorites = getFavorites();
+        delete favorites[favoriteId];
+        localStorage.setItem('oracle_favorites', JSON.stringify(favorites));
+    }
+
+    function isFavorite(resultId) {
+        const favorites = getFavorites();
+        return !!favorites[resultId];
+    }
+
+    // FUNCIONES DEL HISTORIAL CORREGIDAS
+    function showHistory(tab = 'consultas') {
         const historyPanel = document.getElementById('history-panel');
         const historyOverlay = document.getElementById('history-overlay');
-        const historyList = document.getElementById('history-list');
         
-        const results = oracleQueue.getAllResults();
-        
-        if (results.length === 0) {
-            historyList.innerHTML = '<p style="text-align: center; color: #b8a98a;">No tienes consultas anteriores.</p>';
-        } else {
-            historyList.innerHTML = results.map((result, index) => {
-                const date = new Date(result.timestamp);
-                const shortContent = result.result.reading.length > 200 ? 
-                    result.result.reading.substring(0, 200) + '...' : 
-                    result.result.reading;
-                
-                return `
-                    <div class="history-item">
-                        <div class="history-theme">${getThemeName(result.data.theme)}</div>
-                        <div class="history-date">${date.toLocaleString('es-ES')}</div>
-                        <div class="history-content" id="history-content-${index}">
-                            ${shortContent}
-                        </div>
-                        ${result.result.reading.length > 200 ? 
-                            `<button class="read-more" onclick="toggleReadMore(${index})">Leer más</button>` : 
-                            ''
-                        }
-                    </div>
-                `;
-            }).join('');
-        }
+        // Cargar el contenido según la pestaña
+        switchHistoryTab(tab);
         
         historyPanel.style.display = 'block';
         historyOverlay.style.display = 'block';
@@ -725,45 +716,128 @@
         document.getElementById('history-overlay').style.display = 'none';
     }
 
-    function toggleReadMore(index) {
-        const contentElement = document.getElementById(`history-content-${index}`);
-        const result = oracleQueue.getAllResults()[index];
-        
-        if (contentElement.classList.contains('expanded')) {
-            contentElement.textContent = result.result.reading.substring(0, 200) + '...';
-            contentElement.classList.remove('expanded');
-            // Cambiar el texto del botón
-            contentElement.nextElementSibling.textContent = 'Leer más';
-        } else {
-            contentElement.textContent = result.result.reading;
-            contentElement.classList.add('expanded');
-            contentElement.nextElementSibling.textContent = 'Leer menos';
+    function switchHistoryTab(tabName) {
+        // Actualizar pestañas activas
+        document.querySelectorAll('.history-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelectorAll('.history-content').forEach(content => {
+            content.classList.remove('active');
+        });
+
+        // Activar pestaña seleccionada
+        event.target.classList.add('active');
+        document.getElementById(`history-${tabName}-content`).classList.add('active');
+
+        // Cargar contenido
+        if (tabName === 'consultas') {
+            loadConsultasHistory();
+        } else if (tabName === 'favoritos') {
+            loadFavoritesHistory();
         }
+    }
+
+    function loadConsultasHistory() {
+        const historyList = document.getElementById('history-list');
+        const results = oracleQueue.getAllResults();
+        
+        if (results.length === 0) {
+            historyList.innerHTML = '<div class="empty-message">No tienes consultas anteriores</div>';
+        } else {
+            historyList.innerHTML = results.map((result, index) => {
+                const date = new Date(result.timestamp);
+                const isFav = isFavorite(result.data?.requestId || index);
+                
+                return `
+                    <div class="history-item ${isFav ? 'favorite-item' : ''}">
+                        <div class="history-theme">
+                            ${getThemeName(result.data.theme)} 
+                            ${isFav ? '⭐' : ''}
+                        </div>
+                        <div class="history-date">${date.toLocaleString('es-ES')}</div>
+                        <div class="history-text">${result.result.reading}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
+    function loadFavoritesHistory() {
+        const favoritesList = document.getElementById('favorites-list');
+        const favorites = getFavorites();
+        const favoriteItems = Object.values(favorites);
+        
+        if (favoriteItems.length === 0) {
+            favoritesList.innerHTML = '<div class="empty-message">No tienes consultas favoritas</div>';
+        } else {
+            favoritesList.innerHTML = favoriteItems.map((favorite, index) => {
+                const date = new Date(favorite.timestamp);
+                const favDate = new Date(favorite.favoriteDate);
+                
+                return `
+                    <div class="history-item favorite-item">
+                        <div class="history-theme">${getThemeName(favorite.data.theme)} ⭐</div>
+                        <div class="history-date">
+                            Consulta: ${date.toLocaleString('es-ES')}<br>
+                            Guardada: ${favDate.toLocaleString('es-ES')}
+                        </div>
+                        <div class="history-text">${favorite.result.reading}</div>
+                        <button class="action-button" style="margin-top: 10px; background: #ff6b6b;" 
+                                onclick="removeFavoriteFromHistory('${Object.keys(favorites)[index]}')">
+                            🗑️ Quitar de Favoritos
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
+    function removeFavoriteFromHistory(favoriteId) {
+        removeFavorite(favoriteId);
+        loadFavoritesHistory(); // Recargar la lista
+        showNotification('❌ Favorito eliminado');
     }
 
     function clearHistory() {
-        if (confirm('¿Estás seguro de que quieres eliminar todo tu historial de consultas?')) {
+        if (confirm('¿Estás seguro de que quieres eliminar TODO tu historial y favoritos?')) {
             oracleQueue.clearResults();
             hideHistory();
-            showNotification('Historial limpiado correctamente');
+            showNotification('🗑️ Historial y favoritos eliminados');
         }
     }
 
-    // Funciones para los botones de acción
+    // BOTÓN FAVORITO MEJORADO
+    function saveAsFavorite() {
+        const results = oracleQueue.getAllResults();
+        if (results.length === 0) {
+            showNotification('❌ No hay consulta actual para guardar como favorito');
+            return;
+        }
+        
+        const latestResult = results[0];
+        const favoriteId = 'fav_' + Date.now();
+        
+        saveFavorite(favoriteId, latestResult);
+        showNotification('⭐ Consulta guardada en favoritos');
+        
+        // Si el panel de favoritos está abierto, actualizarlo
+        if (document.getElementById('history-panel').style.display === 'block') {
+            loadFavoritesHistory();
+        }
+    }
+
+    // Resto de funciones (compartir, notificaciones, etc.)
     function shareReading() {
         const resultContent = document.getElementById('result-content').textContent;
         const resultTitle = document.getElementById('result-title').textContent;
         
-        const shareText = `${resultTitle}\n\n${resultContent.substring(0, 100)}...\n\n✨ Consulta completa en: ${window.location.href}`;
+        const shareText = `${resultTitle}\n\n${resultContent}\n\n✨ Consulta completa en: ${window.location.href}`;
         
         if (navigator.share) {
             navigator.share({
                 title: 'Mi Tirada del Oráculo',
                 text: shareText,
                 url: window.location.href
-            }).catch(err => {
-                console.log('Error al compartir:', err);
-                copyToClipboard(shareText);
             });
         } else {
             copyToClipboard(shareText);
@@ -773,55 +847,21 @@
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
             showNotification('📋 Texto copiado al portapapeles');
-        }).catch(err => {
-            console.error('Error al copiar:', err);
-            showNotification('❌ Error al copiar el texto');
         });
     }
 
-    function saveAsFavorite() {
-        const results = oracleQueue.getAllResults();
-        if (results.length === 0) {
-            showNotification('❌ No hay consulta actual para guardar como favorito');
-            return;
-        }
-        
-        const latestResult = results[0]; // La más reciente
-        const favorites = JSON.parse(localStorage.getItem('oracle_favorites') || '{}');
-        const favoriteId = 'fav_' + Date.now();
-        
-        favorites[favoriteId] = {
-            ...latestResult,
-            favoriteDate: Date.now()
-        };
-        
-        localStorage.setItem('oracle_favorites', JSON.stringify(favorites));
-        showNotification('⭐ Consulta guardada en favoritos');
-    }
-
     function showNotification(message) {
-        // Crear notificación temporal
         const notification = document.createElement('div');
         notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(42, 39, 55, 0.95);
-            color: #e0d8c0;
-            padding: 15px 20px;
-            border-radius: 8px;
-            border: 1px solid #e6c229;
-            z-index: 10000;
-            font-family: 'Lora', serif;
+            position: fixed; top: 20px; right: 20px;
+            background: rgba(42, 39, 55, 0.95); color: #e0d8c0;
+            padding: 15px 20px; border-radius: 8px; border: 1px solid #e6c229;
+            z-index: 10000; font-family: 'Lora', serif;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         `;
         notification.textContent = message;
-        
         document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
+        setTimeout(() => notification.remove(), 3000);
     }
 
     // Función para nueva consulta
@@ -830,17 +870,10 @@
         const loading = document.getElementById('loading');
         const resultContainer = document.getElementById('result-container');
         
-        // Ocultar resultados
         resultContainer.style.display = 'none';
-        
-        // Mostrar formulario
         form.style.display = 'block';
         form.reset();
-        
-        // Ocultar loading si está visible
         loading.style.display = 'none';
-        
-        // Resetear errores
         resetErrors();
     }
 
@@ -851,21 +884,14 @@
         const resultTitle = document.getElementById('result-title');
         const resultContent = document.getElementById('result-content');
         const newConsultationBtn = document.getElementById('new-consultation-btn');
-        const showHistoryBtn = document.getElementById('show-history-btn');
 
-        // Cargar queue al iniciar
         oracleQueue.loadFromStorage();
 
-        // Configurar botones
         newConsultationBtn.addEventListener('click', setupNewConsultation);
-        showHistoryBtn.addEventListener('click', showHistory);
-
-        // Cerrar historial al hacer clic en el overlay
         document.getElementById('history-overlay').addEventListener('click', hideHistory);
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             resetErrors();
             
             const formData = new FormData(form);
@@ -878,42 +904,25 @@
                 marketing: formData.get('marketing') === 'on'
             };
 
-            if (!validateForm(data)) {
-                return;
-            }
+            if (!validateForm(data)) return;
 
-            // Mostrar loading inmediatamente
             form.style.display = 'none';
             loading.style.display = 'block';
-            loading.innerHTML = `
-                <div class="spinner"></div>
-                <p style="color: #e6c229; font-family: 'Lora', serif;">
-                    El Oráculo está consultando las cartas...
-                </p>
-                <p style="color: #b8a98a; font-size: 0.9em; margin-top: 10px;">
-                    ⚠️ No cierres esta ventana hasta completar la consulta
-                </p>
-            `;
 
             try {
                 const requestId = await oracleQueue.addRequest(data);
-                
-                // Esperar por el resultado (polling)
                 await waitForResult(requestId);
-                
             } catch (error) {
                 console.error('Error en la consulta:', error);
                 showErrorResult(error.message);
             }
         });
 
-        // Función para esperar por el resultado
         async function waitForResult(requestId, attempts = 0) {
-            const maxAttempts = 300; // 5 minutos (300 * 1 segundo)
-            
+            const maxAttempts = 300;
             const result = oracleQueue.getResult(requestId);
+            
             if (result) {
-                // Mostrar resultado exitoso
                 resultTitle.textContent = `Tu Tirada de ${getThemeName(result.data.theme)}`;
                 resultContent.textContent = result.result.reading;
                 resultContainer.style.display = 'block';
@@ -922,10 +931,9 @@
             }
 
             if (attempts >= maxAttempts) {
-                throw new Error('Tiempo de espera agotado. La consulta está tomando más tiempo de lo esperado.');
+                throw new Error('Tiempo de espera agotado');
             }
 
-            // Esperar 1 segundo y reintentar
             await new Promise(resolve => setTimeout(resolve, 1000));
             return waitForResult(requestId, attempts + 1);
         }
@@ -938,32 +946,26 @@
 
         function validateForm(data) {
             let isValid = true;
-
             if (!data.name || data.name.length < 2) {
                 showError('name-error', 'El nombre debe tener al menos 2 caracteres');
                 isValid = false;
             }
-
             if (!data.birthdate) {
                 showError('birthdate-error', 'La fecha de nacimiento es obligatoria');
                 isValid = false;
             }
-
             if (!data.email || !isValidEmail(data.email)) {
                 showError('email-error', 'Introduce un email válido');
                 isValid = false;
             }
-
             if (!data.theme) {
                 showError('theme-error', 'Selecciona una temática');
                 isValid = false;
             }
-
             if (!data.lopd) {
                 showError('lopd-error', 'Debes aceptar la política de privacidad');
                 isValid = false;
             }
-
             return isValid;
         }
 
@@ -974,8 +976,7 @@
         }
 
         function resetErrors() {
-            const errorElements = document.querySelectorAll('.error-message');
-            errorElements.forEach(element => {
+            document.querySelectorAll('.error-message').forEach(element => {
                 element.style.display = 'none';
                 element.textContent = '';
             });
@@ -988,17 +989,13 @@
 
         function getThemeName(theme) {
             const themes = {
-                'oraculo': 'Oráculo',
-                'tarot': 'Tarot',
-                'cabala': 'Cábala',
-                'numerologia': 'Numerología',
-                'astrologica': 'Astrología'
+                'oraculo': 'Oráculo', 'tarot': 'Tarot', 'cabala': 'Cábala',
+                'numerologia': 'Numerología', 'astrologica': 'Astrología'
             };
             return themes[theme] || 'Oráculo';
         }
     });
 
-    // Función para PayPal
     function openPayPalDonation() {
         window.open('https://www.paypal.com/donate/?hosted_button_id=8Y7DEGZZ7X2JS', '_blank');
     }
