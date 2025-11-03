@@ -346,7 +346,7 @@
       <div class="result-container" id="result-container">
         <h3 class="result-title" id="result-title">Tu Tirada del Oráculo</h3>
         <div class="result-content" id="result-content"></div>
-        <button class="cta-button" style="margin-top: 20px;" onclick="location.reload()">
+        <button class="cta-button" style="margin-top: 20px;" id="new-consultation-btn">
           🔮 Nueva Consulta
         </button>
       </div>
@@ -523,177 +523,190 @@
     // Inicializar la cola
     const oracleQueue = new OracleQueue();
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('oracle-form');
-      const loading = document.getElementById('loading');
-      const resultContainer = document.getElementById('result-container');
-      const resultTitle = document.getElementById('result-title');
-      const resultContent = document.getElementById('result-content');
-
-      // Cargar queue al iniciar
-      oracleQueue.loadFromStorage();
-
-      // Verificar si hay resultados pendientes de mostrar
-      checkPendingResults();
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // Función para nueva consulta
+    function setupNewConsultation() {
+        const form = document.getElementById('oracle-form');
+        const loading = document.getElementById('loading');
+        const resultContainer = document.getElementById('result-container');
         
+        // Ocultar resultados
+        resultContainer.style.display = 'none';
+        
+        // Mostrar formulario
+        form.style.display = 'block';
+        form.reset();
+        
+        // Ocultar loading si está visible
+        loading.style.display = 'none';
+        
+        // Resetear errores
         resetErrors();
-        
-        const formData = new FormData(form);
-        const data = {
-          name: formData.get('name').trim(),
-          birthdate: formData.get('birthdate'),
-          email: formData.get('email').trim(),
-          theme: formData.get('theme'),
-          lopd: formData.get('lopd') === 'on',
-          marketing: formData.get('marketing') === 'on'
-        };
+    }
 
-        if (!validateForm(data)) {
-          return;
-        }
-
-        // Mostrar loading inmediatamente
-        form.style.display = 'none';
-        loading.style.display = 'block';
-        loading.innerHTML = `
-            <div class="spinner"></div>
-            <p style="color: #e6c229; font-family: 'Lora', serif;">
-                El Oráculo está consultando las cartas...
-            </p>
-            <p style="color: #b8a98a; font-size: 0.9em; margin-top: 10px;">
-                ⚠️ No cierres esta ventana hasta completar la consulta
-            </p>
-        `;
-
-        try {
-            const requestId = await oracleQueue.addRequest(data);
-            
-            // Esperar por el resultado (polling)
-            await waitForResult(requestId);
-            
-        } catch (error) {
-            console.error('Error en la consulta:', error);
-            showErrorResult(error.message);
-        }
-      });
-
-      // Función para esperar por el resultado
-      async function waitForResult(requestId, attempts = 0) {
-        const maxAttempts = 300; // 5 minutos (300 * 1 segundo)
-        
-        const result = oracleQueue.getResult(requestId);
-        if (result) {
-            // Mostrar resultado exitoso
-            resultTitle.textContent = `Tu Tirada de ${getThemeName(result.data.theme)}`;
-            resultContent.textContent = result.result.reading;
-            resultContainer.style.display = 'block';
-            loading.style.display = 'none';
-            return;
-        }
-
-        if (attempts >= maxAttempts) {
-            throw new Error('Tiempo de espera agotado. La consulta está tomando más tiempo de lo esperado.');
-        }
-
-        // Esperar 1 segundo y reintentar
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        return waitForResult(requestId, attempts + 1);
-      }
-
-      // Verificar resultados pendientes al cargar
-      function checkPendingResults() {
+    // Verificar resultados pendientes al cargar - SOLO LOG, NO MOSTRAR
+    function checkPendingResults() {
         const results = JSON.parse(localStorage.getItem('oracle_results') || '{}');
         const recentResults = Object.values(results).filter(r => 
-            Date.now() - r.timestamp < (10 * 60 * 1000) // Últimos 10 minutos
+            Date.now() - r.timestamp < (10 * 60 * 1000)
         );
+        console.log('Consultas recientes en historial:', recentResults.length);
+    }
 
-        if (recentResults.length > 0) {
-            // Mostrar el resultado más reciente
-            const latest = recentResults.reduce((prev, current) => 
-                prev.timestamp > current.timestamp ? prev : current
-            );
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('oracle-form');
+        const loading = document.getElementById('loading');
+        const resultContainer = document.getElementById('result-container');
+        const resultTitle = document.getElementById('result-title');
+        const resultContent = document.getElementById('result-content');
+        const newConsultationBtn = document.getElementById('new-consultation-btn');
+
+        // Cargar queue al iniciar
+        oracleQueue.loadFromStorage();
+
+        // Solo verificar resultados, NO mostrarlos automáticamente
+        checkPendingResults();
+
+        // Configurar botón de nueva consulta
+        newConsultationBtn.addEventListener('click', setupNewConsultation);
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            resultTitle.textContent = `Tu Tirada de ${getThemeName(latest.data.theme)}`;
-            resultContent.textContent = latest.result.reading;
-            resultContainer.style.display = 'block';
+            resetErrors();
+            
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get('name').trim(),
+                birthdate: formData.get('birthdate'),
+                email: formData.get('email').trim(),
+                theme: formData.get('theme'),
+                lopd: formData.get('lopd') === 'on',
+                marketing: formData.get('marketing') === 'on'
+            };
+
+            if (!validateForm(data)) {
+                return;
+            }
+
+            // Mostrar loading inmediatamente
             form.style.display = 'none';
-        }
-      }
+            loading.style.display = 'block';
+            loading.innerHTML = `
+                <div class="spinner"></div>
+                <p style="color: #e6c229; font-family: 'Lora', serif;">
+                    El Oráculo está consultando las cartas...
+                </p>
+                <p style="color: #b8a98a; font-size: 0.9em; margin-top: 10px;">
+                    ⚠️ No cierres esta ventana hasta completar la consulta
+                </p>
+            `;
 
-      function showErrorResult(message) {
-        resultContent.textContent = `Lo sentimos: ${message}. Por favor, intenta de nuevo.`;
-        resultContainer.style.display = 'block';
-        loading.style.display = 'none';
-      }
-
-      function validateForm(data) {
-        let isValid = true;
-
-        if (!data.name || data.name.length < 2) {
-          showError('name-error', 'El nombre debe tener al menos 2 caracteres');
-          isValid = false;
-        }
-
-        if (!data.birthdate) {
-          showError('birthdate-error', 'La fecha de nacimiento es obligatoria');
-          isValid = false;
-        }
-
-        if (!data.email || !isValidEmail(data.email)) {
-          showError('email-error', 'Introduce un email válido');
-          isValid = false;
-        }
-
-        if (!data.theme) {
-          showError('theme-error', 'Selecciona una temática');
-          isValid = false;
-        }
-
-        if (!data.lopd) {
-          showError('lopd-error', 'Debes aceptar la política de privacidad');
-          isValid = false;
-        }
-
-        return isValid;
-      }
-
-      function showError(elementId, message) {
-        const element = document.getElementById(elementId);
-        element.textContent = message;
-        element.style.display = 'block';
-      }
-
-      function resetErrors() {
-        const errorElements = document.querySelectorAll('.error-message');
-        errorElements.forEach(element => {
-          element.style.display = 'none';
-          element.textContent = '';
+            try {
+                const requestId = await oracleQueue.addRequest(data);
+                
+                // Esperar por el resultado (polling)
+                await waitForResult(requestId);
+                
+            } catch (error) {
+                console.error('Error en la consulta:', error);
+                showErrorResult(error.message);
+            }
         });
-      }
 
-      function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-      }
+        // Función para esperar por el resultado
+        async function waitForResult(requestId, attempts = 0) {
+            const maxAttempts = 300; // 5 minutos (300 * 1 segundo)
+            
+            const result = oracleQueue.getResult(requestId);
+            if (result) {
+                // Mostrar resultado exitoso
+                resultTitle.textContent = `Tu Tirada de ${getThemeName(result.data.theme)}`;
+                resultContent.textContent = result.result.reading;
+                resultContainer.style.display = 'block';
+                loading.style.display = 'none';
+                return;
+            }
 
-      function getThemeName(theme) {
-        const themes = {
-          'oraculo': 'Oráculo',
-          'tarot': 'Tarot',
-          'cabala': 'Cábala',
-          'numerologia': 'Numerología',
-          'astrologica': 'Astrología'
-        };
-        return themes[theme] || 'Oráculo';
-      }
+            if (attempts >= maxAttempts) {
+                throw new Error('Tiempo de espera agotado. La consulta está tomando más tiempo de lo esperado.');
+            }
+
+            // Esperar 1 segundo y reintentar
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            return waitForResult(requestId, attempts + 1);
+        }
+
+        function showErrorResult(message) {
+            resultContent.textContent = `Lo sentimos: ${message}. Por favor, intenta de nuevo.`;
+            resultContainer.style.display = 'block';
+            loading.style.display = 'none';
+        }
+
+        function validateForm(data) {
+            let isValid = true;
+
+            if (!data.name || data.name.length < 2) {
+                showError('name-error', 'El nombre debe tener al menos 2 caracteres');
+                isValid = false;
+            }
+
+            if (!data.birthdate) {
+                showError('birthdate-error', 'La fecha de nacimiento es obligatoria');
+                isValid = false;
+            }
+
+            if (!data.email || !isValidEmail(data.email)) {
+                showError('email-error', 'Introduce un email válido');
+                isValid = false;
+            }
+
+            if (!data.theme) {
+                showError('theme-error', 'Selecciona una temática');
+                isValid = false;
+            }
+
+            if (!data.lopd) {
+                showError('lopd-error', 'Debes aceptar la política de privacidad');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        function resetErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+                element.textContent = '';
+            });
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function getThemeName(theme) {
+            const themes = {
+                'oraculo': 'Oráculo',
+                'tarot': 'Tarot',
+                'cabala': 'Cábala',
+                'numerologia': 'Numerología',
+                'astrologica': 'Astrología'
+            };
+            return themes[theme] || 'Oráculo';
+        }
     });
 
     // Función para PayPal
     function openPayPalDonation() {
-      window.open('https://www.paypal.com/donate/?hosted_button_id=8Y7DEGZZ7X2JS', '_blank');
+        window.open('https://www.paypal.com/donate/?hosted_button_id=8Y7DEGZZ7X2JS', '_blank');
     }
   </script>
 </body>
