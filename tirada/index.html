@@ -125,6 +125,9 @@
       font-family: 'Lora', serif;
       line-height: 1.6;
       white-space: pre-line;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 10px;
     }
     
     .error-message {
@@ -158,51 +161,54 @@
       box-shadow: 0 5px 15px rgba(0, 112, 186, 0.4);
     }
 
-    /* Header responsive */
-    .header-container {
+    /* Header limpio */
+    .clean-header {
       text-align: center;
-      padding: 20px 0;
+      padding: 25px 0;
       margin-bottom: -20px;
-      z-index: 10;
       position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
     }
 
-    .header-title {
+    .clean-header a {
       text-decoration: none;
       color: #e6c229;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8em;
-      letter-spacing: 1px;
-      flex-grow: 1;
-      text-align: center;
+      font-size: 2em;
+      letter-spacing: 2px;
+      font-weight: 700;
     }
 
     .header-donate {
-      position: static;
-      transform: none;
-      margin-left: auto;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
     }
 
-    /* Botón para consultas anteriores */
-    .history-button {
+    /* Botones de acción en resultados */
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+
+    .action-button {
       background: linear-gradient(135deg, #6b5b95, #8a76b5);
       color: white;
       border: none;
-      padding: 10px 16px;
+      padding: 10px 20px;
       border-radius: 6px;
       font-family: 'Cormorant Garamond', serif;
       font-weight: 600;
       font-size: 0.9em;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-left: 10px;
+      text-decoration: none;
     }
 
-    .history-button:hover {
+    .action-button:hover {
       background: linear-gradient(135deg, #5a4a85, #7a66a5);
       transform: translateY(-2px);
     }
@@ -214,15 +220,17 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(26, 23, 35, 0.95);
+      background: rgba(26, 23, 35, 0.98);
       border: 2px solid #e6c229;
       border-radius: 12px;
       padding: 25px;
       z-index: 1000;
-      max-width: 90%;
+      width: 90%;
+      max-width: 600px;
       max-height: 80%;
       overflow-y: auto;
       color: #e0d8c0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .history-overlay {
@@ -232,7 +240,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       z-index: 999;
     }
 
@@ -278,6 +286,7 @@
       font-size: 0.9em;
       margin-top: 5px;
       text-decoration: underline;
+      padding: 0;
     }
 
     .close-history {
@@ -289,58 +298,61 @@
       color: #e6c229;
       font-size: 1.5em;
       cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Media queries para móviles */
     @media (max-width: 768px) {
-      .header-container {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px 0;
+      .clean-header {
+        padding: 20px 0;
       }
 
-      .header-title {
-        font-size: 1.5em;
-        order: 1;
+      .clean-header a {
+        font-size: 1.6em;
       }
 
       .header-donate {
-        order: 2;
-        margin: 0;
+        position: static;
+        transform: none;
+        margin-top: 15px;
       }
 
-      .header-history {
-        order: 3;
-        margin: 10px 0 0 0;
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
       }
 
-      .donate-button, .history-button {
-        padding: 8px 14px;
-        font-size: 0.85em;
-      }
-
-      .footer-donate {
-        margin: 15px 0;
+      .action-button {
+        width: 100%;
+        max-width: 250px;
       }
 
       .history-panel {
         width: 95%;
         padding: 20px 15px;
       }
+
+      .result-content {
+        max-height: 300px;
+      }
     }
 
     @media (max-width: 480px) {
-      .header-title {
-        font-size: 1.3em;
+      .clean-header a {
+        font-size: 1.4em;
       }
 
       .main-box h1 {
         font-size: 1.5em;
       }
 
-      .donate-button, .history-button {
-        padding: 7px 12px;
-        font-size: 0.8em;
+      .donate-button, .action-button {
+        padding: 8px 16px;
+        font-size: 0.85em;
       }
     }
 
@@ -367,18 +379,12 @@
   </style>
 </head>
 <body>
-  <!-- Header corregido para móviles -->
-  <header class="header-container">
-    <a href="/" class="header-title">
-      ✨ El Oráculo Diario
-    </a>
-    <!-- Botón de donar en header - posición corregida -->
+  <!-- Cabecera limpia -->
+  <header class="clean-header">
+    <a href="/">✨ El Oráculo Diario</a>
+    <!-- Botón de donar en header -->
     <div class="header-donate">
       <button class="donate-button" onclick="openPayPalDonation()">❤️ Donar</button>
-    </div>
-    <!-- Botón de historial -->
-    <div class="header-history">
-      <button class="history-button" id="show-history-btn">📜 Historial</button>
     </div>
   </header>
 
@@ -464,12 +470,22 @@
       <div class="result-container" id="result-container">
         <h3 class="result-title" id="result-title">Tu Tirada del Oráculo</h3>
         <div class="result-content" id="result-content"></div>
-        <button class="cta-button" style="margin-top: 20px;" id="new-consultation-btn">
-          🔮 Nueva Consulta
-        </button>
-        <button class="history-button" style="margin-top: 10px;" onclick="showHistory()">
-          📜 Ver Todas mis Consultas
-        </button>
+        
+        <!-- Botones de acción en la parte inferior -->
+        <div class="action-buttons">
+          <button class="cta-button" id="new-consultation-btn">
+            🔮 Nueva Consulta
+          </button>
+          <button class="action-button" id="show-history-btn">
+            📜 Ver Historial
+          </button>
+          <button class="action-button" onclick="shareReading()">
+            📤 Compartir
+          </button>
+          <button class="action-button" onclick="saveAsFavorite()">
+            ⭐ Favorito
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -487,7 +503,7 @@
 
   <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
     <!-- Botón de donar en footer -->
-    <div class="footer-donate">
+    <div style="margin-bottom: 20px;">
       <button class="donate-button" onclick="openPayPalDonation()">❤️ Apoya el Oráculo</button>
     </div>
     
@@ -716,11 +732,12 @@
         if (contentElement.classList.contains('expanded')) {
             contentElement.textContent = result.result.reading.substring(0, 200) + '...';
             contentElement.classList.remove('expanded');
-            contentElement.previousElementSibling.textContent = 'Leer más';
+            // Cambiar el texto del botón
+            contentElement.nextElementSibling.textContent = 'Leer más';
         } else {
             contentElement.textContent = result.result.reading;
             contentElement.classList.add('expanded');
-            contentElement.previousElementSibling.textContent = 'Leer menos';
+            contentElement.nextElementSibling.textContent = 'Leer menos';
         }
     }
 
@@ -728,9 +745,83 @@
         if (confirm('¿Estás seguro de que quieres eliminar todo tu historial de consultas?')) {
             oracleQueue.clearResults();
             hideHistory();
-            // Si estamos en una consulta, volver al formulario
-            setupNewConsultation();
+            showNotification('Historial limpiado correctamente');
         }
+    }
+
+    // Funciones para los botones de acción
+    function shareReading() {
+        const resultContent = document.getElementById('result-content').textContent;
+        const resultTitle = document.getElementById('result-title').textContent;
+        
+        const shareText = `${resultTitle}\n\n${resultContent.substring(0, 100)}...\n\n✨ Consulta completa en: ${window.location.href}`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'Mi Tirada del Oráculo',
+                text: shareText,
+                url: window.location.href
+            }).catch(err => {
+                console.log('Error al compartir:', err);
+                copyToClipboard(shareText);
+            });
+        } else {
+            copyToClipboard(shareText);
+        }
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showNotification('📋 Texto copiado al portapapeles');
+        }).catch(err => {
+            console.error('Error al copiar:', err);
+            showNotification('❌ Error al copiar el texto');
+        });
+    }
+
+    function saveAsFavorite() {
+        const results = oracleQueue.getAllResults();
+        if (results.length === 0) {
+            showNotification('❌ No hay consulta actual para guardar como favorito');
+            return;
+        }
+        
+        const latestResult = results[0]; // La más reciente
+        const favorites = JSON.parse(localStorage.getItem('oracle_favorites') || '{}');
+        const favoriteId = 'fav_' + Date.now();
+        
+        favorites[favoriteId] = {
+            ...latestResult,
+            favoriteDate: Date.now()
+        };
+        
+        localStorage.setItem('oracle_favorites', JSON.stringify(favorites));
+        showNotification('⭐ Consulta guardada en favoritos');
+    }
+
+    function showNotification(message) {
+        // Crear notificación temporal
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(42, 39, 55, 0.95);
+            color: #e0d8c0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #e6c229;
+            z-index: 10000;
+            font-family: 'Lora', serif;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        `;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
     }
 
     // Función para nueva consulta
@@ -753,12 +844,6 @@
         resetErrors();
     }
 
-    // Verificar resultados pendientes al cargar - SOLO LOG, NO MOSTRAR
-    function checkPendingResults() {
-        const results = oracleQueue.getAllResults();
-        console.log('Consultas recientes en historial:', results.length);
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('oracle-form');
         const loading = document.getElementById('loading');
@@ -770,9 +855,6 @@
 
         // Cargar queue al iniciar
         oracleQueue.loadFromStorage();
-
-        // Solo verificar resultados, NO mostrarlos automáticamente
-        checkPendingResults();
 
         // Configurar botones
         newConsultationBtn.addEventListener('click', setupNewConsultation);
