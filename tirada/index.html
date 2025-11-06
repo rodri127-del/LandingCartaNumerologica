@@ -467,10 +467,10 @@
 <body>
   <!-- Cabecera limpia -->
   <header class="clean-header">
-    <a href="/">✨ El Oráculo Diario</a>
+    <a href="/">El Oráculo Diario</a>
     <!-- Botón de donar en header -->
     <div class="header-donate">
-      <button class="donate-button" onclick="openPayPalDonation()">❤️ Donar</button>
+      <button class="donate-button" onclick="openPayPalDonation()">Donar</button>
     </div>
   </header>
 
@@ -505,6 +505,9 @@
           <label class="form-label">Temática de consulta</label>
           <select class="form-select" name="theme" required>
             <option value="">Selecciona una temática</option>
+            <option value="dinero">DINERO</option>
+            <option value="amor">AMOR</option>
+            <option value="proposito">PROPÓSITO</option>
             <option value="oraculo">Oráculo</option>
             <option value="tarot">Tarot</option>
             <option value="cabala">Cábala</option>
@@ -537,7 +540,7 @@
         </div>
 
         <button type="submit" class="cta-button" style="margin-top: 10px;">
-          🎴 Hacer Tirada
+          Hacer Tirada
         </button>
       </form>
 
@@ -548,7 +551,7 @@
           El Oráculo está consultando las cartas...
         </p>
         <p style="color: #b8a98a; font-size: 0.9em; margin-top: 10px;">
-          ⚠️ No cierres esta ventana hasta completar la consulta
+          No cierres esta ventana hasta completar la consulta
         </p>
       </div>
 
@@ -560,16 +563,16 @@
         <!-- Botones de acción en la parte inferior - TODOS DORADOS -->
         <div class="action-buttons">
           <button class="action-button primary" id="new-consultation-btn">
-            🔮 Nueva Consulta
+            Nueva Consulta
           </button>
           <button class="action-button" onclick="showHistory('consultas')">
-            📜 Ver Historial
+            Ver Historial
           </button>
           <button class="action-button" onclick="shareReading()">
-            📤 Compartir
+            Compartir
           </button>
           <button class="action-button secondary" onclick="saveAsFavorite()">
-            ⭐ Guardar Favorito
+            Guardar Favorito
           </button>
         </div>
       </div>
@@ -579,12 +582,12 @@
   <!-- Panel de historial MEJORADO -->
   <div class="history-overlay" id="history-overlay"></div>
   <div class="history-panel" id="history-panel">
-    <button class="close-history" onclick="hideHistory()">&times;</button>
+    <button class="close-history" onclick="hideHistory()">×</button>
     <h2 style="color: #e6c229; text-align: center; margin-bottom: 20px;">Tus Consultas</h2>
     
     <div class="history-tabs">
-      <button class="history-tab active" onclick="switchHistoryTab('consultas')">📜 Todas las Consultas</button>
-      <button class="history-tab" onclick="switchHistoryTab('favoritos')">⭐ Favoritos</button>
+      <button class="history-tab active" onclick="switchHistoryTab('consultas')">Todas las Consultas</button>
+      <button class="history-tab" onclick="switchHistoryTab('favoritos')">Favoritos</button>
     </div>
     
     <!-- Contenido de Consultas -->
@@ -598,21 +601,21 @@
     </div>
     
     <div style="text-align: center; margin-top: 20px;">
-      <button class="action-button secondary" onclick="clearHistory()">🗑️ Limpiar Historial</button>
+      <button class="action-button secondary" onclick="clearHistory()">Limpiar Historial</button>
     </div>
   </div>
 
   <footer style="text-align: center; margin-top: 60px; color: #b8a98a; font-size: 0.9em; padding-bottom: 30px;">
     <div style="margin-bottom: 20px;">
-      <button class="donate-button" onclick="openPayPalDonation()">❤️ Apoya el Oráculo</button>
+      <button class="donate-button" onclick="openPayPalDonation()">Apoya el Oráculo</button>
     </div>
     
     <div style="margin-bottom: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
       <a href="/" style="color: #e6c229; text-decoration: none; font-weight: 500;">
-        📜 Carta Numerológica
+        Carta Numerológica
       </a>
       <a href="/tirada" style="color: #e6c229; text-decoration: none; font-weight: 500;">
-        🔮 Tirada de Tarot
+        Tirada de Tarot
       </a>
     </div>
     <a href="/aviso-legal" style="color: #e6c229; margin: 0 8px;">Aviso Legal</a>
@@ -697,11 +700,14 @@
     // FUNCIÓN GLOBAL PARA CORREGIR EL ERROR
     function getThemeName(theme) {
       const themes = {
+        'dinero': 'DINERO', 
+        'amor': 'AMOR', 
+        'proposito': 'PROPÓSITO',
         'oraculo': 'Oráculo', 
         'tarot': 'Tarot', 
         'cabala': 'Cábala',
         'numerologia': 'Numerología', 
-        'astrologica': 'Astrología'
+        'astrologica': 'Astrológica'
       };
       return themes[theme] || 'Oráculo';
     }
@@ -950,7 +956,7 @@
                         <div class="history-text">${favorite.result.reading}</div>
                         <button class="action-button secondary" style="margin-top: 10px;" 
                                 onclick="removeFavoriteFromHistory('${Object.keys(favorites)[index]}')">
-                            🗑️ Quitar de Favoritos
+                            Quitar de Favoritos
                         </button>
                     </div>
                 `;
@@ -961,14 +967,14 @@
     function removeFavoriteFromHistory(favoriteId) {
         removeFavorite(favoriteId);
         loadFavoritesHistory();
-        showNotification('❌ Favorito eliminado');
+        showNotification('Favorito eliminado');
     }
 
     function clearHistory() {
         if (confirm('¿Estás seguro de que quieres eliminar TODO tu historial y favoritos?')) {
             oracleQueue.clearResults();
             hideHistory();
-            showNotification('🗑️ Historial y favoritos eliminados');
+            showNotification('Historial y favoritos eliminados');
         }
     }
 
@@ -976,7 +982,7 @@
     function saveAsFavorite() {
         const results = oracleQueue.getAllResults();
         if (results.length === 0) {
-            showNotification('❌ No hay consulta actual para guardar como favorito');
+            showNotification('No hay consulta actual para guardar como favorito');
             return;
         }
         
@@ -984,7 +990,7 @@
         const favoriteId = 'fav_' + Date.now();
         
         saveFavorite(favoriteId, latestResult);
-        showNotification('⭐ Consulta guardada en favoritos');
+        showNotification('Consulta guardada en favoritos');
         
         // Si el panel de favoritos está abierto, actualizarlo
         if (document.getElementById('history-panel').style.display === 'block') {
@@ -997,7 +1003,7 @@
         const resultContent = document.getElementById('result-content').textContent;
         const resultTitle = document.getElementById('result-title').textContent;
         
-        const shareText = `${resultTitle}\n\n${resultContent}\n\n✨ Consulta completa en: ${window.location.href}`;
+        const shareText = `${resultTitle}\n\n${resultContent}\n\nConsulta completa en: ${window.location.href}`;
         
         if (navigator.share) {
             navigator.share({
@@ -1012,7 +1018,7 @@
 
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            showNotification('📋 Texto copiado al portapapeles');
+            showNotification('Texto copiado al portapapeles');
         });
     }
 
